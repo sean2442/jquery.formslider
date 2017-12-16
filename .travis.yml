@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "node"
+  - "iojs"
+before_script:
+  - npm install -g gulp-cli bower
+  - npm install
+script:
+  - npm run test
+  - npm run build

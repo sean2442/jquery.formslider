@@ -1,0 +1,188 @@
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>jquery.fromslider - Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+
+<form action="#">
+  <div class="formslider-wrapper loading">
+    <div class="formslider">
+
+      <div class="slide" data-role="question" data-id="0">
+        <div class="headline">Are you a <b>woman</b> or <b>man</b>?</div>
+        <input type="hidden" name="slides[0][question]" value="Are you a <b>woman</b> or <b>man</b>?">
+        <div class="answers">
+          <div class="answer">
+            <label class="inner-answer" for="slides[0][answer]">
+              <input id="question_0_answer" name="slides[0][answer]" value="Women" type="radio">
+              <div class="text">Women</div>
+            </label>
+          </div>
+          <div class="answer" data-next-id="dump-question">
+            <label class="inner-answer" for="slides[0][answer]">
+              <input id="question_0_answer" name="slides[0][answer]" value="Men" type="radio">
+              <div class="text">Men</div>
+            </label>
+          </div>
+          <div class="answer">
+            <label class="inner-answer" for="slides[0][answer]">
+              <input id="question_0_answer" name="slides[0][answer]" value="Don`t know" type="radio">
+              <div class="text">Don`t know</div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" data-role="question" data-id="1">
+        <div class="headline">How <b>old</b> are you?</div>
+        <input type="hidden" name="slides[1][question]" value="How <b>old</b> are you?">
+        <div class="answers">
+          <div class="answer">
+            <label class="inner-answer" for="slides[1][answer]">
+              <input id="question_1_answer" name="slides[1][answer]" value="Younger than 18" type="radio">
+              <div class="text">Younger than 18</div>
+            </label>
+          </div>
+          <div class="answer">
+            <label class="inner-answer" for="slides[1][answer]">
+              <input id="question_1_answer" name="slides[1][answer]" value="Younger than 21" type="radio">
+              <div class="text">Younger than 21</div>
+            </label>
+          </div>
+          <div class="answer">
+            <label class="inner-answer" for="slides[1][answer]">
+              <input id="question_1_answer" name="slides[1][answer]" value="Exactly 42" type="radio">
+              <div class="text">Exactly 42</div>
+            </label>
+          </div>
+          <div class="answer">
+            <label class="inner-answer" for="slides[1][answer]">
+              <input id="question_1_answer" name="slides[1][answer]" value="I can`t remember and have to look on my identity card" type="radio">
+              <div class="text">I can`t remember and have to look on my identity card</div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" data-role="question" data-id="2" data-next-id="zipcode">
+        <div class="headline">Are you <b>cute</b>?</div>
+        <input type="hidden" name="slides[2][question]" value="Are you <b>cute</b>?">
+        <div class="answers">
+          <div class="answer">
+            <label class="inner-answer" for="slides[2][answer]">
+              <input id="question_2_answer" name="slides[2][answer]" value="Yes!" type="radio">
+              <div class="text">Yes!</div>
+            </label>
+          </div>
+          <div class="answer">
+            <label class="inner-answer" for="slides[2][answer]">
+              <input id="question_2_answer" name="slides[2][answer]" value="No =(" type="radio">
+              <div class="text">No =(</div>
+            </label>
+          </div>
+          <div class="answer">
+            <label class="inner-answer" for="slides[2][answer]">
+              <input id="question_2_answer" name="slides[2][answer]" value="It depends" type="radio">
+              <div class="text">It depends</div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!--div class="slide" data-role="question" data-id="dump-question">
+        <div class="headline">Damn, you answered <b>boy</b> =(</div>
+        <input type="hidden" name="slides[3][question]" value="Damn, you answered <b>boy</b> =(">
+        <div class="answers">
+          <div class="answer" data-next-id="0">
+            <label class="inner-answer" for="slides[3][answer]">
+              <input id="question_3_answer" name="slides[3][answer]" value="Ok, that was a lie!" type="radio">
+              <div class="text">Ok, that was a lie!</div>
+            </label>
+          </div>
+          <div class="answer" data-next-id="1">
+            <label class="inner-answer" for="slides[3][answer]">
+              <input id="question_3_answer" name="slides[3][answer]" value="Yes ...sorry, i will go forward nevertheless" type="radio">
+              <div class="text">Yes ...sorry, i will go forward nevertheless</div>
+            </label>
+          </div>
+          <div class="answer" data-next-id="zipcode">
+            <label class="inner-answer" for="slides[3][answer]">
+              <input id="question_3_answer" name="slides[3][answer]" value="Yes ...sorry, let me finish" type="radio">
+              <div class="text">Yes ...sorry, let me finish</div>
+            </label>
+          </div>
+        </div>
+      </div-->
+
+      <div class="slide" data-role="zipcode" data-id="zipcode">
+        <div class="headline">Where do you live?</div>
+        <div class="sub-headline">For calculating your happiness factor based on sun hours ;)</div>
+        <div class="zipcode-input">
+          <label for="">Post Code:</label>
+          <input type="number" name="contact[zipcode]" maxlength="5" required="required" autocompletetype="postal-code" data-force-max-length="1">
+          <a class="next-button" href="#" onclick="return false">Continue</a>
+        </div>
+      </div>
+
+      <div class="slide" data-role="loader" data-id="loader">
+        <div class="headline">Please wait!</div>
+        <div class="sub-headline">I will calculate your yearly sun hours.</div>
+      </div>
+
+      <div class="slide" data-role="contact" data-id="contact">
+        <div class="headline">Get in contact!</div>
+        <div class="sub-headline">You have enough sun hours, may be I will join =)</div>
+        <div class="name row">
+          <label for="input_name_0">Name:</label>
+          <input type="text" name="contact[first_name]" placeholder="Given Name" required="required" minlength="3" autocompletetype="given-name" id="input_name_0">
+          <input type="text" name="contact[last_name]"  placeholder="Last Name"  required="required" minlength="3" id="input_name_1">
+        </div>
+        <div class="row zipcode">
+          <label for="input_zipcode_0">Post Code:</label>
+          <input type="number" name="contact[zipcode]" placeholder="Post Code" maxlength="5" required="required" autocompletetype="postal-code" id="input_zipcode_0" data-force-max-length="1">
+        </div>
+        <div class="phone row">
+          <label for="input_phone_0">Phone:</label>
+          <input type="tel" name="contact[phone]" placeholder="for further questions" required="required" minlength="3" autocompletetype="tel-local" id="input_phone_0">
+        </div>
+        <div class="email row">
+          <label for="input_email_0">E-Mail:</label>
+          <input type="email" name="contact[email]" placeholder="E-Mail" required="required" autocompletetype="email" id="input_email_0"></div>
+        <div class="button-row row">
+          <a class="next-button submit-button" href="#" onclick="return false">continue</a>
+        </div>
+      </div>
+
+      <div class="slide" data-role="confirmation" data-id="confirmation">
+        <div class="headline">Thank you =)</div>
+        <div class="content">I think we will meet next time! For quicker response write me <a href="mailto:tom@creative-workflow.berlin">tom@creative-workflow.berlin</a></div>
+      </div>
+
+    </div>
+  </div>
+</form>
+
+
+  <div class="progressbar-wrapper percent loading">
+    <div class="progress-text">0%</div>
+    <div class="progress-bar">
+      <div class="progress" style="width: 0;"></div>
+    </div>
+  </div>
+
+  <div class="progressbar-wrapper steps loading">
+    <div class="progress-text">0/0</div>
+    <div class="progress-bar">
+      <div class="progress" style="width: 0;"></div>
+    </div>
+  </div>
+
+
+</body>
+
+</html>

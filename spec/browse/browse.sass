@@ -1,0 +1,62 @@
+@import "src/sass/mixins/formslider"
+
++with-formslider('formslider-wrapper')
+  border: 1px solid #999
+  background-color: #eee
+  max-width: 800px
+  margin: 50px auto 0 auto
+  position: relative
+  &:after
+    opacity: 0
+    transition: opacity .2s linear
+
+  &.loading
+    +with-formslider-slide
+      opacity: 0
+      transition: opacity .2s linear
+
+    &:after
+      content: '...loading'
+      display: inline-block
+      position: absolute
+      opacity: 1
+      left: 50%
+      top: 40%
+
+  +with-formslider-slide
+    transition: all .2s linear
+    padding: 50px 0
+
+    .headline
+      font-size: 20px
+      padding: 0 0 50px 0
+      text-align: center
+      font-weight: bold
+
+    +with-answers
+      text-align: center
+
+    +with-answer-inner
+      border: 1px solid #999
+      padding: 20px
+
+    +with-selected-answer
+      font-weight: bold
+      text-decoration: underline
+
++with-formslider-progressbar-wrapper
+  max-width: 800px
+  margin: 0 auto
+  text-align: center
+  +with-formslider-progress-bar
+    +with-formslider-progress-bar-brogress
+      opacity: 1
+      background-color: #999
+      width: 100%
+      border: 1px solid #999
+      height: 20px
+      transition: width .2s linear
+
+  &.loading
+    transition: width 0 linear !important
+    opacity: 0

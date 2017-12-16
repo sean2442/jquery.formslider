@@ -1,0 +1,78 @@
+@mixin with-formslider($class: 'flex-viewport')
+  .#{$class}
+    @content
+
+@mixin with-formslider-slide($role: null)
+  $selector: '.slide'
+  @if $role
+    $selector: "#{$selector}-role-#{$role}"
+
+  "#{$selector}"
+    @content
+
+@mixin with-answer-count($count)
+  &.answer-count-#{$count}
+    @content
+
+@mixin with-answers
+  .answers
+    @content
+
+@mixin with-answer
+  .answer
+    @content
+
+@mixin with-selected-answer
+  .answer.selected
+    @content
+
+
+@mixin with-answer-inner
+  .answer-inner
+    @content
+
+@mixin with-answer-text
+  .text
+    @content
+
+@mixin with-answer-image
+  .image
+    @content
+
+@mixin with-answer-input
+  input
+    @content
+
+// progressbar
+@mixin with-formslider-progressbar-wrapper
+  .progressbar-wrapper
+    @content
+
+@mixin with-formslider-progress-text
+  .progress-text
+    @content
+
+@mixin with-formslider-progress-bar
+  .progress-bar
+    @content
+
+@mixin with-formslider-progress-bar-brogress
+  .progress
+    @content
+
+
+// +with-formslider-progressbar-wrapper
+//   +with-formslider-progress-text
+//   +with-formslider-progress-bar
+//     +with-formslider-progress-bar-brogress
+
+// +with-formslider
+//   +with-formslider-slide
+//     +with-answer-count(4)
+//
+//     +with-answers
+//        +with-selected-answer
+//        +with-answer
+//           +with-answer-inner
+//           +with-answer-text
+//           +with-answer-image # TODO

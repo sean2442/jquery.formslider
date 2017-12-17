@@ -67,7 +67,7 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
 
     # for percent we can give an initial value
     if @config.initialProgress? && indexFromZero < 1
-      percent = @config.initialProgress
+      percent = Math.max(@config.initialProgress, percent)
 
     @_setPercent(percent)
 

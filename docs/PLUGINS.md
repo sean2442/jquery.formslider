@@ -156,12 +156,13 @@ config: {
 
 The plugin automatically detects the following attributes:
 ```bash
-  * required                  # also add aria-required="true"
+  * required                    # also add aria-required="true"
   * minlength
   * maxlength
   * type="email"
   * type="number"
   * data-force-max-length="1"   # will truncate input if longer
+  * data-without-spinner"1"     # will prevent spinner input on number types
 ```
 
 The Plugin triggers the following events:

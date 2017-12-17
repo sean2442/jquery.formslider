@@ -1,6 +1,11 @@
 @import "mixins/formslider"
 
 +with-formslider
+  input.without-spinner::-webkit-outer-spin-button,
+  input.without-spinner::-webkit-inner-spin-button
+    -webkit-appearance: none
+    margin: 0
+
   +with-formslider-slide
     text-align: center
     +with-answers

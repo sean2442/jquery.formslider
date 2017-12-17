@@ -48,8 +48,11 @@ class @JqueryValidatePlugin extends AbstractFormsliderPlugin
 
       if $input.data('type') == 'number'
         $input.attr('pattern', '\\d*')
-        $input.attr('inputmode', 'inputmode')
+        $input.attr('inputmode', 'numeric')
 
+      if($input.data('without-spinner'))
+        $input.addClass('without-spinner')
+          
       for attribute in ['maxlength', 'minlength']
         if $input.attr(attribute)
           $input.data("data-rule-#{attribute}", $input.attr(attribute))

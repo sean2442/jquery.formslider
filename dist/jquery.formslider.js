@@ -942,7 +942,7 @@
         return;
       }
       if ((this.config.initialProgress != null) && indexFromZero < 1) {
-        percent = this.config.initialProgress;
+        percent = Math.max(this.config.initialProgress, percent);
       }
       return this._setPercent(percent);
     };
@@ -1510,6 +1510,29 @@
 
   })();
 
+  this.Locking = (function() {
+    function Locking(logger, initial) {
+      this.logger = logger;
+      if (initial == null) {
+        initial = true;
+      }
+      this.unlock = bind(this.unlock, this);
+      this.lock = bind(this.lock, this);
+      this.locked = initial;
+    }
+
+    Locking.prototype.lock = function() {
+      return this.locked = true;
+    };
+
+    Locking.prototype.unlock = function() {
+      return this.locked = false;
+    };
+
+    return Locking;
+
+  })();
+
   Logger = (function() {
     function Logger(namespace) {
       this.namespace = namespace;
@@ -1671,6 +1694,7 @@
       this.firstInteraction = false;
       this.logger = new Logger('jquery.formslider');
       this.events = new EventManager(this.logger);
+      this.locking = new Locking(this.logger, true);
       this.setupDriver();
       this.slides = this.driver.slides;
       this.loadPlugins();
@@ -1697,6 +1721,9 @@
 
     FormSlider.prototype.onBefore = function(currentIndex, direction, nextIndex) {
       var current, currentRole, event, eventData, next, nextRole, ref, ref1;
+      if (this.locking.locked) {
+        return false;
+      }
       current = this.driver.get(currentIndex);
       currentRole = $(current).data('role');
       next = this.driver.get(nextIndex);
@@ -1704,6 +1731,7 @@
       eventData = [current, direction, next];
       event = (ref = this.events).trigger.apply(ref, ["leaving." + currentRole + "." + direction].concat(slice.call(eventData)));
       if (event.canceled) {
+        this.locking.unlock();
         return false;
       }
       (ref1 = this.events).trigger.apply(ref1, ["before." + nextRole + "." + direction].concat(slice.call(eventData)));
@@ -1721,12 +1749,14 @@
       (ref = this.events).trigger.apply(ref, ["after." + this.lastCurrentRole + "." + this.lastDirection].concat(slice.call(eventData)));
       if (!this.firstInteraction) {
         this.firstInteraction = true;
-        return (ref1 = this.events).trigger.apply(ref1, ['first-interaction'].concat(slice.call(eventData)));
+        (ref1 = this.events).trigger.apply(ref1, ['first-interaction'].concat(slice.call(eventData)));
       }
+      return this.locking.unlock();
     };
 
     FormSlider.prototype.onReady = function() {
-      return this.events.trigger('ready');
+      this.events.trigger('ready');
+      return this.locking.unlock();
     };
 
     FormSlider.prototype.onResize = function() {
@@ -1742,6 +1772,9 @@
     };
 
     FormSlider.prototype.next = function() {
+      if (this.locking.locked) {
+        return;
+      }
       this.events.trigger('before-driver-next');
       if (this.index() + 1 > this.driver.slides.length - 1) {
         return;
@@ -1750,12 +1783,18 @@
     };
 
     FormSlider.prototype.prev = function() {
+      if (this.locking.locked) {
+        return;
+      }
       if (this.index() > 0) {
         return this.driver.prev();
       }
     };
 
     FormSlider.prototype.goto = function(indexFromZero) {
+      if (this.locking.locked) {
+        return;
+      }
       if (indexFromZero < 0 || indexFromZero > this.slides.length - 1) {
         return;
       }

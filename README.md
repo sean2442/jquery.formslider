@@ -178,6 +178,11 @@ Check out this guide: [EXTENDING](docs/EXTENDING.md)
 
   [Tom Hanoldt](https://www.tomhanoldt.info)
 
+### Changelog
+##### 1.0.1
+  * introduce locking
+  * fix initial progressbar value
+
 # Contributing
 
 Check out the [Contributing Guidelines](docs/CONTRIBUTING.md)

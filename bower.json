@@ -1,6 +1,6 @@
 {
   "name": "jquery.formslider",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "https://github.com/formslider/jquery.formslider",
   "authors": [
     "Tom Hanoldt <tom@creative-workflow.berlin>"
@@ -26,7 +26,6 @@
     "jquery": ">=1.8.0",
     "flexslider": "conditional-flexslider#^2.6.4",
     "jquery-validation": "^1.17.0",
-    "isInViewport": "~3.0.0",
     "jquery.debug": "^1.0.3"
   }
 }

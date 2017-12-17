@@ -374,7 +374,7 @@ Scrolls up if a question is not in viewport. Depends on [isInViewport](https://g
 Default configuration:
 ```js
 config: {
-  scrollUpIfNotVisibleSelector: '.headline',
+  selector: '.headline',
   duration: 200,
   tolerance: -30
 }

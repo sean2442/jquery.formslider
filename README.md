@@ -179,6 +179,9 @@ Check out this guide: [EXTENDING](docs/EXTENDING.md)
   [Tom Hanoldt](https://www.tomhanoldt.info)
 
 ### Changelog
+##### 1.0.3
+  * remove isInViewport dependency
+
 ##### 1.0.2
   * remove phantomjs dependency
   * extend sass capabilities

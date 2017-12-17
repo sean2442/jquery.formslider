@@ -1,20 +1,34 @@
+
 class @ScrollUpPlugin extends AbstractFormsliderPlugin
   @config =
-    scrollUpIfNotVisibleSelector: '.headline'
+    selector: '.headline'
     duration: 200
-    tolerance: 30
+    tolerance: 80
 
   init: =>
-    @on('after', @onBefore)
+    @on('after', @onAfter)
+    @window = $(window)
 
-  onBefore: (e, current, direction, next) =>
-    $scrollTo = $(@config.scrollUpIfNotVisibleSelector, current)
+  onAfter: (e, current, direction, prev) =>
+    $element = $(@config.selector, current)
 
-    tolerance = @config.tolerance || 0
-    return unless $scrollTo.isInViewport(
-      tolerance: tolerance
-    ).length
+    return if @isOnScreen($element)
 
     $("html, body").animate({
-      scrollTop: Math.max(0, $scrollTo.offset().top - tolerance)
+      scrollTop: Math.max(0, $element.offset().top - @config.tolerance)
     }, @config.duration)
+
+  isOnScreen: ($element) =>
+    viewport =
+      top: @window.scrollTop()
+      left: @window.scrollLeft()
+    viewport.right = viewport.left + @window.width()
+    viewport.bottom = viewport.top + @window.height()
+    bounds = $element.offset()
+    bounds.right = bounds.left + $element.outerWidth()
+    bounds.bottom = bounds.top + $element.outerHeight()
+    return !(
+      viewport.right < bounds.left ||
+      viewport.left > bounds.right ||
+      viewport.bottom < bounds.top - @config.tolerance ||
+      viewport.top > bounds.bottom - @config.tolerance)

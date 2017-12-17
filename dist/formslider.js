@@ -1376,33 +1376,46 @@
     extend(ScrollUpPlugin, superClass);
 
     function ScrollUpPlugin() {
-      this.onBefore = bind(this.onBefore, this);
+      this.isOnScreen = bind(this.isOnScreen, this);
+      this.onAfter = bind(this.onAfter, this);
       this.init = bind(this.init, this);
       return ScrollUpPlugin.__super__.constructor.apply(this, arguments);
     }
 
     ScrollUpPlugin.config = {
-      scrollUpIfNotVisibleSelector: '.headline',
+      selector: '.headline',
       duration: 200,
-      tolerance: 30
+      tolerance: 80
     };
 
     ScrollUpPlugin.prototype.init = function() {
-      return this.on('after', this.onBefore);
+      this.on('after', this.onAfter);
+      return this.window = $(window);
     };
 
-    ScrollUpPlugin.prototype.onBefore = function(e, current, direction, next) {
-      var $scrollTo, tolerance;
-      $scrollTo = $(this.config.scrollUpIfNotVisibleSelector, current);
-      tolerance = this.config.tolerance || 0;
-      if (!$scrollTo.isInViewport({
-        tolerance: tolerance
-      }).length) {
+    ScrollUpPlugin.prototype.onAfter = function(e, current, direction, prev) {
+      var $element;
+      $element = $(this.config.selector, current);
+      if (this.isOnScreen($element)) {
         return;
       }
       return $("html, body").animate({
-        scrollTop: Math.max(0, $scrollTo.offset().top - tolerance)
+        scrollTop: Math.max(0, $element.offset().top - this.config.tolerance)
       }, this.config.duration);
+    };
+
+    ScrollUpPlugin.prototype.isOnScreen = function($element) {
+      var bounds, viewport;
+      viewport = {
+        top: this.window.scrollTop(),
+        left: this.window.scrollLeft()
+      };
+      viewport.right = viewport.left + this.window.width();
+      viewport.bottom = viewport.top + this.window.height();
+      bounds = $element.offset();
+      bounds.right = bounds.left + $element.outerWidth();
+      bounds.bottom = bounds.top + $element.outerHeight();
+      return !(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top - this.config.tolerance || viewport.top > bounds.bottom - this.config.tolerance);
     };
 
     return ScrollUpPlugin;

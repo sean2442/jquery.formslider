@@ -1068,7 +1068,7 @@
         return;
       }
       LoaderClass = window[this.config.loaderClass];
-      this.loader = new LoaderClass(this, this.config, currentSlide);
+      this.loader = new LoaderClass(this, this.config, nextSlide);
       return this.loader.start();
     };
 
@@ -1100,6 +1100,7 @@
       this.config = config1;
       this.slide = slide1;
       this.stop = bind(this.stop, this);
+      this.doAnimation = bind(this.doAnimation, this);
       this.start = bind(this.start, this);
       this.config = ObjectExtender.extend({}, this.constructor.config, this.config);
       this.animating = false;
@@ -1111,7 +1112,11 @@
       }
       this.plugin.logger.debug("start(" + this.config.duration + ")");
       this.animating = true;
-      return setTimeout(this.stop, this.config.duration);
+      return setTimeout(this.doAnimation, this.config.duration);
+    };
+
+    AbstractFormsliderLoader.prototype.doAnimation = function() {
+      return this.stop();
     };
 
     AbstractFormsliderLoader.prototype.stop = function() {
@@ -1127,23 +1132,9 @@
   this.SimpleLoaderImplementation = (function(superClass) {
     extend(SimpleLoaderImplementation, superClass);
 
-    SimpleLoaderImplementation.config = {
-      duration: 1000
-    };
-
     function SimpleLoaderImplementation() {
-      this.stop = bind(this.stop, this);
-      this.start = bind(this.start, this);
-      SimpleLoaderImplementation.__super__.constructor.apply(this, arguments);
+      return SimpleLoaderImplementation.__super__.constructor.apply(this, arguments);
     }
-
-    SimpleLoaderImplementation.prototype.start = function() {
-      return SimpleLoaderImplementation.__super__.start.apply(this, arguments);
-    };
-
-    SimpleLoaderImplementation.prototype.stop = function() {
-      return SimpleLoaderImplementation.__super__.stop.apply(this, arguments);
-    };
 
     return SimpleLoaderImplementation;
 

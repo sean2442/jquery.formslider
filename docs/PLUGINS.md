@@ -68,6 +68,7 @@ Default configuration for a plugin.
 These plugins can be used to extend the formslider:
   * [formslider.jquery.tracking](https://github.com/formslider/formslider.jquery.tracking)
   * [formslider.animate.css](https://github.com/formslider/formslider.animate.css)
+  * [formslider.dramatic.loader](https://github.com/formslider/formslider.dramatic.loader)
 
 ### AddSlideClassesPlugin               
 Adds classes based on role and index.

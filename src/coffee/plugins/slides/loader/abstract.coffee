@@ -12,9 +12,12 @@ class @AbstractFormsliderLoader
     @plugin.logger.debug "start(#{@config.duration})"
     @animating = true
     setTimeout(
-      @stop,
+      @doAnimation,
       @config.duration
     )
+
+  doAnimation: =>
+    @stop()
 
   stop: =>
     @plugin.logger.debug 'stop()'

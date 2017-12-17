@@ -11,7 +11,7 @@ class @LoaderSlidePlugin extends AbstractFormsliderPlugin
     return if @isLoading()
 
     LoaderClass = window[@config.loaderClass]
-    @loader     = new LoaderClass(@, @config, currentSlide)
+    @loader     = new LoaderClass(@, @config, nextSlide)
     @loader.start()
 
   onLeaving: (event, current, direction, next) =>

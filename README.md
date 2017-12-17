@@ -179,6 +179,9 @@ Check out this guide: [EXTENDING](docs/EXTENDING.md)
   [Tom Hanoldt](https://www.tomhanoldt.info)
 
 ### Changelog
+##### 1.0.5
+  * fix loader implementation
+
 ##### 1.0.4
   * add input without spinner capability
 

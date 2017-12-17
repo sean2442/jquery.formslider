@@ -283,6 +283,8 @@ html[xmlns] .flexslider .slides {
     cursor: pointer; }
     .flex-viewport .slide .answers .answer > * {
       cursor: pointer; }
+    .flex-viewport .slide .answers .answer .inner-answer {
+      display: block; }
   .flex-viewport .slide .answers input {
     display: none; }
   .flex-viewport .slide.answer-count-1 .answer {

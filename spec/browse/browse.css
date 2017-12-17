@@ -27,7 +27,7 @@
       font-weight: bold; }
     .formslider-wrapper .slide .answers {
       text-align: center; }
-    .formslider-wrapper .slide .answer-inner {
+    .formslider-wrapper .slide .inner-answer {
       border: 1px solid #999;
       padding: 20px; }
     .formslider-wrapper .slide .answer.selected {

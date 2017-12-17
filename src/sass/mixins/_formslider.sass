@@ -2,10 +2,13 @@
   .#{$class}
     @content
 
-@mixin with-formslider-slide($role: null)
+@mixin with-formslider-slide($role: null, $nr: null)
   $selector: '.slide'
   @if $role
     $selector: "#{$selector}-role-#{$role}"
+
+  @if $nr
+    $selector: "#{$selector}.slide-number-#{$nr}"
 
   "#{$selector}"
     @content
@@ -26,9 +29,8 @@
   .answer.selected
     @content
 
-
 @mixin with-answer-inner
-  .answer-inner
+  .inner-answer
     @content
 
 @mixin with-answer-text
@@ -42,6 +44,15 @@
 @mixin with-answer-input
   input
     @content
+
+@mixin with-headline
+  .headline
+    @content
+
+@mixin with-sub-headline
+  .sub-headline
+    @content
+
 
 // progressbar
 @mixin with-formslider-progressbar-wrapper
@@ -67,8 +78,10 @@
 //     +with-formslider-progress-bar-brogress
 
 // +with-formslider
-//   +with-formslider-slide
+//   +with-formslider-slide(role, nr)
 //     +with-answer-count(4)
+//     +with-headline
+//     +with-sub-headline
 //
 //     +with-answers
 //        +with-selected-answer

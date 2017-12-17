@@ -274,6 +274,11 @@ html[xmlns] .flexslider .slides {
   }
 }
 
+.flex-viewport input.without-spinner::-webkit-outer-spin-button,
+.flex-viewport input.without-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
+
 .flex-viewport .slide {
   text-align: center; }
   .flex-viewport .slide .answers .answer {

@@ -442,7 +442,10 @@
           }
           if ($input.data('type') === 'number') {
             $input.attr('pattern', '\\d*');
-            $input.attr('inputmode', 'inputmode');
+            $input.attr('inputmode', 'numeric');
+          }
+          if ($input.data('without-spinner')) {
+            $input.addClass('without-spinner');
           }
           ref = ['maxlength', 'minlength'];
           for (i = 0, len = ref.length; i < len; i++) {

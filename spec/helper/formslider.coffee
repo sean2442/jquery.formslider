@@ -12,7 +12,7 @@ helper.formslider =
 
     $.debug(debug)
 
-    return formslider = $wrapper.formslider(
+    formslider = $wrapper.formslider(
       version: 3
 
       driver:
@@ -75,3 +75,6 @@ helper.formslider =
         { class: 'LazyLoadPlugin'          }
       ]
     )
+
+    formslider.onReady()
+    return formslider

@@ -9,6 +9,7 @@ class @FormSlider
     @firstInteraction = false
     @logger           = new Logger('jquery.formslider')
     @events           = new EventManager(@logger)
+    @locking          = new Locking(@logger, true)
     @setupDriver()
     @slides           = @driver.slides
     @loadPlugins()
@@ -33,15 +34,18 @@ class @FormSlider
   # called from @driver.next|prev|goto
   # return value(bool) indicates if transition allowed or not
   onBefore: (currentIndex, direction, nextIndex) =>
-    current     = @driver.get(currentIndex)
-    currentRole = $(current).data('role')
-    next        = @driver.get(nextIndex)
-    nextRole    = $(next).data('role')
-    eventData   = [ current, direction, next ]
+    return false if @locking.locked
+    current           = @driver.get(currentIndex)
+    currentRole       = $(current).data('role')
+    next              = @driver.get(nextIndex)
+    nextRole          = $(next).data('role')
+    eventData         = [ current, direction, next ]
 
     # trigger leaving event, can also stop the transition
     event = @events.trigger("leaving.#{currentRole}.#{direction}", eventData...)
-    return false if event.canceled
+    if event.canceled
+      @locking.unlock()
+      return false
 
     # trigger before event
     @events.trigger("before.#{nextRole}.#{direction}", eventData...)
@@ -63,8 +67,11 @@ class @FormSlider
       @firstInteraction = true
       @events.trigger('first-interaction', eventData...)
 
+    @locking.unlock()
+
   onReady: =>
     @events.trigger('ready')
+    @locking.unlock()
 
   onResize: =>
     @events.trigger('resize')
@@ -76,14 +83,17 @@ class @FormSlider
     $(@driver.get()).data('id')
 
   next: =>
+    return if @locking.locked
     @events.trigger('before-driver-next')
     return if @index() + 1 > @driver.slides.length - 1 # zero based
     @driver.next()
 
   prev: =>
+    return if @locking.locked
     @driver.prev() if @index() > 0
 
   goto: (indexFromZero) =>
+    return if @locking.locked
     return if indexFromZero < 0 || indexFromZero > @slides.length - 1
     @driver.goto(indexFromZero)
 

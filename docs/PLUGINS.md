@@ -369,6 +369,7 @@ config: {
   selector: '.answer .label'
 }
 ```
+Listens also on event `do-equal-height`. To trigger this event: `@trigger('do-equal-height', slideToEqualize)`.
 
 
 ### ScrollUpPlugin                      

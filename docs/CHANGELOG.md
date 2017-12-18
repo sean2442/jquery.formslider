@@ -3,6 +3,7 @@
 ##### 1.0.6
   * add `DoOnEventPlugin` for inline plugin definition
   * eleminate `before` event dependency from `EqualHeightPlugin`
+  * add `do-equal-height` event
   * move changelog to `docs/CHANGELOG.md`
 
 ##### 1.0.5

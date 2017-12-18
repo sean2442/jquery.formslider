@@ -3,9 +3,10 @@ class @EqualHeightPlugin extends AbstractFormsliderPlugin
     selector: '.answer .text'
 
   init: =>
-    @on('ready', @equalizeAll)
-    @on('resize', @equalizeAll)
-    @on('after', @doEqualize)
+    @on('ready',           @equalizeAll)
+    @on('resize',          @equalizeAll)
+    @on('leaving',         @doEqualize)
+    @on('do-equal-height', @doEqualize)
 
   equalizeAll: =>
     for i in [0..@slides.length - 1]

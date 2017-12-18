@@ -6,8 +6,7 @@ class @PluginLoader
   loadAll: (plugins) =>
     for plugin in plugins
       unless window[plugin.class]
-        @formslider.logger.warn(
-          "loadAll(#{plugin.class}) -> not found")
+        @formslider.logger.warn("loadAll(#{plugin.class}) -> not found")
         continue
 
       @load(plugin)

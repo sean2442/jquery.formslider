@@ -393,6 +393,17 @@ config: {
 }
 ```
 
+### DoOnEventPlugin
+Generic plugin to for inline implementing a plugin.
+
+Default configuration:
+```js
+config: {
+    'after.question': function (plugin){
+      plugin.track('any after question');
+    }
+}
+```
 
 ### DoOneTimeOnEventPlugin
 Execute a callback first time an event was seen.
@@ -400,8 +411,8 @@ Execute a callback first time an event was seen.
 Default configuration:
 ```js
 config: {
-    'after.question': function (formslider){
-      formslider.track('first time after question');
+    'after.question': function (plugin){
+      plugin.formslider.track('first time after question');
     }
 }
 ```

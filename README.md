@@ -125,6 +125,7 @@ This functionality is provided by plugins. You can develop your own flow as you 
 
 # generic plugins
   * AddSlideClassesPlugin               # adds classes based on role and index
+  * DoOnEventPlugin                     # Generic plugin to for inline implementing a plugin.
   * DoOneTimeOnEventPlugin              # run a callback first time a specific event occurs
 
 # navigation

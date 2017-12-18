@@ -1,6 +1,6 @@
 # Extending
 
-By combining, configuring and writing own plugins you are able to implement nearly any behaviour you can imagine.
+By combining, configuring and writing own plugins you are able to implement nearly any behavior you can imagine.
 
 ## AbstractFormsliderPlugin
 Your plugin should inherit `AbstractFormsliderPlugin`.
@@ -25,7 +25,7 @@ Available methods:
   * @formslider.index()
 
 ##### @logger
-Can be used to log informations. Utilizes [jquery.debug](https://github.com/creative-workflow/jquery.debug). Warnings and errors will always be preinted in the brwoser console. Info and Debug only if you append `?debug=1` on the current page.
+Can be used to log informations. Utilizes [jquery.debug](https://github.com/creative-workflow/jquery.debug). Warnings and errors will always be printed in the brwoser console. Info and Debug only if you append `?debug=1` on the current page.
 
 Available methods:
   * @logger.debug(arg1, [arg2, ..., argN])   // arg1 should be string
@@ -39,7 +39,7 @@ Available methods:
   * do your setups here
 
 ##### on(eventName, callback)
-Registeres an event listener.
+Registers an event listener.
 
 Possible pre define event names in chronoloical order:
 ```bash
@@ -75,7 +75,7 @@ Triggers the event `eventName` and passes args to callbacks.
 The signature of a callback is: callbck(event [, eventArg1 [, ebentArg2 ...]])
 
 ##### track(source, value, category = null)
-This will trigger an tracking event. If the plugin `JqueryTrackingPlugin` was loaded the event will be published to google analytics for ex.
+This will trigger a tracking event. If the plugin `JqueryTrackingPlugin` was loaded the event will be published to google analytics for ex.
 
 ##### slideByRole(role)
 Retrieves slides by `data-role`, depends on plugin `AddSlideClassesPlugin`.

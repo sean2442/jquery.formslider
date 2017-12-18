@@ -204,7 +204,7 @@ config: {
 
 
 ### InputSyncPlugin                     
-Syncs iputs with the same name.
+Syncs inputs with the same name.
 Default configuration:
 ```js
 config: {
@@ -238,7 +238,7 @@ config: {
 sed.
 
 ### TabIndexSetterPlugin               
-Fixes tab behaviour, only enables on current slide.
+Fixes tab behavior, only enables on current slide.
 Default configuration:
 ```js
 config: {
@@ -271,7 +271,7 @@ config: {
 
 
 ### ProgressBarPlugin                   
-Manages progess animation.
+Manages progress animation.
 Default configuration:
 ```js
 config: {
@@ -297,7 +297,7 @@ config: {
 
 
 ### TrackSessionInformationPlugin       
-Triggers track events for useragent, device dimension etc and adds an hidden input fieled for later form submission.
+Triggers track events for useragent, device dimension etc and adds an hidden input field for later form submission.
 Triggers after first user interaction for clean unbounce tracking.
 Default configuration:
 ```js
@@ -331,7 +331,7 @@ Triggers:
 Default configuration:
 ```js
 config: {
-  questionAnsweredEvent: 'question-answered'  // event triggered, when a answer was selected
+  questionAnsweredEvent: 'question-answered'  // event triggered, when an answer was selected
 }
 ```
 

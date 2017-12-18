@@ -178,24 +178,6 @@ Check out this guide: [EXTENDING](docs/EXTENDING.md)
 
   [Tom Hanoldt](https://www.tomhanoldt.info)
 
-### Changelog
-##### 1.0.5
-  * fix loader implementation
-
-##### 1.0.4
-  * add input without spinner capability
-
-##### 1.0.3
-  * remove isInViewport dependency
-
-##### 1.0.2
-  * remove phantomjs dependency
-  * extend sass capabilities
-
-##### 1.0.1
-  * introduce locking
-  * fix initial progressbar value
-
 # Contributing
 
 Check out the [Contributing Guidelines](docs/CONTRIBUTING.md)

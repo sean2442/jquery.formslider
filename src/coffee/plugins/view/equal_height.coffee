@@ -3,25 +3,15 @@ class @EqualHeightPlugin extends AbstractFormsliderPlugin
     selector: '.answer .text'
 
   init: =>
-    @doEqualize(@slideByIndex(0))
-    @on('ready', @onReady)
-    @on('after', @onAfter)
-    @on('resize', @onResize)
+    @on('ready', @equalizeAll)
+    @on('resize', @equalizeAll)
+    @on('after', @doEqualize)
 
-  onReady: =>
-    @doEqualize(@slideByIndex(0))
-    @doEqualize(@slideByIndex(1))
+  equalizeAll: =>
+    for i in [0..@slides.length - 1]
+      @doEqualize(null, @slideByIndex(i))
 
-  onAfter: =>
-    currentIndex = @formslider.index()
-    @doEqualize(@slideByIndex(currentIndex + 1))
-
-  onResize: =>
-    currentIndex = @formslider.index()
-    @doEqualize(@slideByIndex(currentIndex))
-    @doEqualize(@slideByIndex(currentIndex + 1))
-
-  doEqualize: (slide) ->
+  doEqualize: (event, slide) =>
     $elements = $(@config.selector, slide)
 
     return unless $elements.length

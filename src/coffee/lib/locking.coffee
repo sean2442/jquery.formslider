@@ -1,6 +1,6 @@
 
 class @Locking
-  constructor: (@logger, initial = true) ->
+  constructor: (initial = true) ->
     @locked = initial
 
   lock: =>

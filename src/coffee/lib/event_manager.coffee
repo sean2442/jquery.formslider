@@ -7,7 +7,7 @@ class EventManager
     data = [arguments...]
     name = data.shift()
 
-    @logger.info("triggerEvent(#{name})")
+    # @logger.info("triggerEvent(#{name})")
     # @logger.debug("trigger(#{name})", data)
 
     tags    = name.split('.')   # event name is first segment
@@ -23,14 +23,8 @@ class EventManager
 
     for listener in @listener[name]
       # call listeners without tags or listeners with all tags
-      if listener.tags and not @allTagsInArray(listener.tags, tags)
-        continue
-
-      try
+      if !listener.tags || @allTagsInArray(listener.tags, tags)
         listener.callback(event, data...)
-      catch error
-        @logger.error("triggerEvent(#{name})", error, data)
-        event.canceled = true
 
       # run all listener even if event stopped
       # break if event.canceled

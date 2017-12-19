@@ -25,18 +25,13 @@ class @JqueryValidatePlugin extends AbstractFormsliderPlugin
 
     currentRole = $(currentSlide).data('role')
 
-    try
-      if $inputs.valid()
-        @trigger("validation.valid.#{currentRole}", currentSlide)
+    if !$inputs.valid()
+      $inputs.filter('.error').first().focus()
+      @trigger("validation.invalid.#{currentRole}", currentSlide)
+      event.canceled = true
+      return false
 
-      else
-        $inputs.filter('.error').first().focus()
-        @trigger("validation.invalid.#{currentRole}", currentSlide)
-        return @cancel(event)
-
-    catch error
-      @trigger("validation.error.#{currentRole}", currentSlide)
-      @logger.debug('validation error', error)
+    @trigger("validation.valid.#{currentRole}", currentSlide)
 
   prepareInputs: =>
     $(@config.selector, @container).each( (index, input) =>
@@ -52,7 +47,7 @@ class @JqueryValidatePlugin extends AbstractFormsliderPlugin
 
       if($input.data('without-spinner'))
         $input.addClass('without-spinner')
-          
+
       for attribute in ['maxlength', 'minlength']
         if $input.attr(attribute)
           $input.data("data-rule-#{attribute}", $input.attr(attribute))

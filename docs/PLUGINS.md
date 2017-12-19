@@ -171,7 +171,6 @@ The Plugin triggers the following events:
 @trigger("validation.prepared")
 @trigger("validation.valid.#{currentRole}", currentSlide)
 @trigger("validation.invalid.#{currentRole}", currentSlide)
-@trigger("validation.error.#{currentRole}", currentSlide)
 ```
 
 _Note:_ This plugin will log an error if no surrounding form tag was found

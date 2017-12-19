@@ -9,7 +9,7 @@ class @FormSlider
     @firstInteraction = false
     @logger           = new Logger('jquery.formslider')
     @events           = new EventManager(@logger)
-    @locking          = new Locking(@logger, true)
+    @locking          = new Locking(true)
     @setupDriver()
     @slides           = @driver.slides
     @loadPlugins()
@@ -35,11 +35,12 @@ class @FormSlider
   # return value(bool) indicates if transition allowed or not
   onBefore: (currentIndex, direction, nextIndex) =>
     return false if @locking.locked
-    current           = @driver.get(currentIndex)
-    currentRole       = $(current).data('role')
-    next              = @driver.get(nextIndex)
-    nextRole          = $(next).data('role')
-    eventData         = [ current, direction, next ]
+
+    current     = @slides.get(currentIndex)
+    currentRole = $(current).data('role')
+    next        = @driver.get(nextIndex)
+    nextRole    = $(next).data('role')
+    eventData   = [ current, direction, next ]
 
     # trigger leaving event, can also stop the transition
     event = @events.trigger("leaving.#{currentRole}.#{direction}", eventData...)

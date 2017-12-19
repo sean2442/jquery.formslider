@@ -19,7 +19,7 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
     ]
 
   init: =>
-    @on('before', @onBefore)
+    @on('after', @doUpdate)
 
     @visible  = true
     @wrapper  = $(@config.selectorWrapper)
@@ -39,10 +39,9 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
 
     @slides.length - substract
 
-  onBefore: (e, current, direction, next) =>
-    index = @formslider.index() + 1
-    index = @formslider.index() - 1 if direction == 'prev'
-    unless @shouldBeVisible(next)
+  doUpdate: (e, current, direction, next) =>
+    index = @formslider.index()
+    unless @shouldBeVisible(current)
       @set(index)
       return @hide()
 

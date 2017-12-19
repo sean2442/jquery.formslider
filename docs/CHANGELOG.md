@@ -1,5 +1,9 @@
 # Changelog
 
+
+##### 1.0.7
+  * performance
+
 ##### 1.0.6
   * add `DoOnEventPlugin` for inline plugin definition
   * eleminate `before` event dependency from `EqualHeightPlugin`

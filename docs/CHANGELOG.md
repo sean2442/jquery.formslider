@@ -1,5 +1,9 @@
 # Changelog
 
+##### 1.0.8
+  * add feature `disableOnMobile` to `InputFocusPlugin`
+  * add feature `scrollUpOffset` to `ScrollUpPlugin`
+  * introduce `FeatureDetector`
 
 ##### 1.0.7
   * performance

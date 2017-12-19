@@ -4,6 +4,7 @@ class @ScrollUpPlugin extends AbstractFormsliderPlugin
     selector: '.headline'
     duration: 200
     tolerance: 80
+    scrollUpOffset: 30
 
   init: =>
     @on('after', @onAfter)
@@ -15,7 +16,7 @@ class @ScrollUpPlugin extends AbstractFormsliderPlugin
     return if @isOnScreen($element)
 
     $("html, body").animate({
-      scrollTop: Math.max(0, $element.offset().top - @config.tolerance)
+      scrollTop: Math.max(0, $element.offset().top - @config.scrollUpOffset)
     }, @config.duration)
 
   isOnScreen: ($element) =>

@@ -110,7 +110,8 @@ Default configuration:
 ```js
 config: {
   selector: 'input:visible',
-  waitBeforeFocus: 50        // have to wait a little for flexslider reasons
+  waitBeforeFocus: 50           // have to wait a little for flexslider reasons
+  disableOnMobile: true
 }
 ```
 
@@ -379,6 +380,7 @@ config: {
   selector: '.headline',
   duration: 200,
   tolerance: -30
+  scrollUpOffset: 30
 }
 ```
 

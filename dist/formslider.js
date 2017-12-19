@@ -105,6 +105,7 @@
       this.config = ObjectExtender.extend({}, this.constructor.config, config);
       this.container = this.formslider.container;
       this.slides = this.formslider.slides;
+      this.events = this.formslider.events;
       this.logger = new Logger("jquery.formslider::" + this.constructor.name);
       this.init();
     }
@@ -114,31 +115,31 @@
     };
 
     AbstractFormsliderPlugin.prototype.on = function(eventName, callback) {
-      return this.formslider.events.on(eventName + "." + this.constructor.name, callback);
+      return this.events.on(eventName + "." + this.constructor.name, callback);
     };
 
     AbstractFormsliderPlugin.prototype.off = function(eventName) {
-      return this.formslider.events.off(eventName + "." + this.constructor.name);
+      return this.events.off(eventName + "." + this.constructor.name);
     };
 
     AbstractFormsliderPlugin.prototype.cancel = function(event) {
-      return this.formslider.events.cancel(event);
+      return this.events.cancel(event);
     };
 
     AbstractFormsliderPlugin.prototype.isCanceled = function(event) {
-      return this.formslider.events.isCanceled(event);
+      return this.events.isCanceled(event);
     };
 
     AbstractFormsliderPlugin.prototype.trigger = function() {
       var ref;
-      return (ref = this.formslider.events).trigger.apply(ref, arguments);
+      return (ref = this.events).trigger.apply(ref, arguments);
     };
 
     AbstractFormsliderPlugin.prototype.track = function(source, value, category) {
       if (category == null) {
         category = null;
       }
-      return this.formslider.events.trigger('track', source, value, category);
+      return this.events.trigger('track', source, value, category);
     };
 
     AbstractFormsliderPlugin.prototype.slideByRole = function(role) {
@@ -212,11 +213,11 @@
     };
 
     FormSubmissionPlugin.prototype.init = function() {
-      var eventName, i, len, ref, results;
+      var eventName, j, len, ref, results;
       ref = this.config.submitOnEvents;
       results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        eventName = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        eventName = ref[j];
         results.push(this.on(eventName, this.onSubmit));
       }
       return results;
@@ -255,11 +256,11 @@
     };
 
     FormSubmissionPlugin.prototype.collectInputs = function() {
-      var $input, $inputs, $other, $others, i, input, j, len, len1, other, result;
+      var $input, $inputs, $other, $others, input, j, k, len, len1, other, result;
       result = {};
       $inputs = $('input', this.container);
-      for (i = 0, len = $inputs.length; i < len; i++) {
-        input = $inputs[i];
+      for (j = 0, len = $inputs.length; j < len; j++) {
+        input = $inputs[j];
         $input = $(input);
         if ($input.is(':checkbox') || $input.is(':radio')) {
           if ($input.is(':checked')) {
@@ -270,8 +271,8 @@
         }
       }
       $others = $('select, textarea', this.container);
-      for (j = 0, len1 = $others.length; j < len1; j++) {
-        other = $others[j];
+      for (k = 0, len1 = $others.length; k < len1; k++) {
+        other = $others[k];
         $other = $(other);
         result[$other.attr('name')] = $other.val();
       }
@@ -308,7 +309,8 @@
 
     InputFocusPlugin.config = {
       selector: 'input:visible',
-      waitBeforeFocus: 200
+      waitBeforeFocus: 200,
+      disableOnMobile: true
     };
 
     InputFocusPlugin.prototype.init = function() {
@@ -317,8 +319,14 @@
 
     InputFocusPlugin.prototype.onAfter = function(e, currentSlide, direction, prevSlide) {
       var $input;
+      if (this.config.disableOnMobile && FeatureDetector.isMobileDevice()) {
+        return;
+      }
       $input = $(this.config.selector, currentSlide);
       if (!$input.length) {
+        if (indexOf.call(document, "activeElement") >= 0) {
+          document.activeElement.blur();
+        }
         return;
       }
       return setTimeout(function() {
@@ -399,10 +407,10 @@
     };
 
     JqueryValidatePlugin.prototype.init = function() {
-      var eventName, i, len, ref;
+      var eventName, j, len, ref;
       ref = this.config.validateOnEvents;
-      for (i = 0, len = ref.length; i < len; i++) {
-        eventName = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        eventName = ref[j];
         this.on(eventName, this.onValidate);
       }
       this.prepareInputs();
@@ -410,31 +418,25 @@
     };
 
     JqueryValidatePlugin.prototype.onValidate = function(event, currentSlide, direction, nextSlide) {
-      var $inputs, currentRole, error;
+      var $inputs, currentRole;
       $inputs = $(this.config.selector, currentSlide);
       if (!$inputs.length) {
         return;
       }
       currentRole = $(currentSlide).data('role');
-      try {
-        if ($inputs.valid()) {
-          return this.trigger("validation.valid." + currentRole, currentSlide);
-        } else {
-          $inputs.filter('.error').first().focus();
-          this.trigger("validation.invalid." + currentRole, currentSlide);
-          return this.cancel(event);
-        }
-      } catch (error1) {
-        error = error1;
-        this.trigger("validation.error." + currentRole, currentSlide);
-        return this.logger.debug('validation error', error);
+      if (!$inputs.valid()) {
+        $inputs.filter('.error').first().focus();
+        this.trigger("validation.invalid." + currentRole, currentSlide);
+        event.canceled = true;
+        return false;
       }
+      return this.trigger("validation.valid." + currentRole, currentSlide);
     };
 
     JqueryValidatePlugin.prototype.prepareInputs = function() {
       return $(this.config.selector, this.container).each((function(_this) {
         return function(index, input) {
-          var $input, attribute, i, len, ref;
+          var $input, attribute, j, len, ref;
           $input = $(input);
           if ($input.attr('required')) {
             $input.data('data-rule-required', 'true');
@@ -448,8 +450,8 @@
             $input.addClass('without-spinner');
           }
           ref = ['maxlength', 'minlength'];
-          for (i = 0, len = ref.length; i < len; i++) {
-            attribute = ref[i];
+          for (j = 0, len = ref.length; j < len; j++) {
+            attribute = ref[j];
             if ($input.attr(attribute)) {
               $input.data("data-rule-" + attribute, $input.attr(attribute));
               $input.data("data-msg-" + attribute, _this.config.messages[attribute]);
@@ -488,7 +490,7 @@
 
     NormalizeInputAttributesPlugin.prototype.prepareInputs = function() {
       return $(this.config.selector, this.container).each(function(index, input) {
-        var $input, attribute, i, len, ref, results;
+        var $input, attribute, j, len, ref, results;
         $input = $(input);
         if ($input.attr('required')) {
           $input.data('required', 'required');
@@ -496,8 +498,8 @@
         }
         ref = ['inputmode', 'autocompletetype'];
         results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          attribute = ref[i];
+        for (j = 0, len = ref.length; j < len; j++) {
+          attribute = ref[j];
           if ($input.attr(attribute)) {
             results.push($input.data("x-" + attribute, $input.attr(attribute)));
           } else {
@@ -599,6 +601,30 @@
     };
 
     return AddSlideClassesPlugin;
+
+  })(AbstractFormsliderPlugin);
+
+  this.DoOnEventPlugin = (function(superClass) {
+    extend(DoOnEventPlugin, superClass);
+
+    function DoOnEventPlugin() {
+      this.init = bind(this.init, this);
+      return DoOnEventPlugin.__super__.constructor.apply(this, arguments);
+    }
+
+    DoOnEventPlugin.prototype.init = function() {
+      return $.each(this.config, (function(_this) {
+        return function(eventName, callback) {
+          if (typeof callback === 'function') {
+            return _this.on(eventName, function() {
+              return callback(_this);
+            });
+          }
+        };
+      })(this));
+    };
+
+    return DoOnEventPlugin;
 
   })(AbstractFormsliderPlugin);
 
@@ -869,7 +895,7 @@
       this._setPercent = bind(this._setPercent, this);
       this.set = bind(this.set, this);
       this.shouldBeVisible = bind(this.shouldBeVisible, this);
-      this.onBefore = bind(this.onBefore, this);
+      this.doUpdate = bind(this.doUpdate, this);
       this.slidesThatCount = bind(this.slidesThatCount, this);
       this.init = bind(this.init, this);
       return ProgressBarPlugin.__super__.constructor.apply(this, arguments);
@@ -887,7 +913,7 @@
     };
 
     ProgressBarPlugin.prototype.init = function() {
-      this.on('before', this.onBefore);
+      this.on('after', this.doUpdate);
       this.visible = true;
       this.wrapper = $(this.config.selectorWrapper);
       this.progress = $(this.config.selectorText, this.wrapper);
@@ -899,23 +925,20 @@
     };
 
     ProgressBarPlugin.prototype.slidesThatCount = function() {
-      var i, len, ref, role, substract;
+      var j, len, ref, role, substract;
       substract = 0;
       ref = this.config.dontCountOnRoles;
-      for (i = 0, len = ref.length; i < len; i++) {
-        role = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        role = ref[j];
         substract = substract + this.slideByRole(role).length;
       }
       return this.slides.length - substract;
     };
 
-    ProgressBarPlugin.prototype.onBefore = function(e, current, direction, next) {
+    ProgressBarPlugin.prototype.doUpdate = function(e, current, direction, next) {
       var index;
-      index = this.formslider.index() + 1;
-      if (direction === 'prev') {
-        index = this.formslider.index() - 1;
-      }
-      if (!this.shouldBeVisible(next)) {
+      index = this.formslider.index();
+      if (!this.shouldBeVisible(current)) {
         this.set(index);
         return this.hide();
       }
@@ -1047,7 +1070,7 @@
     function LoaderSlidePlugin() {
       this.isLoading = bind(this.isLoading, this);
       this.onLeaving = bind(this.onLeaving, this);
-      this.onBefore = bind(this.onBefore, this);
+      this.onLOaderStart = bind(this.onLOaderStart, this);
       this.init = bind(this.init, this);
       return LoaderSlidePlugin.__super__.constructor.apply(this, arguments);
     }
@@ -1058,17 +1081,17 @@
     };
 
     LoaderSlidePlugin.prototype.init = function() {
-      this.on('before.loader', this.onBefore);
+      this.on('after.loader', this.onLOaderStart);
       return this.on('leaving.loader', this.onLeaving);
     };
 
-    LoaderSlidePlugin.prototype.onBefore = function(event, currentSlide, direction, nextSlide) {
+    LoaderSlidePlugin.prototype.onLOaderStart = function(event, currentSlide, direction, nextSlide) {
       var LoaderClass;
       if (this.isLoading()) {
         return;
       }
       LoaderClass = window[this.config.loaderClass];
-      this.loader = new LoaderClass(this, this.config, nextSlide);
+      this.loader = new LoaderClass(this, this.config, currentSlide);
       return this.loader.start();
     };
 
@@ -1241,9 +1264,8 @@
     extend(EqualHeightPlugin, superClass);
 
     function EqualHeightPlugin() {
-      this.onResize = bind(this.onResize, this);
-      this.onAfter = bind(this.onAfter, this);
-      this.onReady = bind(this.onReady, this);
+      this.doEqualize = bind(this.doEqualize, this);
+      this.equalizeAll = bind(this.equalizeAll, this);
       this.init = bind(this.init, this);
       return EqualHeightPlugin.__super__.constructor.apply(this, arguments);
     }
@@ -1253,39 +1275,29 @@
     };
 
     EqualHeightPlugin.prototype.init = function() {
-      this.doEqualize(this.slideByIndex(0));
-      this.on('ready', this.onReady);
-      this.on('after', this.onAfter);
-      return this.on('resize', this.onResize);
+      this.on('ready', this.equalizeAll);
+      this.on('resize', this.equalizeAll);
+      return this.on('do-equal-height', this.doEqualize);
     };
 
-    EqualHeightPlugin.prototype.onReady = function() {
-      this.doEqualize(this.slideByIndex(0));
-      return this.doEqualize(this.slideByIndex(1));
+    EqualHeightPlugin.prototype.equalizeAll = function() {
+      var i, j, ref, results;
+      results = [];
+      for (i = j = 0, ref = this.slides.length - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
+        results.push(this.doEqualize(null, this.slideByIndex(i)));
+      }
+      return results;
     };
 
-    EqualHeightPlugin.prototype.onAfter = function() {
-      var currentIndex;
-      currentIndex = this.formslider.index();
-      return this.doEqualize(this.slideByIndex(currentIndex + 1));
-    };
-
-    EqualHeightPlugin.prototype.onResize = function() {
-      var currentIndex;
-      currentIndex = this.formslider.index();
-      this.doEqualize(this.slideByIndex(currentIndex));
-      return this.doEqualize(this.slideByIndex(currentIndex + 1));
-    };
-
-    EqualHeightPlugin.prototype.doEqualize = function(slide) {
-      var $element, $elements, element, i, len, maxHeight;
+    EqualHeightPlugin.prototype.doEqualize = function(event, slide) {
+      var $element, $elements, element, j, len, maxHeight;
       $elements = $(this.config.selector, slide);
       if (!$elements.length) {
         return;
       }
       maxHeight = 0;
-      for (i = 0, len = $elements.length; i < len; i++) {
-        element = $elements[i];
+      for (j = 0, len = $elements.length; j < len; j++) {
+        element = $elements[j];
         $element = $(element);
         $element.css('height', 'auto');
         maxHeight = Math.max(maxHeight, $element.outerHeight());
@@ -1379,7 +1391,8 @@
     ScrollUpPlugin.config = {
       selector: '.headline',
       duration: 200,
-      tolerance: 80
+      tolerance: 80,
+      scrollUpOffset: 30
     };
 
     ScrollUpPlugin.prototype.init = function() {
@@ -1394,7 +1407,7 @@
         return;
       }
       return $("html, body").animate({
-        scrollTop: Math.max(0, $element.offset().top - this.config.tolerance)
+        scrollTop: Math.max(0, $element.offset().top - this.config.scrollUpOffset)
       }, this.config.duration);
     };
 
@@ -1426,10 +1439,9 @@
     }
 
     EventManager.prototype.trigger = function() {
-      var data, error, event, i, len, listener, name, ref, tags;
+      var data, event, j, len, listener, name, ref, tags;
       data = slice.call(arguments);
       name = data.shift();
-      this.logger.info("triggerEvent(" + name + ")");
       tags = name.split('.');
       name = tags.shift();
       if (this.listener[name] == null) {
@@ -1441,17 +1453,10 @@
         canceled: false
       };
       ref = this.listener[name];
-      for (i = 0, len = ref.length; i < len; i++) {
-        listener = ref[i];
-        if (listener.tags && !this.allTagsInArray(listener.tags, tags)) {
-          continue;
-        }
-        try {
+      for (j = 0, len = ref.length; j < len; j++) {
+        listener = ref[j];
+        if (!listener.tags || this.allTagsInArray(listener.tags, tags)) {
           listener.callback.apply(listener, [event].concat(slice.call(data)));
-        } catch (error1) {
-          error = error1;
-          this.logger.error("triggerEvent(" + name + ")", error, data);
-          event.canceled = true;
         }
       }
       return event;
@@ -1494,9 +1499,9 @@
     };
 
     EventManager.prototype.allTagsInArray = function(tags, inputArray) {
-      var i, len, tag;
-      for (i = 0, len = tags.length; i < len; i++) {
-        tag = tags[i];
+      var j, len, tag;
+      for (j = 0, len = tags.length; j < len; j++) {
+        tag = tags[j];
         if (!(indexOf.call(inputArray, tag) >= 0)) {
           return false;
         }
@@ -1517,9 +1522,19 @@
 
   })();
 
+  this.FeatureDetector = (function() {
+    function FeatureDetector() {}
+
+    FeatureDetector.isMobileDevice = function() {
+      return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+    };
+
+    return FeatureDetector;
+
+  })();
+
   this.Locking = (function() {
-    function Locking(logger, initial) {
-      this.logger = logger;
+    function Locking(initial) {
       if (initial == null) {
         initial = true;
       }
@@ -1633,10 +1648,10 @@
     }
 
     PluginLoader.prototype.loadAll = function(plugins) {
-      var i, len, plugin, results;
+      var j, len, plugin, results;
       results = [];
-      for (i = 0, len = plugins.length; i < len; i++) {
-        plugin = plugins[i];
+      for (j = 0, len = plugins.length; j < len; j++) {
+        plugin = plugins[j];
         if (!window[plugin["class"]]) {
           this.formslider.logger.warn("loadAll(" + plugin["class"] + ") -> not found");
           continue;
@@ -1701,7 +1716,7 @@
       this.firstInteraction = false;
       this.logger = new Logger('jquery.formslider');
       this.events = new EventManager(this.logger);
-      this.locking = new Locking(this.logger, true);
+      this.locking = new Locking(true);
       this.setupDriver();
       this.slides = this.driver.slides;
       this.loadPlugins();
@@ -1731,7 +1746,7 @@
       if (this.locking.locked) {
         return false;
       }
-      current = this.driver.get(currentIndex);
+      current = this.slides.get(currentIndex);
       currentRole = $(current).data('role');
       next = this.driver.get(nextIndex);
       nextRole = $(next).data('role');

@@ -1,6 +1,9 @@
 # Changelog
 
 ##### 1.0.8
+  * only equalize element heights at ready or resize
+
+##### 1.0.8
   * add feature `disableOnMobile` to `InputFocusPlugin`
   * add feature `scrollUpOffset` to `ScrollUpPlugin`
   * introduce `FeatureDetector`

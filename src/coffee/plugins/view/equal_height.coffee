@@ -5,7 +5,6 @@ class @EqualHeightPlugin extends AbstractFormsliderPlugin
   init: =>
     @on('ready',           @equalizeAll)
     @on('resize',          @equalizeAll)
-    @on('after',         @doEqualize)
     @on('do-equal-height', @doEqualize)
 
   equalizeAll: =>

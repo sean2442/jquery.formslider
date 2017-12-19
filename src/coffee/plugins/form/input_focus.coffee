@@ -12,7 +12,9 @@ class @InputFocusPlugin extends AbstractFormsliderPlugin
 
     $input = $(@config.selector, currentSlide)
 
-    return unless $input.length
+    if !$input.length
+      document.activeElement.blur() if "activeElement" in document
+      return
 
     setTimeout(
       ->

@@ -346,7 +346,7 @@ config: {
 }
 ```
 
-For you custom loader implementation have alook at https://github.com/formslider/jquery.formslider/src/plugins/pages/loader/abstract.coffee.
+For you custom loader implementation have alook at https://github.com/formslider/jquery.formslider/tree/master/src/coffee/plugins/slides/loader.
 
 
 ### ContactSlidePlugin                   
@@ -373,7 +373,7 @@ Listens also on event `do-equal-height`. To trigger this event: `@trigger('do-eq
 
 
 ### ScrollUpPlugin                      
-Scrolls up if a question is not in viewport. Depends on [isInViewport](https://github.com/zeusdeux/isInViewport).
+Scrolls up if a question is not in viewport.
 Default configuration:
 ```js
 config: {

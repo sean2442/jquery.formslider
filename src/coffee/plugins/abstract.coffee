@@ -10,6 +10,16 @@ class @AbstractFormsliderPlugin
   init: ->
     null
 
+  configWithDataFrom: (element) =>
+    config = ObjectExtender.extend({}, @config)
+
+    $element = $(element)
+    for key, value of config
+      data = $element.data(key)
+      config[key] = data if data != undefined
+
+    return config
+
   # event helper
   on: (eventName, callback) =>
     @events.on("#{eventName}.#{@constructor.name}", callback)

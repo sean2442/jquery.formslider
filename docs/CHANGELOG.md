@@ -1,5 +1,8 @@
 # Changelog
 
+##### 1.0.9
+  * add configWithDataFrom for AbstractPlugin so you can merge data attributes
+
 ##### 1.0.8
   * only equalize element heights at ready or resize
 

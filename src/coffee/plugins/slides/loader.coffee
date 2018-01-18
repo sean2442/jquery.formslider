@@ -4,10 +4,10 @@ class @LoaderSlidePlugin extends AbstractFormsliderPlugin
     duration: 1000
 
   init: =>
-    @on('after.loader', @onLOaderStart)
+    @on('after.loader', @onLoaderStart)
     @on('leaving.loader', @onLeaving)
 
-  onLOaderStart: (event, currentSlide, direction, nextSlide) =>
+  onLoaderStart: (event, currentSlide, direction, nextSlide) =>
     return if @isLoading()
 
     LoaderClass = window[@config.loaderClass]

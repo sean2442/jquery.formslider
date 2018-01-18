@@ -1,6 +1,6 @@
 class @NextOnKeyPlugin extends AbstractFormsliderPlugin
   @config =
-    selector: 'input:visible'
+    selector: 'input'
     keyCode: 13
 
   init: =>
@@ -10,5 +10,4 @@ class @NextOnKeyPlugin extends AbstractFormsliderPlugin
 
   onKeyPressed: (event) =>
     keyCode = event.keyCode || event.which
-
     @formslider.next() if keyCode == @config.keyCode

@@ -219,7 +219,7 @@ Can trigger next if key pressed.
 Default configuration:
 ```js
 config: {
-  selector: 'input:visible',
+  selector: 'input',
   keyCode: 13                 //enter
 }
 ```
@@ -263,7 +263,7 @@ Manipulates loading classes on ready.
 Default configuration:
 ```js
 config: {
-  selector: '.progressbar-wrapper, .formslider-wrapper',
+  selector: '.nextbar-wrapper, .formslider-wrapper',
   loadingClass: 'loading',          // will be removed
   loadedClass: 'loaded'             // will be added
 }

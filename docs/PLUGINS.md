@@ -187,18 +187,29 @@ config: {
   errorEventName:   'form-submission-error',
   loadHiddenFrameOnSuccess: 'url',
 
-  strategy:{
-    type:     'collect',
+  formSelector: 'form',
+
+  submitter: {
+    class: 'FormSubmitterCollect',
     endpoint: '#',
     method:   'POST'
-
-    // type: 'submit',        // trivial submit
-    // formSelector: 'form'
-
-    // make sure to load https://github.com/jquery-form/form
-    // type: 'ajaxSubmit',
-    // formSelector: 'form'
   }
+
+  submitter: {
+    class: 'FormSubmitterCollect',
+    endpoint: '#',
+    method:   'POST'
+  }  
+
+  // submitter: {
+  //   class: 'FormSubmitterSubmit'
+  // }    
+
+  // make sure to load https://github.com/jquery-form/form
+  // submitter: {
+  //   class: 'FormSubmitterAjax',
+  //   jquery-form configuration
+  // }    
 }
 ```
 

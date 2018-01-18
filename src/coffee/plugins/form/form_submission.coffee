@@ -4,48 +4,29 @@ class @FormSubmissionPlugin extends AbstractFormsliderPlugin
 
     successEventName: 'form-submitted'
     errorEventName:   'form-submission-error'
-    loadHiddenFrameOnSuccess: 'url'
+    loadHiddenFrameOnSuccess: null
 
-    strategy:
-      # type: 'submit'     # trivial submit
-      # formSelector: 'form'
+    formSelector: 'form'
 
-      # make sure to load https://github.com/jquery-form/form
-      # type: 'ajaxSubmit'
-      # formSelector: 'form'
-
-      type:     'collect'
+    submitter:
+      class: 'FormSubmitterCollect'
       endpoint: '#'
       method:   'POST'
 
   init: =>
+    @form = $(@config.formSelector)
+
     for eventName in @config.submitOnEvents
       @on(eventName, @onSubmit)
 
+    SubmitterClass = window[@config.submitter.class]
+    @submitter     = new SubmitterClass(@, @config.submitter, @form)
+
+
   onSubmit: (event, currentSlide) =>
-    return @isCanceled(event)
+    return if @isCanceled(event)
 
-    switch @config.strategy.type
-      when 'submit'
-        $form = $(@config.formSelector)
-        $form.submit()
-
-      when 'ajaxSubmit'
-        $form = $(@config.formSelector)
-        $form.ajaxSubmit(@config.strategy)
-        $form.data('jqxhr')
-          .done(@onDone)
-          .fail(@onFail)
-
-      when 'collect'
-        $.ajax(
-          cache: false
-          url: @config.strategy.endpoint
-          method: @config.strategy.method
-          data: @collectInputs()
-        )
-        .done(@onDone)
-        .fail(@onFail)
+    @submitter.submit(event, currentSlide)
 
   onDone: =>
     @trigger(@config.successEventName)
@@ -55,27 +36,6 @@ class @FormSubmissionPlugin extends AbstractFormsliderPlugin
   onFail: =>
     @logger.error('onFail', @config.errorEventName)
     @trigger(@config.errorEventName)
-
-  collectInputs: =>
-    result = {}
-
-    $inputs = $('input', @container)
-    for input in $inputs
-      $input = $(input)
-
-      if $input.is(':checkbox') || $input.is(':radio')
-        if $input.is(':checked')
-          result[$input.attr('name')] = $input.val()
-
-      else
-        result[$input.attr('name')] = $input.val()
-
-    $others = $('select, textarea', @container)
-    for other in $others
-      $other = $(other)
-      result[$other.attr('name')] = $other.val()
-
-    result
 
   loadHiddenFrameOnSuccess: (url) ->
     return unless @config.loadHiddenFrameOnSuccess?

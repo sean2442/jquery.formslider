@@ -6,6 +6,7 @@
   * `ProgressbarPlugin` merges config data from progress bar wrapper by default
   * `NextOnKeyPlugin` attaches to all inputs per default config
   * `InputSyncPlugin` attaches to all inputs per default config
+  * refactor `FormSubmissionPlugin` and implement strategies via adapter classes
 
 ##### 1.0.8
   * only equalize element heights at ready or resize

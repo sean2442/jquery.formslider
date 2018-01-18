@@ -310,7 +310,7 @@ config: {
 
 ### TrackSessionInformationPlugin       
 Triggers track events for useragent, device dimension etc and adds an hidden input field for later form submission.
-Triggers after first user interaction for clean unbounce tracking.
+Triggers after first user interaction for clean bounce rate tracking.
 Default configuration:
 ```js
 config: {

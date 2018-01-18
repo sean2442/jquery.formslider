@@ -1,4 +1,4 @@
-class FormSubmitterCollect extends FormSubmitterAbstract
+class @FormSubmitterCollect extends FormSubmitterAbstract
   constructor: (@plugin, @config, @form) ->
     super(@plugin, @config, @form)
     @supressNaturalFormSubmit()

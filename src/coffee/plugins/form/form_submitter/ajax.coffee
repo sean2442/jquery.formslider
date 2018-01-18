@@ -1,4 +1,4 @@
-class FormSubmitterAjax extends FormSubmitterAbstract
+class @FormSubmitterAjax extends FormSubmitterAbstract
   constructor: (@plugin, @config, @form) ->
     super(@plugin, @config, @form)
     @supressNaturalFormSubmit()

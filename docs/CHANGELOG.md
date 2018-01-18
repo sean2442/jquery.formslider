@@ -1,5 +1,8 @@
 # Changelog
 
+##### 1.0.12
+  * define FormSubmitter in global namespace
+
 ##### 1.0.11
   * build dist ;)
 

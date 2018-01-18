@@ -1,5 +1,5 @@
 (function() {
-  var EventManager, FormSubmitterAjax, FormSubmitterCollect, FormSubmitterSubmit, Logger,
+  var EventManager, Logger,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty,
@@ -295,7 +295,7 @@
 
   })();
 
-  FormSubmitterAjax = (function(superClass) {
+  this.FormSubmitterAjax = (function(superClass) {
     extend(FormSubmitterAjax, superClass);
 
     function FormSubmitterAjax(plugin1, config1, form) {
@@ -316,7 +316,7 @@
 
   })(FormSubmitterAbstract);
 
-  FormSubmitterCollect = (function(superClass) {
+  this.FormSubmitterCollect = (function(superClass) {
     extend(FormSubmitterCollect, superClass);
 
     function FormSubmitterCollect(plugin1, config1, form) {
@@ -366,7 +366,7 @@
 
   })(FormSubmitterAbstract);
 
-  FormSubmitterSubmit = (function(superClass) {
+  this.FormSubmitterSubmit = (function(superClass) {
     extend(FormSubmitterSubmit, superClass);
 
     function FormSubmitterSubmit() {

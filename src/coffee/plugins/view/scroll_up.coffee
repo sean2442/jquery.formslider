@@ -13,6 +13,10 @@ class @ScrollUpPlugin extends AbstractFormsliderPlugin
   onAfter: (e, current, direction, prev) =>
     $element = $(@config.selector, current)
 
+    unless $element.length
+      @logger.warn "no element found for selector #{@config.selector}"
+      return
+
     return if @isOnScreen($element)
 
     $("html, body").animate({

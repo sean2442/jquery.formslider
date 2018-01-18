@@ -373,7 +373,8 @@ Listens also on event `do-equal-height`. To trigger this event: `@trigger('do-eq
 
 
 ### ScrollUpPlugin                      
-Scrolls up if a question is not in viewport.
+Scrolls up if a question is not in viewport and logs warning if no element found by `@config.selector`.
+
 Default configuration:
 ```js
 config: {

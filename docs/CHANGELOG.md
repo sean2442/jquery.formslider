@@ -1,5 +1,8 @@
 # Changelog
 
+##### 1.0.11
+  * build dist ;)
+
 ##### 1.0.10
   * add `configWithDataFrom` for `AbstractPlugin` so you can merge data attributes
   * log warning if `ScrollUpPlugin` does not find an element to check for
@@ -7,6 +10,9 @@
   * `NextOnKeyPlugin` attaches to all inputs per default config
   * `InputSyncPlugin` attaches to all inputs per default config
   * refactor `FormSubmissionPlugin` and implement strategies via adapter classes
+
+##### 1.0.09
+  * build dist ;)
 
 ##### 1.0.8
   * only equalize element heights at ready or resize

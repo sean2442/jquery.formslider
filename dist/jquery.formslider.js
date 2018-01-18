@@ -1,5 +1,5 @@
 (function() {
-  var EventManager, Logger,
+  var EventManager, FormSubmitterAjax, FormSubmitterCollect, FormSubmitterSubmit, Logger,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty,
@@ -102,6 +102,7 @@
       this.cancel = bind(this.cancel, this);
       this.off = bind(this.off, this);
       this.on = bind(this.on, this);
+      this.configWithDataFrom = bind(this.configWithDataFrom, this);
       this.config = ObjectExtender.extend({}, this.constructor.config, config);
       this.container = this.formslider.container;
       this.slides = this.formslider.slides;
@@ -112,6 +113,20 @@
 
     AbstractFormsliderPlugin.prototype.init = function() {
       return null;
+    };
+
+    AbstractFormsliderPlugin.prototype.configWithDataFrom = function(element) {
+      var $element, config, data, key, value;
+      config = ObjectExtender.extend({}, this.config);
+      $element = $(element);
+      for (key in config) {
+        value = config[key];
+        data = $element.data(key);
+        if (data !== void 0) {
+          config[key] = data;
+        }
+      }
+      return config;
     };
 
     AbstractFormsliderPlugin.prototype.on = function(eventName, callback) {
@@ -192,7 +207,6 @@
     extend(FormSubmissionPlugin, superClass);
 
     function FormSubmissionPlugin() {
-      this.collectInputs = bind(this.collectInputs, this);
       this.onFail = bind(this.onFail, this);
       this.onDone = bind(this.onDone, this);
       this.onSubmit = bind(this.onSubmit, this);
@@ -204,44 +218,32 @@
       submitOnEvents: ['validation.valid.contact'],
       successEventName: 'form-submitted',
       errorEventName: 'form-submission-error',
-      loadHiddenFrameOnSuccess: 'url',
-      strategy: {
-        type: 'collect',
+      loadHiddenFrameOnSuccess: null,
+      formSelector: 'form',
+      submitter: {
+        "class": 'FormSubmitterCollect',
         endpoint: '#',
         method: 'POST'
       }
     };
 
     FormSubmissionPlugin.prototype.init = function() {
-      var eventName, j, len, ref, results;
+      var SubmitterClass, eventName, j, len, ref;
+      this.form = $(this.config.formSelector);
       ref = this.config.submitOnEvents;
-      results = [];
       for (j = 0, len = ref.length; j < len; j++) {
         eventName = ref[j];
-        results.push(this.on(eventName, this.onSubmit));
+        this.on(eventName, this.onSubmit);
       }
-      return results;
+      SubmitterClass = window[this.config.submitter["class"]];
+      return this.submitter = new SubmitterClass(this, this.config.submitter, this.form);
     };
 
     FormSubmissionPlugin.prototype.onSubmit = function(event, currentSlide) {
-      var $form;
-      return this.isCanceled(event);
-      switch (this.config.strategy.type) {
-        case 'submit':
-          $form = $(this.config.formSelector);
-          return $form.submit();
-        case 'ajaxSubmit':
-          $form = $(this.config.formSelector);
-          $form.ajaxSubmit(this.config.strategy);
-          return $form.data('jqxhr').done(this.onDone).fail(this.onFail);
-        case 'collect':
-          return $.ajax({
-            cache: false,
-            url: this.config.strategy.endpoint,
-            method: this.config.strategy.method,
-            data: this.collectInputs()
-          }).done(this.onDone).fail(this.onFail);
+      if (this.isCanceled(event)) {
+        return;
       }
+      return this.submitter.submit(event, currentSlide);
     };
 
     FormSubmissionPlugin.prototype.onDone = function() {
@@ -253,30 +255,6 @@
     FormSubmissionPlugin.prototype.onFail = function() {
       this.logger.error('onFail', this.config.errorEventName);
       return this.trigger(this.config.errorEventName);
-    };
-
-    FormSubmissionPlugin.prototype.collectInputs = function() {
-      var $input, $inputs, $other, $others, input, j, k, len, len1, other, result;
-      result = {};
-      $inputs = $('input', this.container);
-      for (j = 0, len = $inputs.length; j < len; j++) {
-        input = $inputs[j];
-        $input = $(input);
-        if ($input.is(':checkbox') || $input.is(':radio')) {
-          if ($input.is(':checked')) {
-            result[$input.attr('name')] = $input.val();
-          }
-        } else {
-          result[$input.attr('name')] = $input.val();
-        }
-      }
-      $others = $('select, textarea', this.container);
-      for (k = 0, len1 = $others.length; k < len1; k++) {
-        other = $others[k];
-        $other = $(other);
-        result[$other.attr('name')] = $other.val();
-      }
-      return result;
     };
 
     FormSubmissionPlugin.prototype.loadHiddenFrameOnSuccess = function(url) {
@@ -297,6 +275,109 @@
     return FormSubmissionPlugin;
 
   })(AbstractFormsliderPlugin);
+
+  this.FormSubmitterAbstract = (function() {
+    function FormSubmitterAbstract(plugin1, config1, form) {
+      this.plugin = plugin1;
+      this.config = config1;
+      this.form = form;
+      this.supressNaturalFormSubmit = bind(this.supressNaturalFormSubmit, this);
+    }
+
+    FormSubmitterAbstract.prototype.supressNaturalFormSubmit = function() {
+      return this.form.submit(function(e) {
+        e.preventDefault();
+        return false;
+      });
+    };
+
+    return FormSubmitterAbstract;
+
+  })();
+
+  FormSubmitterAjax = (function(superClass) {
+    extend(FormSubmitterAjax, superClass);
+
+    function FormSubmitterAjax(plugin1, config1, form) {
+      this.plugin = plugin1;
+      this.config = config1;
+      this.form = form;
+      this.submit = bind(this.submit, this);
+      FormSubmitterAjax.__super__.constructor.call(this, this.plugin, this.config, this.form);
+      this.supressNaturalFormSubmit();
+    }
+
+    FormSubmitterAjax.prototype.submit = function(event, slide) {
+      this.form.ajaxSubmit(this.config);
+      return this.form.data('jqxhr').done(this.plugin.onDone).fail(this.plugin.onFail);
+    };
+
+    return FormSubmitterAjax;
+
+  })(FormSubmitterAbstract);
+
+  FormSubmitterCollect = (function(superClass) {
+    extend(FormSubmitterCollect, superClass);
+
+    function FormSubmitterCollect(plugin1, config1, form) {
+      this.plugin = plugin1;
+      this.config = config1;
+      this.form = form;
+      this.collectInputs = bind(this.collectInputs, this);
+      this.submit = bind(this.submit, this);
+      FormSubmitterCollect.__super__.constructor.call(this, this.plugin, this.config, this.form);
+      this.supressNaturalFormSubmit();
+    }
+
+    FormSubmitterCollect.prototype.submit = function(event, slide) {
+      return $.ajax({
+        cache: false,
+        url: this.config.endpoint,
+        method: this.config.method,
+        data: this.collectInputs()
+      }).done(this.plugin.onDone).fail(this.plugin.onFail);
+    };
+
+    FormSubmitterCollect.prototype.collectInputs = function() {
+      var $input, $inputs, $other, $others, input, j, k, len, len1, other, result;
+      result = {};
+      $inputs = $('input', this.plugin.container);
+      for (j = 0, len = $inputs.length; j < len; j++) {
+        input = $inputs[j];
+        $input = $(input);
+        if ($input.is(':checkbox') || $input.is(':radio')) {
+          if ($input.is(':checked')) {
+            result[$input.attr('name')] = $input.val();
+          }
+        } else {
+          result[$input.attr('name')] = $input.val();
+        }
+      }
+      $others = $('select, textarea', this.plugin.container);
+      for (k = 0, len1 = $others.length; k < len1; k++) {
+        other = $others[k];
+        $other = $(other);
+        result[$other.attr('name')] = $other.val();
+      }
+      return result;
+    };
+
+    return FormSubmitterCollect;
+
+  })(FormSubmitterAbstract);
+
+  FormSubmitterSubmit = (function(superClass) {
+    extend(FormSubmitterSubmit, superClass);
+
+    function FormSubmitterSubmit() {
+      return FormSubmitterSubmit.__super__.constructor.apply(this, arguments);
+    }
+
+    FormSubmitterSubmit.prototype.submit = function(event, slide) {};
+
+    return FormSubmitterSubmit;
+
+  })(FormSubmitterAbstract);
 
   this.InputFocusPlugin = (function(superClass) {
     extend(InputFocusPlugin, superClass);
@@ -348,7 +429,7 @@
     }
 
     InputSyncPlugin.config = {
-      selector: 'input:visible',
+      selector: 'input',
       attribute: 'name'
     };
 
@@ -571,7 +652,7 @@
       $slide = $(slide);
       this._addAnswerCountClasses(index, $slide);
       this._addSlideNumberClass(index, $slide);
-      this._addRoleClass(index, $slide);
+      this._addRoleClass($slide);
       return this._addSlideIdClass($slide);
     };
 
@@ -581,7 +662,7 @@
       return $slide.addClass("answer-count-" + answerCount).data('answer-count', answerCount);
     };
 
-    AddSlideClassesPlugin.prototype._addRoleClass = function(index, $slide) {
+    AddSlideClassesPlugin.prototype._addRoleClass = function($slide) {
       var role;
       role = $slide.data('role');
       return $slide.addClass("slide-role-" + role);
@@ -792,7 +873,7 @@
     }
 
     NextOnKeyPlugin.config = {
-      selector: 'input:visible',
+      selector: 'input',
       keyCode: 13
     };
 
@@ -916,6 +997,7 @@
       this.on('after', this.doUpdate);
       this.visible = true;
       this.wrapper = $(this.config.selectorWrapper);
+      this.config = this.configWithDataFrom(this.wrapper);
       this.progress = $(this.config.selectorText, this.wrapper);
       this.bar = $(this.config.selectorProgress, this.wrapper);
       this.type = this.config.type;
@@ -963,7 +1045,6 @@
       percent = (indexFromOne / this.countMax) * 100;
       this.bar.css('width', percent + '%');
       if (this.config.type === 'steps') {
-        this._setSteps(indexFromOne);
         this._setSteps(indexFromOne);
         return;
       }
@@ -1070,7 +1151,7 @@
     function LoaderSlidePlugin() {
       this.isLoading = bind(this.isLoading, this);
       this.onLeaving = bind(this.onLeaving, this);
-      this.onLOaderStart = bind(this.onLOaderStart, this);
+      this.onLoaderStart = bind(this.onLoaderStart, this);
       this.init = bind(this.init, this);
       return LoaderSlidePlugin.__super__.constructor.apply(this, arguments);
     }
@@ -1081,11 +1162,11 @@
     };
 
     LoaderSlidePlugin.prototype.init = function() {
-      this.on('after.loader', this.onLOaderStart);
+      this.on('after.loader', this.onLoaderStart);
       return this.on('leaving.loader', this.onLeaving);
     };
 
-    LoaderSlidePlugin.prototype.onLOaderStart = function(event, currentSlide, direction, nextSlide) {
+    LoaderSlidePlugin.prototype.onLoaderStart = function(event, currentSlide, direction, nextSlide) {
       var LoaderClass;
       if (this.isLoading()) {
         return;
@@ -1403,6 +1484,10 @@
     ScrollUpPlugin.prototype.onAfter = function(e, current, direction, prev) {
       var $element;
       $element = $(this.config.selector, current);
+      if (!$element.length) {
+        this.logger.warn("no element found for selector " + this.config.selector);
+        return;
+      }
       if (this.isOnScreen($element)) {
         return;
       }

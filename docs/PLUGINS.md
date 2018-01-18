@@ -208,7 +208,7 @@ Syncs inputs with the same name.
 Default configuration:
 ```js
 config: {
-  selector: 'input:visible',
+  selector: 'input',
   attribute: 'name'
 }
 ```

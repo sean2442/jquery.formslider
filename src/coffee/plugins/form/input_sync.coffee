@@ -1,6 +1,6 @@
 class @InputSyncPlugin extends AbstractFormsliderPlugin
   @config =
-    selector: 'input:visible'
+    selector: 'input'
     attribute: 'name'
 
   init: =>

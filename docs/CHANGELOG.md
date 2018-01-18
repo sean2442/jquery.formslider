@@ -3,6 +3,7 @@
 ##### 1.0.9
   * add `configWithDataFrom` for `AbstractPlugin` so you can merge data attributes
   * log warning if `ScrollUpPlugin` does not find an element to check for
+  * `ProgressbarPlugin` merges config data from progress bar wrapper by default
 
 ##### 1.0.8
   * only equalize element heights at ready or resize

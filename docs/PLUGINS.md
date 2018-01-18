@@ -271,7 +271,8 @@ config: {
 
 
 ### ProgressBarPlugin                   
-Manages progress animation.
+Manages progress animation, looks for data attributes on progress bar wrapper. Use `data-type="steps"` for ex.
+
 Default configuration:
 ```js
 config: {

@@ -23,6 +23,9 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
 
     @visible  = true
     @wrapper  = $(@config.selectorWrapper)
+
+    @config   = @configWithDataFrom(@wrapper)
+
     @progress = $(@config.selectorText, @wrapper)
     @bar      = $(@config.selectorProgress, @wrapper)
     @type     = @config.type
@@ -60,7 +63,6 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
     @bar.css('width', percent + '%')
 
     if @config.type == 'steps'
-      @_setSteps(indexFromOne)
       @_setSteps(indexFromOne)
       return
 

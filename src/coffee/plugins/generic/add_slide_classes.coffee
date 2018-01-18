@@ -6,7 +6,7 @@ class @AddSlideClassesPlugin extends AbstractFormsliderPlugin
     $slide = $(slide)
     @_addAnswerCountClasses(index, $slide)
     @_addSlideNumberClass(index, $slide)
-    @_addRoleClass(index, $slide)
+    @_addRoleClass($slide)
     @_addSlideIdClass($slide)
 
   _addAnswerCountClasses: (index, $slide) =>
@@ -15,7 +15,7 @@ class @AddSlideClassesPlugin extends AbstractFormsliderPlugin
     $slide.addClass("answer-count-#{answerCount}")
           .data('answer-count', answerCount)
 
-  _addRoleClass: (index, $slide) ->
+  _addRoleClass: ($slide) ->
     role = $slide.data('role')
     $slide.addClass("slide-role-#{role}")
 

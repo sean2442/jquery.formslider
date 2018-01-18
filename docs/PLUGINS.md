@@ -237,7 +237,7 @@ config: {
 
 
 ### ArrowNavigationPlugin               
-Can trigger next/prev if arrow keys pres
+Can trigger next/prev if arrow keys pressed.
 Default configuration:
 ```js
 config: {
@@ -246,7 +246,6 @@ config: {
   keyCodeRight: 39
 }
 ```
-sed.
 
 ### TabIndexSetterPlugin               
 Fixes tab behavior, only enables on current slide.

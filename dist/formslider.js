@@ -827,6 +827,35 @@
 
   })(AbstractFormsliderPlugin);
 
+  this.DirectionPolicyPlugin = (function(superClass) {
+    extend(DirectionPolicyPlugin, superClass);
+
+    function DirectionPolicyPlugin() {
+      this.cancelEvent = bind(this.cancelEvent, this);
+      this.init = bind(this.init, this);
+      return DirectionPolicyPlugin.__super__.constructor.apply(this, arguments);
+    }
+
+    DirectionPolicyPlugin.config = {
+      cancelEventOn: []
+    };
+
+    DirectionPolicyPlugin.prototype.init = function() {
+      return $.each(this.config.cancelEventOn, (function(_this) {
+        return function(index, eventName) {
+          return _this.on(eventName, _this.cancelEvent);
+        };
+      })(this));
+    };
+
+    DirectionPolicyPlugin.prototype.cancelEvent = function(event, current, direction, next) {
+      return this.cancel(event);
+    };
+
+    return DirectionPolicyPlugin;
+
+  })(AbstractFormsliderPlugin);
+
   this.NextOnClickPlugin = (function(superClass) {
     extend(NextOnClickPlugin, superClass);
 
@@ -965,17 +994,82 @@
 
   })(AbstractFormsliderPlugin);
 
+  this.ProgressBarAdapterAbstract = (function() {
+    function ProgressBarAdapterAbstract(plugin1, config1) {
+      this.plugin = plugin1;
+      this.config = config1;
+    }
+
+    return ProgressBarAdapterAbstract;
+
+  })();
+
+  this.ProgressBarAdapterPercent = (function(superClass) {
+    extend(ProgressBarAdapterPercent, superClass);
+
+    function ProgressBarAdapterPercent() {
+      this._setPercentStepCallback = bind(this._setPercentStepCallback, this);
+      this._setPercent = bind(this._setPercent, this);
+      this.set = bind(this.set, this);
+      return ProgressBarAdapterPercent.__super__.constructor.apply(this, arguments);
+    }
+
+    ProgressBarAdapterPercent.prototype.set = function(indexFromZero, percent) {
+      return this._setPercent(percent);
+    };
+
+    ProgressBarAdapterPercent.prototype._setPercent = function(percent) {
+      var startFrom;
+      startFrom = parseInt(this.plugin.progressText.text()) || 13;
+      return $({
+        Counter: startFrom
+      }).animate({
+        Counter: percent
+      }, {
+        duration: this.config.animationSpeed,
+        queue: false,
+        easing: 'swing',
+        step: this._setPercentStepCallback
+      });
+    };
+
+    ProgressBarAdapterPercent.prototype._setPercentStepCallback = function(percent) {
+      return this.plugin.progressText.text(Math.ceil(percent) + '%');
+    };
+
+    return ProgressBarAdapterPercent;
+
+  })(ProgressBarAdapterAbstract);
+
+  this.ProgressBarAdapterSteps = (function(superClass) {
+    extend(ProgressBarAdapterSteps, superClass);
+
+    function ProgressBarAdapterSteps() {
+      this._setSteps = bind(this._setSteps, this);
+      this.set = bind(this.set, this);
+      return ProgressBarAdapterSteps.__super__.constructor.apply(this, arguments);
+    }
+
+    ProgressBarAdapterSteps.prototype.set = function(indexFromZero, percent) {
+      return this._setSteps(indexFromZero + 1);
+    };
+
+    ProgressBarAdapterSteps.prototype._setSteps = function(indexFromOne) {
+      return this.plugin.progressText.text(indexFromOne + "/" + this.plugin.countMax);
+    };
+
+    return ProgressBarAdapterSteps;
+
+  })(ProgressBarAdapterAbstract);
+
   this.ProgressBarPlugin = (function(superClass) {
     extend(ProgressBarPlugin, superClass);
 
     function ProgressBarPlugin() {
       this.show = bind(this.show, this);
       this.hide = bind(this.hide, this);
-      this._setSteps = bind(this._setSteps, this);
-      this._setPercentStepCallback = bind(this._setPercentStepCallback, this);
-      this._setPercent = bind(this._setPercent, this);
-      this.set = bind(this.set, this);
       this.shouldBeVisible = bind(this.shouldBeVisible, this);
+      this.set = bind(this.set, this);
       this.doUpdate = bind(this.doUpdate, this);
       this.slidesThatCount = bind(this.slidesThatCount, this);
       this.init = bind(this.init, this);
@@ -987,8 +1081,8 @@
       selectorText: '.progress-text',
       selectorProgress: '.progress',
       animationSpeed: 300,
-      type: 'percent',
-      initialProgress: '15',
+      adapter: 'ProgressBarAdapterPercent',
+      initialProgress: null,
       dontCountOnRoles: ['loader', 'contact', 'confirmation'],
       hideOnRoles: ['zipcode', 'loader', 'contact', 'confirmation']
     };
@@ -998,11 +1092,11 @@
       this.visible = true;
       this.wrapper = $(this.config.selectorWrapper);
       this.config = this.configWithDataFrom(this.wrapper);
-      this.progress = $(this.config.selectorText, this.wrapper);
+      this.progressText = $(this.config.selectorText, this.wrapper);
       this.bar = $(this.config.selectorProgress, this.wrapper);
-      this.type = this.config.type;
       this.bar.css('transition-duration', (this.config.animationSpeed / 1000) + 's');
       this.countMax = this.slidesThatCount();
+      this.adapter = new window[this.config.adapter](this, this.config);
       return this.set(0);
     };
 
@@ -1028,53 +1122,25 @@
       return this.set(index);
     };
 
-    ProgressBarPlugin.prototype.shouldBeVisible = function(slide) {
-      var ref;
-      return !(ref = $(slide).data('role'), indexOf.call(this.config.hideOnRoles, ref) >= 0);
-    };
-
     ProgressBarPlugin.prototype.set = function(indexFromZero) {
-      var indexFromOne, percent;
+      var percent;
       if (indexFromZero > this.countMax) {
         indexFromZero = this.countMax;
       }
       if (indexFromZero < 0) {
         indexFromZero = 0;
       }
-      indexFromOne = indexFromZero + 1;
-      percent = (indexFromOne / this.countMax) * 100;
+      percent = ((indexFromZero + 1) / this.countMax) * 100;
+      if (this.config.initialProgress && indexFromZero === 0) {
+        percent = this.config.initialProgress;
+      }
       this.bar.css('width', percent + '%');
-      if (this.config.type === 'steps') {
-        this._setSteps(indexFromOne);
-        return;
-      }
-      if ((this.config.initialProgress != null) && indexFromZero < 1) {
-        percent = Math.max(this.config.initialProgress, percent);
-      }
-      return this._setPercent(percent);
+      return this.adapter.set(indexFromZero, percent);
     };
 
-    ProgressBarPlugin.prototype._setPercent = function(percent) {
-      var startFrom;
-      startFrom = parseInt(this.progress.text()) || 13;
-      return $({
-        Counter: startFrom
-      }).animate({
-        Counter: percent
-      }, {
-        duration: this.config.animationSpeed,
-        queue: false,
-        easing: 'swing',
-        step: this._setPercentStepCallback
-      });
-    };
-
-    ProgressBarPlugin.prototype._setPercentStepCallback = function(percent) {
-      return this.progress.text(Math.ceil(percent) + '%');
-    };
-
-    ProgressBarPlugin.prototype._setSteps = function(indexFromOne) {
-      return this.progress.text(indexFromOne + "/" + this.countMax);
+    ProgressBarPlugin.prototype.shouldBeVisible = function(slide) {
+      var ref;
+      return !(ref = $(slide).data('role'), indexOf.call(this.config.hideOnRoles, ref) >= 0);
     };
 
     ProgressBarPlugin.prototype.hide = function() {
@@ -1105,45 +1171,31 @@
     extend(ConfirmationSlidePlugin, superClass);
 
     function ConfirmationSlidePlugin() {
-      this.onLeaving = bind(this.onLeaving, this);
-      this.init = bind(this.init, this);
       return ConfirmationSlidePlugin.__super__.constructor.apply(this, arguments);
     }
 
-    ConfirmationSlidePlugin.prototype.init = function() {
-      return this.on('leaving.confirmation', this.onLeaving);
-    };
-
-    ConfirmationSlidePlugin.prototype.onLeaving = function(event, current, direction, next) {
-      return this.cancel(event);
+    ConfirmationSlidePlugin.config = {
+      cancelEventOn: ['leaving.confirmation']
     };
 
     return ConfirmationSlidePlugin;
 
-  })(AbstractFormsliderPlugin);
+  })(DirectionPolicyPlugin);
 
   this.ContactSlidePlugin = (function(superClass) {
     extend(ContactSlidePlugin, superClass);
 
     function ContactSlidePlugin() {
-      this.onLeaving = bind(this.onLeaving, this);
-      this.init = bind(this.init, this);
       return ContactSlidePlugin.__super__.constructor.apply(this, arguments);
     }
 
-    ContactSlidePlugin.prototype.init = function() {
-      return this.on('leaving.contact', this.onLeaving);
-    };
-
-    ContactSlidePlugin.prototype.onLeaving = function(event, current, direction, next) {
-      if (direction === 'prev') {
-        return this.cancel(event);
-      }
+    ContactSlidePlugin.config = {
+      cancelEventOn: ['leaving.contact.prev']
     };
 
     return ContactSlidePlugin;
 
-  })(AbstractFormsliderPlugin);
+  })(DirectionPolicyPlugin);
 
   this.LoaderSlidePlugin = (function(superClass) {
     extend(LoaderSlidePlugin, superClass);

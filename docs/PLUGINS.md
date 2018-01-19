@@ -258,6 +258,25 @@ config: {
 }
 ```
 
+### DirectionPolicyPlugin
+Prevent going forward or backward based on events.
+Default configuration:
+```js
+config: {
+  cancelEventOn: []
+}
+```
+
+Example implemenatation:
+```coffee
+
+class @ContactSlidePlugin extends DirectionPolicyPlugin
+  @config =
+    cancelEventOn: ['leaving.contact.prev']
+
+```
+
+
 ### TabIndexSetterPlugin               
 Fixes tab behavior, only enables on current slide.
 Default configuration:

@@ -1,6 +1,3 @@
-class @ConfirmationSlidePlugin extends AbstractFormsliderPlugin
-  init: =>
-    @on('leaving.confirmation', @onLeaving)
-
-  onLeaving: (event, current, direction, next) =>
-    @cancel(event)
+class @ConfirmationSlidePlugin extends DirectionPolicyPlugin
+  @config =
+    cancelEventOn: ['leaving.confirmation']

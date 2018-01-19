@@ -49,6 +49,7 @@ This functionality is provided by plugins. You can develop your own flow as you 
   * BrowserHistoryPlugin                       # adds browser history entries
   * NextOnClickPlugin                   # call next if certain element clicked
   * NextOnKeyPlugin                     # can trigger next if enter pressed
+  * DirectionPolicyPlugin               # can prevent going forward or backward based on events
 
 # progress  
   * ProgressBarPlugin                   # manages progress animation
@@ -57,8 +58,8 @@ This functionality is provided by plugins. You can develop your own flow as you 
 
 # slides
   * LoaderSlidePlugin                   # controls the loader page
-  * ContactSlidePlugin                  # controls the contact page
-  * ConfirmationSlidePlugin             # controls the confirmation page
+  * ContactSlidePlugin                  # controls the contact page, prevents going back
+  * ConfirmationSlidePlugin             # controls the confirmation page, prevents going any where
 
 # tracking
   * TrackSessionInformationPlugin       # triggers track events for useragent, device dimension etc.

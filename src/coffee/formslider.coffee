@@ -35,6 +35,7 @@ class @FormSlider
   # return value(bool) indicates if transition allowed or not
   onBefore: (currentIndex, direction, nextIndex) =>
     return false if @locking.locked
+    @locking.lock()
 
     current     = @slides.get(currentIndex)
     currentRole = $(current).data('role')

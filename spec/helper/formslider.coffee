@@ -42,12 +42,13 @@ helper.formslider =
           class: 'ProgressBarPlugin'
           config:
             selectorWrapper: '.progressbar-wrapper.percent'
+            initialProgress: 23
         }
         {
           class: 'ProgressBarPlugin'
           config:
             selectorWrapper: '.progressbar-wrapper.steps'
-            type: 'steps'
+            adapter: 'ProgressBarAdapterSteps'
         }
         {
           class: 'DoOnEventPlugin'

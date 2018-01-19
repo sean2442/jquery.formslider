@@ -320,8 +320,8 @@ config: {
   selectorText: '.progress-text',
   selectorProgress: '.progress',
   animationSpeed: 300,
-  type: 'percent',             // animate progress in percent or 'steps' (1/6)
-  initialProgress: '15',
+  adapter: 'ProgressBarAdapterPercent',  // animate progress in percent or 'steps' (1/6) (ProgressBarAdapterSteps)
+  initialProgress: '15',                 // initial bar width, when type percent also the initial value
   dontCountOnRoles: [
     'loader'
     'contact'

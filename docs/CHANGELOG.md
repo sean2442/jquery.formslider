@@ -3,6 +3,9 @@
 ##### 1.0.13
   * docs/INTEGRATION.md added
   * `DirectionPolicyPlugin` introduced
+  * implement `ProgressBarPlugin` with adapter:
+    * `ProgressBarAdapterPercent`
+    * `ProgressBarAdapterSteps`
 
 ##### 1.0.12
   * define FormSubmitter in global namespace

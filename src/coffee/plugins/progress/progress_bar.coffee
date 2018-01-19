@@ -4,8 +4,8 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
     selectorText: '.progress-text'
     selectorProgress: '.progress'
     animationSpeed: 300
-    type: 'percent'
-    initialProgress: '15'
+    adapter: 'ProgressBarAdapterPercent'
+    initialProgress: null
     dontCountOnRoles: [
       'loader'
       'contact'
@@ -26,13 +26,15 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
 
     @config   = @configWithDataFrom(@wrapper)
 
-    @progress = $(@config.selectorText, @wrapper)
-    @bar      = $(@config.selectorProgress, @wrapper)
-    @type     = @config.type
+    @progressText = $(@config.selectorText, @wrapper)
+    @bar          = $(@config.selectorProgress, @wrapper)
 
     @bar.css('transition-duration', (@config.animationSpeed / 1000) + 's')
 
     @countMax = @slidesThatCount()
+
+    @adapter  = new window[@config.adapter](@, @config)
+
     @set(0)
 
   slidesThatCount: =>
@@ -51,48 +53,21 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
     @show()
     @set(index) # we are on first step initial
 
-  shouldBeVisible: (slide) =>
-    ! ($(slide).data('role') in @config.hideOnRoles)
-
   set: (indexFromZero) =>
     indexFromZero = @countMax if indexFromZero > @countMax
     indexFromZero = 0 if indexFromZero < 0
-    indexFromOne  = indexFromZero + 1
 
-    percent = ((indexFromOne) / @countMax) * 100
+    percent = ((indexFromZero + 1) / @countMax) * 100
+
+    if @config.initialProgress && indexFromZero == 0
+      percent = @config.initialProgress
+
     @bar.css('width', percent + '%')
 
-    if @config.type == 'steps'
-      @_setSteps(indexFromOne)
-      return
+    @adapter.set(indexFromZero, percent)
 
-    # for percent we can give an initial value
-    if @config.initialProgress? && indexFromZero < 1
-      percent = Math.max(@config.initialProgress, percent)
-
-    @_setPercent(percent)
-
-
-  # optimize
-  _setPercent: (percent) =>
-    startFrom = parseInt(@progress.text()) || 13
-
-    $(Counter: startFrom)
-      .animate(
-        { Counter: percent }
-        {
-          duration: @config.animationSpeed
-          queue: false
-          easing: 'swing'
-          step: @_setPercentStepCallback
-        }
-    )
-
-  _setPercentStepCallback: (percent) =>
-    @progress.text(Math.ceil(percent) + '%')
-
-  _setSteps: (indexFromOne) =>
-    @progress.text("#{indexFromOne}/#{@countMax}")
+  shouldBeVisible: (slide) =>
+    ! ($(slide).data('role') in @config.hideOnRoles)
 
   hide: =>
     return unless @visible

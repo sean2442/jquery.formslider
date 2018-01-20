@@ -1,8 +1,14 @@
 # Changelog
 
+##### 1.0.14
+  * add specs for `DirectionPolicyByRolePlugin`
+  * lock navigation until current transition finished
+  * set default for `BrowserHistoryPlugin` `updateHash` to false
+  * introduce `resetStatesOnLoad` for `BrowserHistoryPlugin`
+
 ##### 1.0.13
   * docs/INTEGRATION.md added
-  * `DirectionPolicyPlugin` introduced
+  * `DirectionPolicyByRolePlugin` introduced
   * implement `ProgressBarPlugin` with adapter:
     * `ProgressBarAdapterPercent`
     * `ProgressBarAdapterSteps`

@@ -46,10 +46,10 @@ This functionality is provided by plugins. You can develop your own flow as you 
 
 # navigation
   * ArrowNavigationPlugin               # adds arrow navigation feature
-  * BrowserHistoryPlugin                       # adds browser history entries
+  * BrowserHistoryPlugin                # adds browser history entries
   * NextOnClickPlugin                   # call next if certain element clicked
   * NextOnKeyPlugin                     # can trigger next if enter pressed
-  * DirectionPolicyPlugin               # can prevent going forward or backward based on events
+  * DirectionPolicyByRolePlugin         # can prevent going forward or backward based on events
 
 # progress  
   * ProgressBarPlugin                   # manages progress animation

@@ -52,7 +52,8 @@ $('.my-formslider').formslider({
     {
       class: 'BrowserHistoryPlugin'
       config:{
-        updateHash: true
+        updateHash: false,
+        resetStatesOnLoad: true
       }
     }
   ]
@@ -80,6 +81,7 @@ These plugins can be used to extend the formslider:
   * [formslider.jquery.tracking](https://github.com/formslider/formslider.jquery.tracking)
   * [formslider.animate.css](https://github.com/formslider/formslider.animate.css)
   * [formslider.dramatic.loader](https://github.com/formslider/formslider.dramatic.loader)
+  * [formslider.hitory.js](https://github.com/formslider/formslider.hitory.js)
 
 ### AddSlideClassesPlugin               
 Adds classes based on role and index.
@@ -132,7 +134,8 @@ Adds browser history entries.
 Default configuration:
 ```js
 config: {
-  updateHash: true    // change browser hash or not
+  updateHash: false,          // change browser url or not
+  resetStatesOnLoad: true    // only allow states since browser reload
 }
 ```
 
@@ -258,7 +261,7 @@ config: {
 }
 ```
 
-### DirectionPolicyPlugin
+### DirectionPolicyByRolePlugin
 Prevent going forward or backward based on events.
 Default configuration:
 ```js
@@ -270,7 +273,7 @@ config: {
 Example implemenatation:
 ```coffee
 
-class @ContactSlidePlugin extends DirectionPolicyPlugin
+class @ContactSlidePlugin extends DirectionPolicyByRolePlugin
   @config =
     cancelEventOn: ['leaving.contact.prev']
 

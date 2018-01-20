@@ -782,12 +782,14 @@
     }
 
     BrowserHistoryPlugin.config = {
-      updateHash: true
+      updateHash: true,
+      resetStatesOnLoad: true
     };
 
     BrowserHistoryPlugin.prototype.init = function() {
       this.on('after', this.onAfter);
       this.dontUpdateHistoryNow = false;
+      this.time = new Date().getTime();
       this.pushCurrentHistoryState();
       return $(window).bind('popstate', this.handleHistoryChange);
     };
@@ -808,51 +810,78 @@
       }
       this.logger.debug('pushCurrentHistoryState', hash);
       return history.pushState({
-        index: this.formslider.index()
+        index: this.formslider.index(),
+        time: this.time
       }, "index " + (this.formslider.index()), hash);
     };
 
     BrowserHistoryPlugin.prototype.handleHistoryChange = function(event) {
-      var newIndex, ref;
+      var ref, state;
       if (((ref = event.originalEvent) != null ? ref.state : void 0) == null) {
         return;
       }
-      newIndex = event.originalEvent.state.index;
-      this.logger.debug('handleHistoryChange', newIndex);
+      state = event.originalEvent.state;
+      if (this.config.resetStatesOnLoad) {
+        if (state.time !== this.time) {
+          return;
+        }
+      }
+      this.logger.debug('handleHistoryChange', state.index);
       this.dontUpdateHistoryNow = true;
-      return this.formslider.goto(newIndex);
+      return this.formslider.goto(state.index);
     };
 
     return BrowserHistoryPlugin;
 
   })(AbstractFormsliderPlugin);
 
-  this.DirectionPolicyPlugin = (function(superClass) {
-    extend(DirectionPolicyPlugin, superClass);
+  this.DirectionPolicyByRolePlugin = (function(superClass) {
+    extend(DirectionPolicyByRolePlugin, superClass);
 
-    function DirectionPolicyPlugin() {
-      this.cancelEvent = bind(this.cancelEvent, this);
+    function DirectionPolicyByRolePlugin() {
+      this.checkPermissions = bind(this.checkPermissions, this);
       this.init = bind(this.init, this);
-      return DirectionPolicyPlugin.__super__.constructor.apply(this, arguments);
+      return DirectionPolicyByRolePlugin.__super__.constructor.apply(this, arguments);
     }
 
-    DirectionPolicyPlugin.config = {
-      cancelEventOn: []
+    DirectionPolicyByRolePlugin.config = {};
+
+    DirectionPolicyByRolePlugin.prototype.init = function() {
+      return this.on('leaving', this.checkPermissions);
     };
 
-    DirectionPolicyPlugin.prototype.init = function() {
-      return $.each(this.config.cancelEventOn, (function(_this) {
-        return function(index, eventName) {
-          return _this.on(eventName, _this.cancelEvent);
-        };
-      })(this));
+    DirectionPolicyByRolePlugin.prototype.checkPermissions = function(event, current, direction, next) {
+      var currentRole, nextRole, permissions;
+      currentRole = $(current).data('role');
+      nextRole = $(next).data('role');
+      if (!currentRole || !nextRole) {
+        return;
+      }
+      if (currentRole in this.config) {
+        permissions = this.config[currentRole];
+        if ('goingTo' in permissions) {
+          if (indexOf.call(permissions.goingTo, 'none') >= 0) {
+            return this.cancel(event);
+          }
+          if (indexOf.call(permissions.goingTo, nextRole) < 0) {
+            return this.cancel(event);
+          }
+        }
+      }
+      if (nextRole in this.config) {
+        permissions = this.config[nextRole];
+        if ('commingFrom' in permissions) {
+          if (indexOf.call(permissions.commingFrom, 'none') >= 0) {
+            return this.cancel(event);
+          }
+          if (indexOf.call(permissions.commingFrom, currentRole) < 0) {
+            return this.cancel(event);
+          }
+        }
+      }
     };
 
-    DirectionPolicyPlugin.prototype.cancelEvent = function(event, current, direction, next) {
-      return this.cancel(event);
-    };
-
-    return DirectionPolicyPlugin;
+    return DirectionPolicyByRolePlugin;
 
   })(AbstractFormsliderPlugin);
 
@@ -1167,36 +1196,6 @@
 
   })(AbstractFormsliderPlugin);
 
-  this.ConfirmationSlidePlugin = (function(superClass) {
-    extend(ConfirmationSlidePlugin, superClass);
-
-    function ConfirmationSlidePlugin() {
-      return ConfirmationSlidePlugin.__super__.constructor.apply(this, arguments);
-    }
-
-    ConfirmationSlidePlugin.config = {
-      cancelEventOn: ['leaving.confirmation']
-    };
-
-    return ConfirmationSlidePlugin;
-
-  })(DirectionPolicyPlugin);
-
-  this.ContactSlidePlugin = (function(superClass) {
-    extend(ContactSlidePlugin, superClass);
-
-    function ContactSlidePlugin() {
-      return ContactSlidePlugin.__super__.constructor.apply(this, arguments);
-    }
-
-    ContactSlidePlugin.config = {
-      cancelEventOn: ['leaving.contact.prev']
-    };
-
-    return ContactSlidePlugin;
-
-  })(DirectionPolicyPlugin);
-
   this.LoaderSlidePlugin = (function(superClass) {
     extend(LoaderSlidePlugin, superClass);
 
@@ -1229,9 +1228,6 @@
     };
 
     LoaderSlidePlugin.prototype.onLeaving = function(event, current, direction, next) {
-      if (direction === 'prev') {
-        this.cancel(event);
-      }
       if (this.isLoading()) {
         return this.cancel(event);
       }
@@ -1883,6 +1879,7 @@
       if (this.locking.locked) {
         return false;
       }
+      this.locking.lock();
       current = this.slides.get(currentIndex);
       currentRole = $(current).data('role');
       next = this.driver.get(nextIndex);

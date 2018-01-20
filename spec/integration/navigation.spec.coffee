@@ -18,8 +18,14 @@ describe 'formslider', ->
       expect(formslider.index()).toBe 0
       formslider.next()
       expect(formslider.index()).toBe 1
-      formslider.prev()
-      expect(formslider.index()).toBe 0
+      # wait a little so that the slider gets unlocked
+      setTimeout(
+        =>
+          formslider.prev()
+          expect(formslider.index()).toBe 0
+        ,
+        10
+      )
 
   it 'can`t go prev 0', ->
     expect(formslider.index()).toBe 0

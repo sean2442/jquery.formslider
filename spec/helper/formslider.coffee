@@ -75,8 +75,24 @@ helper.formslider =
             loaderClass: 'SimpleLoaderImplementation'
             duration: 1000
         }
-        { class: 'ContactSlidePlugin'      }
-        { class: 'ConfirmationSlidePlugin' }
+        {
+          class: 'DirectionPolicyByRolePlugin'
+          config:
+            zipcode:
+              commingFrom: ['question']
+              goingTo: ['loader', 'question']
+
+            loader:
+              commingFrom: ['zipcode']
+              goingTo: ['contact']
+
+            contact:
+              commingFrom: ['loader']
+              goingTo: ['confirmation']
+
+            confirmation:
+              goingTo: ['none']
+        }
         { class: 'EqualHeightPlugin'       }
         { class: 'ScrollUpPlugin'          }
         { class: 'LazyLoadPlugin'          }

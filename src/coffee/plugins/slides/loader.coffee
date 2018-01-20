@@ -15,7 +15,6 @@ class @LoaderSlidePlugin extends AbstractFormsliderPlugin
     @loader.start()
 
   onLeaving: (event, current, direction, next) =>
-    @cancel(event) if direction == 'prev'
     @cancel(event) if @isLoading()
 
   isLoading: =>

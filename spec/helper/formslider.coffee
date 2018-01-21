@@ -101,14 +101,14 @@ helper.formslider =
     )
 
     if waitForReady
-      helper.sleep(250)
-      formslider.onReady()
+      # helper.sleep(350)
+      # formslider.onReady()
 
       # works in headless only if flexslider init is used for onReady -> fix
-      # while true
-      #   break if formslider?.ready == true
+      while true
+        break if formslider?.ready == true
     else
       formslider.onReady()
-      
+
 
     return formslider

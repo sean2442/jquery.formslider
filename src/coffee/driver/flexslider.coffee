@@ -16,7 +16,7 @@ class @DriverFlexslider
     @config = ObjectExtender.extend({}, DriverFlexslider.config, @config)
     @config.after             = @_internOnAfter
     @config.conditionalBefore = @onBefore
-    @config.start             = @onReady
+    @config.init              = @onReady
 
     @slides                   = $(@config.selector, @container)
 

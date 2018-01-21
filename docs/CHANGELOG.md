@@ -1,5 +1,9 @@
 # Changelog
 
+##### 1.0.15
+  * fix triggering after events, when there was not an allowed transition
+  * correct description for `DirectionPolicyByRolePlugin`
+
 ##### 1.0.14
   * add specs for `DirectionPolicyByRolePlugin`
   * lock navigation until current transition finished

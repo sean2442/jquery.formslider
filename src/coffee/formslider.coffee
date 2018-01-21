@@ -34,6 +34,7 @@ class @FormSlider
   # called from @driver.next|prev|goto
   # return value(bool) indicates if transition allowed or not
   onBefore: (currentIndex, direction, nextIndex) =>
+    return false if currentIndex == nextIndex
     return false if @locking.locked
     @locking.lock()
 
@@ -58,9 +59,10 @@ class @FormSlider
     @lastCurrentRole = nextRole
     @lastDirection   = direction
 
-    return true
-
   onAfter: =>
+    # not an allowed after event
+    return unless @locking.locked
+
                 # current  , direction     , prev
     eventData = [ @lastNext, @lastDirection, @lastCurrent ]
     @events.trigger("after.#{@lastCurrentRole}.#{@lastDirection}", eventData...)

@@ -70,6 +70,7 @@ This functionality is provided by plugins. You can develop your own flow as you 
   * LazyLoadPlugin                      # load images from the next slides
   * LoadingStatePlugin                  # manipulates loading classes on ready
   * ScrollUpPlugin                      # scrolls up if a question is not in viewport
+  * SlideVisibilityPlugin               # hides slides before and after current until transition is allowed
 ```
 
 For a full list and detailed informations check out this guide: [PLUGINS](docs/PLUGINS.md)

@@ -115,7 +115,8 @@ The Plugin triggers the following events:
 @trigger('question-answered', $answer, value, slideIndex)
 ```
 
-
+### SlideVisibilityPlugin
+Hides slides before and after current until transition is allowed
 
 ### InputFocusPlugin                    
 Focusses first input on current slide.

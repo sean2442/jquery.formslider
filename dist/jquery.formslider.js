@@ -1876,6 +1876,9 @@
 
     FormSlider.prototype.onBefore = function(currentIndex, direction, nextIndex) {
       var current, currentRole, event, eventData, next, nextRole, ref, ref1;
+      if (currentIndex === nextIndex) {
+        return false;
+      }
       if (this.locking.locked) {
         return false;
       }
@@ -1895,12 +1898,14 @@
       this.lastCurrent = current;
       this.lastNext = next;
       this.lastCurrentRole = nextRole;
-      this.lastDirection = direction;
-      return true;
+      return this.lastDirection = direction;
     };
 
     FormSlider.prototype.onAfter = function() {
       var eventData, ref, ref1;
+      if (!this.locking.locked) {
+        return;
+      }
       eventData = [this.lastNext, this.lastDirection, this.lastCurrent];
       (ref = this.events).trigger.apply(ref, ["after." + this.lastCurrentRole + "." + this.lastDirection].concat(slice.call(eventData)));
       if (!this.firstInteraction) {

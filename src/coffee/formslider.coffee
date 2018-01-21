@@ -74,6 +74,7 @@ class @FormSlider
     @locking.unlock()
 
   onReady: =>
+    @ready = true
     @events.trigger('ready')
     @locking.unlock()
 

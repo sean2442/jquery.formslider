@@ -7,7 +7,7 @@ helper.formslider =
   currentSlide: ->
     $(formslider.driver.get(formslider.index()))
 
-  init: (debug=false) ->
+  init: (debug=false, waitForReady=false) ->
     $wrapper = $('.formslider-wrapper')
 
     $.debug(debug)
@@ -96,8 +96,19 @@ helper.formslider =
         { class: 'EqualHeightPlugin'       }
         { class: 'ScrollUpPlugin'          }
         { class: 'LazyLoadPlugin'          }
+        { class: 'SlideVisibilityPlugin'   }
       ]
     )
 
-    formslider.onReady()
+    if waitForReady
+      helper.sleep(250)
+      formslider.onReady()
+
+      # works in headless only if flexslider init is used for onReady -> fix
+      # while true
+      #   break if formslider?.ready == true
+    else
+      formslider.onReady()
+      
+
     return formslider

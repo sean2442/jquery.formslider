@@ -1,4 +1,4 @@
-# jquery.formslider [![Build Status](https://travis-ci.org/formslider/jquery.formslider.svg?branch=master)](https://travis-ci.org/formslider/jquery.formslider) [![Contribute](https://img.shields.io/badge/Contribution-Open-brightgreen.svg)](docs/CONTRIBUTING.md) [![Code Climate](https://codeclimate.com/github/formslider/jquery.formslider/badges/gpa.svg)](https://codeclimate.com/github/formslider/jquery.formslider)
+# jquery.formslider [![Build Status](https://travis-ci.org/formslider/jquery.formslider.svg?branch=master)](https://travis-ci.org/formslider/jquery.formslider) [![Contribute](https://img.shields.io/badge/Contribution-Open-brightgreen.svg)](docs/CONTRIBUTING.md) [![Code Climate](https://codeclimate.com/github/formslider/jquery.formslider/badges/gpa.svg)](https://codeclimate.com/github/formslider/jquery.formslider) [![npm](https://img.shields.io/npm/dt/jquery.formslider.svg)](https://www.npmjs.com/package/jquery.formslider) [![Beerpay](https://beerpay.io/formslider/jquery.formslider/badge.svg?style=flat)](https://beerpay.io/formslider/jquery.formslider)
 
 [![NPM](https://nodei.co/npm/jquery.formslider.png)](https://nodei.co/npm/jquery.formslider/)
 
@@ -39,7 +39,7 @@ This functionality is provided by plugins. You can develop your own flow as you 
   * InputSyncPlugin                     # syncs inputs with the same name
   * JqueryValidatePlugin                # validates inputs before leaving a slide, uses jquery-validate
   * NormalizeInputAttributesPlugin      # does n´some normalization on inputs
-  * TabIndexerPlugin                    # fixes tab order on current visible slide
+  * TabIndexSetterPlugin                # fixes tab order on current visible slide
 
 # generic plugins
   * AddSlideClassesPlugin               # adds classes based on role and index
@@ -99,7 +99,8 @@ Check out this guide: [EXTENDING](docs/EXTENDING.md)
 
 Check out the [Contributing Guidelines](docs/CONTRIBUTING.md)
 
+
 ## Support on Beerpay
 Hey dude! Help me out for a couple of :beers:!
 
-[![Beerpay](https://beerpay.io/formslider/jquery.formslider/badge.svg?style=beer-square)](https://beerpay.io/formslider/jquery.formslider)  [![Beerpay](https://beerpay.io/formslider/jquery.formslider/make-wish.svg?style=flat-square)](https://beerpay.io/formslider/jquery.formslider?focus=wish)
+[![Beerpay](https://beerpay.io/formslider/jquery.formslider/badge.svg?style=beer)](https://beerpay.io/formslider/jquery.formslider)  [![Beerpay](https://beerpay.io/formslider/jquery.formslider/make-wish.svg?style=flat)](https://beerpay.io/formslider/jquery.formslider?focus=wish)

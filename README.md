@@ -55,13 +55,10 @@ This functionality is provided by plugins. You can develop your own flow as you 
 
 # progress  
   * ProgressBarPlugin                   # manages progress animation
-  * TODO: SlideVisibilityPlugin         # hides adjacent slides before transition is allowed          
   * TODO: NextSlideResolver             # adds individual slide targeting per answer or slide
 
 # slides
   * LoaderSlidePlugin                   # controls the loader page
-  * ContactSlidePlugin                  # controls the contact page, prevents going back
-  * ConfirmationSlidePlugin             # controls the confirmation page, prevents going any where
 
 # tracking
   * TrackSessionInformationPlugin       # triggers track events for useragent, device dimension etc.

@@ -98,3 +98,8 @@ Check out this guide: [EXTENDING](docs/EXTENDING.md)
 # Contributing
 
 Check out the [Contributing Guidelines](docs/CONTRIBUTING.md)
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/formslider/jquery.formslider/badge.svg?style=beer-square)](https://beerpay.io/formslider/jquery.formslider)  [![Beerpay](https://beerpay.io/formslider/jquery.formslider/make-wish.svg?style=flat-square)](https://beerpay.io/formslider/jquery.formslider?focus=wish)

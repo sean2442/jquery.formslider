@@ -431,9 +431,15 @@ Default configuration:
 ```js
 config: {
   selector: '.headline',
-  duration: 200,
+  duration: 500,
   tolerance: -30
   scrollUpOffset: 30
+  scrollTo: function(plugin, $element){
+    return Math.max(0, $element.offset().top - plugin.config.scrollUpOffset);
+  },
+  checkElement: function(plugin, slide){
+    retrun $(plugin.config.selector, slide);
+  }
 }
 ```
 

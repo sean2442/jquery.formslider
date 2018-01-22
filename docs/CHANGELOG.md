@@ -1,7 +1,11 @@
 # Changelog
 
+##### 1.0.17
+  * add `scrollTo` and `checkElement` method to `ScrollUpPlugin` so that they can be overridden
+  * remove left and right check from `ScrollUpPlugin`
+
 ##### 1.0.16
-  * implement `SlideVisibilityPlugin` 
+  * implement `SlideVisibilityPlugin`
 
 ##### 1.0.15
   * fix triggering after events, when there was not an allowed transition

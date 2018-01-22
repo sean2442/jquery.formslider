@@ -1196,6 +1196,46 @@
 
   })(AbstractFormsliderPlugin);
 
+  this.SlideVisibilityPlugin = (function(superClass) {
+    extend(SlideVisibilityPlugin, superClass);
+
+    function SlideVisibilityPlugin() {
+      this.hideAdjescentSlides = bind(this.hideAdjescentSlides, this);
+      this.showNextSlide = bind(this.showNextSlide, this);
+      this.init = bind(this.init, this);
+      return SlideVisibilityPlugin.__super__.constructor.apply(this, arguments);
+    }
+
+    SlideVisibilityPlugin.config = {};
+
+    SlideVisibilityPlugin.prototype.init = function() {
+      this.on('before', this.showNextSlide);
+      this.on('after', this.hideAdjescentSlides);
+      this.hide(this.slides);
+      return this.show(this.slideByIndex(this.formslider.index()));
+    };
+
+    SlideVisibilityPlugin.prototype.showNextSlide = function(event, current, direction, next) {
+      return this.show(next);
+    };
+
+    SlideVisibilityPlugin.prototype.hideAdjescentSlides = function(event, current, direction, prev) {
+      this.hide(this.slideByIndex(this.formslider.index() + 1));
+      return this.hide(prev);
+    };
+
+    SlideVisibilityPlugin.prototype.hide = function(slide) {
+      return $(slide).css('opacity', 0).data('slide-visibility', 0);
+    };
+
+    SlideVisibilityPlugin.prototype.show = function(slide) {
+      return $(slide).css('opacity', 1).data('slide-visibility', 1);
+    };
+
+    return SlideVisibilityPlugin;
+
+  })(AbstractFormsliderPlugin);
+
   this.LoaderSlidePlugin = (function(superClass) {
     extend(LoaderSlidePlugin, superClass);
 
@@ -1519,9 +1559,15 @@
 
     ScrollUpPlugin.config = {
       selector: '.headline',
-      duration: 200,
+      duration: 500,
       tolerance: 80,
-      scrollUpOffset: 30
+      scrollUpOffset: 30,
+      scrollTo: function(plugin, $element) {
+        return Math.max(0, $element.offset().top - plugin.config.scrollUpOffset);
+      },
+      checkElement: function(plugin, slide) {
+        return $(plugin.config.selector, slide);
+      }
     };
 
     ScrollUpPlugin.prototype.init = function() {
@@ -1531,7 +1577,7 @@
 
     ScrollUpPlugin.prototype.onAfter = function(e, current, direction, prev) {
       var $element;
-      $element = $(this.config.selector, current);
+      $element = this.config.checkElement(this, current);
       if (!$element.length) {
         this.logger.warn("no element found for selector " + this.config.selector);
         return;
@@ -1540,22 +1586,19 @@
         return;
       }
       return $("html, body").animate({
-        scrollTop: Math.max(0, $element.offset().top - this.config.scrollUpOffset)
+        scrollTop: this.config.scrollTo(this, $element)
       }, this.config.duration);
     };
 
     ScrollUpPlugin.prototype.isOnScreen = function($element) {
       var bounds, viewport;
       viewport = {
-        top: this.window.scrollTop(),
-        left: this.window.scrollLeft()
+        top: this.window.scrollTop()
       };
-      viewport.right = viewport.left + this.window.width();
       viewport.bottom = viewport.top + this.window.height();
       bounds = $element.offset();
-      bounds.right = bounds.left + $element.outerWidth();
       bounds.bottom = bounds.top + $element.outerHeight();
-      return !(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top - this.config.tolerance || viewport.top > bounds.bottom - this.config.tolerance);
+      return !(viewport.bottom < bounds.top - this.config.tolerance || viewport.top > bounds.bottom - this.config.tolerance);
     };
 
     return ScrollUpPlugin;
@@ -1916,6 +1959,7 @@
     };
 
     FormSlider.prototype.onReady = function() {
+      this.ready = true;
       this.events.trigger('ready');
       return this.locking.unlock();
     };

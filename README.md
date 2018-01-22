@@ -1,4 +1,6 @@
-# jquery.formslider [![Build Status](https://travis-ci.org/formslider/jquery.formslider.svg?branch=master)](https://travis-ci.org/formslider/jquery.formslider) [![Code Climate](https://codeclimate.com/github/formslider/jquery.formslider/badges/gpa.svg)](https://codeclimate.com/github/formslider/jquery.formslider)
+# jquery.formslider [![Build Status](https://travis-ci.org/formslider/jquery.formslider.svg?branch=master)](https://travis-ci.org/formslider/jquery.formslider) [![Contribute](https://img.shields.io/badge/Contribution-Open-brightgreen.svg)](docs/CONTRIBUTING.md) [![Code Climate](https://codeclimate.com/github/formslider/jquery.formslider/badges/gpa.svg)](https://codeclimate.com/github/formslider/jquery.formslider)
+
+[![NPM](https://nodei.co/npm/jquery.formslider.png)](https://nodei.co/npm/jquery.formslider/)
 
 This jquery.formslider integrates a modified [Flexslider](https://github.com/formslider/FlexSlider) with logical slide pages that can have features and behaviors provided by plugins.
 

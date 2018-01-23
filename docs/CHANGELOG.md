@@ -1,5 +1,8 @@
 # Changelog
 
+##### 1.0.18
+  * move slide `SlideVisibilityPlugin` plugin from progress to views
+
 ##### 1.0.17
   * add `scrollTo` and `checkElement` method to `ScrollUpPlugin` so that they can be overridden
   * remove left and right check from `ScrollUpPlugin`

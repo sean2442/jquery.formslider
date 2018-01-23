@@ -89,62 +89,86 @@ $('.formslider-wrapper').formslider(
     animationSpeed: 600
     animation:      'slide'
     smoothHeight:   true
+    touch:          true
 
   pluginsGlobalConfig:
-    transitionSpeed: 600
     answersSelector: '.answers'
     answerSelector:  '.answer'
-    answerSelectedClass: 'selected'
 
   plugins: [
+    #{ class: 'NextSlideResolverPlugin' }
     { class: 'AddSlideClassesPlugin'          }
-    { class: 'JqueryAnimatePlugin'            }
-    { class: 'JqueryValidatePlugin'           }
-    { class: 'ArrowNavigationPlugin'          }
     { class: 'AnswerClickPlugin'              }
     { class: 'InputFocusPlugin'               }
     { class: 'BrowserHistoryPlugin'           }
     { class: 'NormalizeInputAttributesPlugin' }
-    {
-      class: 'FormSubmissionPlugin'           
-      config:
-        loadHiddenFrameOnSuccess: '/converted'
-        submitter:
-          class:    'FormSubmitterCollect'
-          endpoint: '/submit'
-          method:   'POST'
-    }
+    { class: 'FormSubmissionPlugin'           }
+    { class: 'JqueryValidatePlugin'           }
     { class: 'InputSyncPlugin'                }
     { class: 'NextOnKeyPlugin'                }
+    { class: 'ArrowNavigationPlugin'          }
     { class: 'TabIndexSetterPlugin'           }
     { class: 'NextOnClickPlugin'              }
+    { class: 'LoadingStatePlugin'             }
     {
-      class: 'LoadingStatePlugin'
+      class: 'ProgressBarPlugin'
       config:
-        selector: '.progressbar-wrapper, .formslider-wrapper'
+        selectorWrapper: '.progressbar-wrapper.percent'
+        initialProgress: 23
     }
     {
-      class: 'ProgressBarPlugin'             
+      class: 'ProgressBarPlugin'
       config:
-        initialProgress: 15
+        selectorWrapper: '.progressbar-wrapper.steps'
+        adapter: 'ProgressBarAdapterSteps'
     }
     {
-      class: 'LoaderSlidePlugin'       
+      class: 'DoOnEventPlugin'
       config:
-        duration: 2500   
+        'after.question': (plugin) ->
+          plugin.track('any time after question')
     }
-    { class: 'ContactSlidePlugin'            }
-    { class: 'ConfirmationSlidePlugin'       }
-    { class: 'EqualHeightPlugin'             }
     {
-      class: 'ScrollUpPlugin'
+      class: 'DoOneTimeOnEventPlugin'
       config:
-        selector: '.headline'
-        scrollUpOffset: 40
+        'after.question': (plugin) ->
+          plugin.track('first time after question')
     }
-    { class: 'LazyLoadPlugin'                }
-    { class: 'TrackSessionInformationPlugin' }
-    { class: 'TrackUserInteractionPlugin'    }
+    { class: 'TrackUserInteractionPlugin'     }
+    {
+      class: 'TrackSessionInformationPlugin'
+      config:
+        onReady: (plugin) ->
+          plugin.inform('custom-information-var', 'custom-information-val')
+    }
+    {
+      class: 'LoaderSlidePlugin'
+      config:
+        loaderClass: 'SimpleLoaderImplementation'
+        duration: 1000
+    }
+    {
+      class: 'DirectionPolicyByRolePlugin'
+      config:
+        zipcode:
+          commingFrom: ['question']
+          goingTo: ['loader', 'question']
+
+        loader:
+          commingFrom: ['zipcode']
+          goingTo: ['contact']
+
+        contact:
+          commingFrom: ['loader']
+          goingTo: ['confirmation']
+
+        confirmation:
+          goingTo: ['none']
+    }
+    { class: 'EqualHeightPlugin'       }
+    { class: 'ScrollUpPlugin'          }
+    { class: 'LazyLoadPlugin'          }
+    { class: 'SlideVisibilityPlugin'   }
   ]
 )
 

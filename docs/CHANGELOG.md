@@ -1,5 +1,8 @@
 # Changelog
 
+##### 1.0.19
+  * add `hideAnimationDuration` to `SlideVisibilityPlugin`
+
 ##### 1.0.18
   * move slide `SlideVisibilityPlugin` plugin from progress to views
 

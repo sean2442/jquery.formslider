@@ -116,7 +116,13 @@ The Plugin triggers the following events:
 ```
 
 ### SlideVisibilityPlugin
-Hides slides before and after current until transition is allowed
+Hides slides before and after current until transition is allowed.
+Default configuration:
+```js
+config: {
+  hideAnimationDuration: 300
+}
+```
 
 ### InputFocusPlugin                    
 Focusses first input on current slide.

@@ -1,12 +1,9 @@
 # Changelog
 
 ##### 1.0.18
-<<<<<<< HEAD
   * fix `TabIndexSetterPlugin`, start from 1 and count up per slide -> fixes autofill
   * add area and object for tabindex setting and apply also to non visible because they get ignored
-=======
   * move slide `SlideVisibilityPlugin` plugin from progress to views
->>>>>>> 8b7c8be79a3f08cd71ac7899b50421b9503f75ec
 
 ##### 1.0.17
   * add `scrollTo` and `checkElement` method to `ScrollUpPlugin` so that they can be overridden

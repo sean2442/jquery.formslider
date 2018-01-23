@@ -607,7 +607,7 @@
     }
 
     TabIndexSetterPlugin.config = {
-      selector: 'input:visible, a, select, textarea, button'
+      selector: 'input, a, select, textarea, button, area, object'
     };
 
     TabIndexSetterPlugin.prototype.init = function() {
@@ -622,7 +622,9 @@
     };
 
     TabIndexSetterPlugin.prototype.enableTabs = function(slide) {
-      return $(this.config.selector, slide).attr('tabindex', 0);
+      return $(this.config.selector, slide).each(function(index, el) {
+        return $(el).attr('tabindex', index + 1);
+      });
     };
 
     TabIndexSetterPlugin.prototype.disableTabs = function() {

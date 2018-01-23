@@ -1196,46 +1196,6 @@
 
   })(AbstractFormsliderPlugin);
 
-  this.SlideVisibilityPlugin = (function(superClass) {
-    extend(SlideVisibilityPlugin, superClass);
-
-    function SlideVisibilityPlugin() {
-      this.hideAdjescentSlides = bind(this.hideAdjescentSlides, this);
-      this.showNextSlide = bind(this.showNextSlide, this);
-      this.init = bind(this.init, this);
-      return SlideVisibilityPlugin.__super__.constructor.apply(this, arguments);
-    }
-
-    SlideVisibilityPlugin.config = {};
-
-    SlideVisibilityPlugin.prototype.init = function() {
-      this.on('before', this.showNextSlide);
-      this.on('after', this.hideAdjescentSlides);
-      this.hide(this.slides);
-      return this.show(this.slideByIndex(this.formslider.index()));
-    };
-
-    SlideVisibilityPlugin.prototype.showNextSlide = function(event, current, direction, next) {
-      return this.show(next);
-    };
-
-    SlideVisibilityPlugin.prototype.hideAdjescentSlides = function(event, current, direction, prev) {
-      this.hide(this.slideByIndex(this.formslider.index() + 1));
-      return this.hide(prev);
-    };
-
-    SlideVisibilityPlugin.prototype.hide = function(slide) {
-      return $(slide).css('opacity', 0).data('slide-visibility', 0);
-    };
-
-    SlideVisibilityPlugin.prototype.show = function(slide) {
-      return $(slide).css('opacity', 1).data('slide-visibility', 1);
-    };
-
-    return SlideVisibilityPlugin;
-
-  })(AbstractFormsliderPlugin);
-
   this.LoaderSlidePlugin = (function(superClass) {
     extend(LoaderSlidePlugin, superClass);
 
@@ -1602,6 +1562,57 @@
     };
 
     return ScrollUpPlugin;
+
+  })(AbstractFormsliderPlugin);
+
+  this.SlideVisibilityPlugin = (function(superClass) {
+    extend(SlideVisibilityPlugin, superClass);
+
+    function SlideVisibilityPlugin() {
+      this.hide = bind(this.hide, this);
+      this.hideAdjescentSlides = bind(this.hideAdjescentSlides, this);
+      this.showNextSlide = bind(this.showNextSlide, this);
+      this.init = bind(this.init, this);
+      return SlideVisibilityPlugin.__super__.constructor.apply(this, arguments);
+    }
+
+    SlideVisibilityPlugin.config = {
+      hideAnimationDuration: 300
+    };
+
+    SlideVisibilityPlugin.prototype.init = function() {
+      this.on('before', this.showNextSlide);
+      this.on('after', this.hideAdjescentSlides);
+      this.hide(this.slides, 0);
+      return this.show(this.slideByIndex(this.formslider.index()));
+    };
+
+    SlideVisibilityPlugin.prototype.showNextSlide = function(event, current, direction, next) {
+      return this.show(next);
+    };
+
+    SlideVisibilityPlugin.prototype.hideAdjescentSlides = function(event, current, direction, prev) {
+      this.hide(this.slideByIndex(this.formslider.index() + 1));
+      return this.hide(prev);
+    };
+
+    SlideVisibilityPlugin.prototype.hide = function(slide, duration) {
+      if (duration == null) {
+        duration = null;
+      }
+      if (duration === null) {
+        duration = this.config.hideAnimationDuration;
+      }
+      return $(slide).animate({
+        opacity: 0
+      }, duration).data('slide-visibility', 0);
+    };
+
+    SlideVisibilityPlugin.prototype.show = function(slide) {
+      return $(slide).finish().css('opacity', 1).data('slide-visibility', 1);
+    };
+
+    return SlideVisibilityPlugin;
 
   })(AbstractFormsliderPlugin);
 

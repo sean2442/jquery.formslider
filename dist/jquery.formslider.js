@@ -570,24 +570,20 @@
     };
 
     NormalizeInputAttributesPlugin.prototype.prepareInputs = function() {
-      return $(this.config.selector, this.container).each(function(index, input) {
-        var $input, attribute, j, len, ref, results;
+      $(this.config.selector, this.container).each(function(index, input) {
+        var $input, attribute, j, len, ref;
         $input = $(input);
         if ($input.attr('required')) {
           $input.data('required', 'required');
           $input.data('aria-required', 'true');
         }
         ref = ['inputmode', 'autocompletetype'];
-        results = [];
         for (j = 0, len = ref.length; j < len; j++) {
           attribute = ref[j];
           if ($input.attr(attribute)) {
-            results.push($input.data("x-" + attribute, $input.attr(attribute)));
-          } else {
-            results.push(void 0);
+            $input.data("x-" + attribute, $input.attr(attribute));
           }
         }
-        return results;
       });
     };
 
@@ -1412,12 +1408,10 @@
     };
 
     EqualHeightPlugin.prototype.equalizeAll = function() {
-      var i, j, ref, results;
-      results = [];
+      var i, j, ref;
       for (i = j = 0, ref = this.slides.length - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        results.push(this.doEqualize(null, this.slideByIndex(i)));
+        this.doEqualize(null, this.slideByIndex(i));
       }
-      return results;
     };
 
     EqualHeightPlugin.prototype.doEqualize = function(event, slide) {
@@ -1433,7 +1427,7 @@
         $element.css('height', 'auto');
         maxHeight = Math.max(maxHeight, $element.outerHeight());
       }
-      return $elements.css('height', maxHeight);
+      $elements.css('height', maxHeight);
     };
 
     return EqualHeightPlugin;
@@ -1837,17 +1831,15 @@
     }
 
     PluginLoader.prototype.loadAll = function(plugins) {
-      var j, len, plugin, results;
-      results = [];
+      var j, len, plugin;
       for (j = 0, len = plugins.length; j < len; j++) {
         plugin = plugins[j];
         if (!window[plugin["class"]]) {
           this.formslider.logger.warn("loadAll(" + plugin["class"] + ") -> not found");
           continue;
         }
-        results.push(this.load(plugin));
+        this.load(plugin);
       }
-      return results;
     };
 
     PluginLoader.prototype.load = function(plugin) {
@@ -1858,7 +1850,6 @@
       } else {
         config = ObjectExtender.extend({}, this.globalPluginConfig, plugin.config);
       }
-      this.formslider.logger.info("loadPlugin(" + plugin["class"] + ")");
       try {
         pluginInstance = new PluginClass(this.formslider, config);
         this.loaded[plugin["class"]] = pluginInstance;

@@ -11,6 +11,8 @@ class @PluginLoader
 
       @load(plugin)
 
+    return
+
   load: (plugin) =>
     PluginClass = window[plugin.class]
 
@@ -23,7 +25,6 @@ class @PluginLoader
         plugin.config
       )
 
-    @formslider.logger.info("loadPlugin(#{plugin.class})")
     try
       pluginInstance = new PluginClass(@formslider, config)
       @loaded[plugin.class] = pluginInstance

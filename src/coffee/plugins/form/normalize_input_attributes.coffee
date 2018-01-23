@@ -16,4 +16,7 @@ class @NormalizeInputAttributesPlugin extends AbstractFormsliderPlugin
       for attribute in ['inputmode', 'autocompletetype']
         if $input.attr(attribute)
           $input.data("x-#{attribute}", $input.attr(attribute))
+
+      return
     )
+    return

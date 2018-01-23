@@ -1,5 +1,9 @@
 # Changelog
 
+##### 1.0.20
+  * eliminate unwanted loops for performance
+  * remove logging of loaded modules
+
 ##### 1.0.19
   * add `hideAnimationDuration` to `SlideVisibilityPlugin`
 

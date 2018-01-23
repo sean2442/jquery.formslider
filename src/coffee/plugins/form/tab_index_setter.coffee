@@ -1,6 +1,6 @@
 class @TabIndexSetterPlugin extends AbstractFormsliderPlugin
   @config =
-    selector: 'input:visible, a, select, textarea, button'
+    selector: 'input, a, select, textarea, button, area, object'
 
   init: =>
     @disableTabs()
@@ -12,7 +12,9 @@ class @TabIndexSetterPlugin extends AbstractFormsliderPlugin
     @enableTabs(currentSlide)
 
   enableTabs: (slide) =>
-    $(@config.selector, slide).attr('tabindex', 0)
+    $(@config.selector, slide).each((index, el) ->
+      $(el).attr('tabindex', index + 1)
+    )
 
   disableTabs: =>
     $(@config.selector, @container).attr('tabindex', '-1')

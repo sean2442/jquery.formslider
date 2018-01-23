@@ -299,7 +299,7 @@ Fixes tab behavior, only enables on current slide.
 Default configuration:
 ```js
 config: {
-  selector: 'input:visible, a, select, textarea, button'
+  selector: 'input, a, select, textarea, button, area, object'
 }
 ```
 

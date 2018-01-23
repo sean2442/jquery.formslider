@@ -12,7 +12,7 @@ class @TabIndexSetterPlugin extends AbstractFormsliderPlugin
     @enableTabs(currentSlide)
 
   enableTabs: (slide) =>
-    $(@config.selector, slide).each((index, el) =>
+    $(@config.selector, slide).each((index, el) ->
       $(el).attr('tabindex', index + 1)
     )
 

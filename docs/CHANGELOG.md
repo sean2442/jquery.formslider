@@ -1,5 +1,8 @@
 # Changelog
 
+##### 1.0.21 !WIP
+  * dont let jquery.formslider fail if wrapper not found
+
 ##### 1.0.20
   * eliminate unwanted loops for performance
   * remove logging of loaded modules

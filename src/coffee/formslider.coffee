@@ -5,9 +5,14 @@
 class @FormSlider
   @config = null # see below
   constructor: (@container, config) ->
+    @logger           = new Logger('jquery.formslider')
+
+    unless @container.length
+      @logger.error('container is empty')
+      return
+
     @setupConfig(config)
     @firstInteraction = false
-    @logger           = new Logger('jquery.formslider')
     @events           = new EventManager(@logger)
     @locking          = new Locking(true)
     @setupDriver()

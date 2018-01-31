@@ -6,6 +6,7 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
     animationSpeed: 300
     adapter: 'ProgressBarAdapterPercent'
     initialProgress: null
+    animateHeight: true
     dontCountOnRoles: [
       'loader'
       'contact'
@@ -71,10 +72,23 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
 
   hide: =>
     return unless @visible
-    @wrapper.animate({opacity: 0}, @config.animationSpeed)
+    @wrapper.animate({opacity: 0, height: 0}, @config.animationSpeed)
     @visible = false
 
   show: =>
     return if @visible
-    @wrapper.animate({opacity: 1}, @config.animationSpeed)
+
+    animationProperties =
+      opacity: 1
+
+    if @config.animateHeight
+      currentHeight = @wrapper.height()
+      autoHeight    = @wrapper.css('height', 'auto').height()
+      @wrapper.css('height', currentHeight)
+
+      animationProperties.height = "#{autoHeight}px"
+
+    @wrapper.animate(animationProperties, @config.animationSpeed)
+
+
     @visible = true

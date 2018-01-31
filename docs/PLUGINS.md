@@ -339,6 +339,7 @@ config: {
   animationSpeed: 300,
   adapter: 'ProgressBarAdapterPercent',  // animate progress in percent or 'steps' (1/6) (ProgressBarAdapterSteps)
   initialProgress: '15',                 // initial bar width, when type percent also the initial value
+  animateHeight: true
   dontCountOnRoles: [
     'loader'
     'contact'

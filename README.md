@@ -8,6 +8,8 @@ The main goal is to have different actions triggered depending on what type the 
 
 The Library is very small, performance optimized, full responsive and touch capable. You can easily write you own plugins and implement custom slide behavior.
 
+Have a look at the example implementation [formslider.github.io](https://formslider.github.io/).
+
 ## Installation
 ```bash
 bower install jquery.formslider --save
@@ -30,7 +32,7 @@ A possible use case is as follows:
 
 This functionality is provided by plugins. You can develop your own flow as you like by extend or configure plugins.
 
-### List of bundeled plugins
+### List of bundeled (core-)plugins
 ```bash
 # form plugins
   * AnswerClickPlugin                   # add answered classes and triggers track events
@@ -76,6 +78,11 @@ For a full list and detailed informations check out this guide: [PLUGINS](docs/P
 
 ### Write your own Plugin
 Check out this guide: [EXTENDING](docs/EXTENDING.md)
+
+
+### Advanced usage
+Check out this guide: [FORMSLIDER](docs/FORMSLIDER.md)
+
 
 ### Dependencies
   * [jquery](https://jquery.com)

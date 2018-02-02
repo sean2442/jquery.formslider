@@ -7,7 +7,7 @@ Your plugin should inherit `AbstractFormsliderPlugin`.
 
 ### variables
 ##### @config
-Configuration merged from
+Configuration merged from:
   * global config (see [PLUGINS.md](PLUGINS.md))
   * default config
   * instance config
@@ -16,22 +16,11 @@ Configuration merged from
   * the container the flexslider and formslider runs on
 
 ##### @formslider
-The underlying slider driver, currently only [Flexslider](https://github.com/creative-workflow/FlexSlider) supported.
-
-Available methods:
-  * @formslider.next()
-  * @formslider.prev()
-  * @formslider.goto(indexFromZero)
-  * @formslider.index()
+  * formslider instance, see: [FORMSLIDER](FORMSLIDER.md#)
 
 ##### @logger
-Can be used to log informations. Utilizes [jquery.debug](https://github.com/creative-workflow/jquery.debug). Warnings and errors will always be printed in the brwoser console. Info and Debug only if you append `?debug=1` on the current page.
+  * logger instance, see: [FORMSLIDER](FORMSLIDER.md#)
 
-Available methods:
-  * @logger.debug(arg1, [arg2, ..., argN])   // arg1 should be string
-  * @logger.info(arg1, [arg2, ..., argN])   // arg1 should be string
-  * @logger.warn(arg1, [arg2, ..., argN])   // arg1 should be string
-  * @logger.error(arg1, [arg2, ..., argN])   // arg1 should be string
 
 ### methods
 ##### init()
@@ -39,7 +28,7 @@ Available methods:
   * do your setups here
 
 ##### on(eventName, callback)
-Registers an event listener.
+Registers an event listener. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
 
 Possible pre define event names in chronoloical order:
 ```bash
@@ -47,7 +36,7 @@ Possible pre define event names in chronoloical order:
   * `resize`                        # fired when page is resized
   * `first-interaction`             # fired after first transition
   * `leaving`                       # fired before going to the next slide, can stop transition
-  * `leaving.[currentRole]`         # currentRole it the role of the slide, a plugin can listen only listen for `leaving-zipcode`
+  * `leaving.[currentRole]`         # currentRole it the role of the slide, a plugin can listen only listen for `leaving.zipcode`
   * `leaving.[currentRole].next`    # same as above but only when direction forward
   * `leaving.[currentRole].prev`    # same as above but only when direction backward
   * `before`                        # fired after leaving, when transition is allowed
@@ -61,16 +50,16 @@ Possible pre define event names in chronoloical order:
 ```
 
 ##### off(eventName)
-Deregister an event listener.
+Deregister an event listener. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
 
 ##### cancel(event)
-Cancel the given event.
+Cancel the given event. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
 
 ##### isCanceled(event)
-Checks if event is canceled.
+Checks if event is canceled. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
 
 ##### trigger(eventName [, eventArg1 [, ebentArg2 ...]])
-Triggers the event `eventName` and passes args to callbacks.
+Triggers the event `eventName` and passes args to callbacks. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
 
 The signature of a callback is: callbck(event [, eventArg1 [, ebentArg2 ...]])
 

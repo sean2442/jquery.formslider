@@ -123,12 +123,6 @@ $('.formslider-wrapper').formslider(
         adapter: 'ProgressBarAdapterSteps'
     }
     {
-      class: 'DoOnEventPlugin'
-      config:
-        'after.question': (plugin) ->
-          plugin.track('any time after question')
-    }
-    {
       class: 'DoOneTimeOnEventPlugin'
       config:
         'after.question': (plugin) ->

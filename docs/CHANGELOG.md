@@ -1,5 +1,8 @@
 # Changelog
 
+##### WIP: 1.0.22
+  * do forgotten commit for `docs/EVENTMANAGER.md` ;)
+
 ##### 1.0.21
   * don't let jquery.formslider fail if wrapper not found
   * add `animateHeight` to `ProgressbarPlugin`

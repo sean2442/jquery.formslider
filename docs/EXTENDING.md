@@ -28,7 +28,13 @@ Configuration merged from:
   * do your setups here
 
 ##### on(eventName, callback)
-Registers an event listener. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
+Registers an event listener for your plugin. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
+
+The eventName has the following semantic:
+
+`name[.tag1.tag2.tag3]`
+
+When you read the [EVENTMANAGER](EVENTMANAGER.md) guide, you dont have to care about the `context` as the `AbstractFormsliderPlugin` handles this.
 
 Possible pre define event names in chronoloical order:
 ```bash
@@ -50,13 +56,19 @@ Possible pre define event names in chronoloical order:
 ```
 
 ##### off(eventName)
-Deregister an event listener. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
+Deregister an event listener for your plugin. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
+
+The eventName has the following semantic:
+
+`name[.tag1.tag2.tag3]`
+
+When you read the [EVENTMANAGER](EVENTMANAGER.md) guide, you dont have to care about the `context` as the `AbstractFormsliderPlugin` handles this.
 
 ##### cancel(event)
-Cancel the given event. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
+Cancel the given event.
 
 ##### isCanceled(event)
-Checks if event is canceled. (more on events: [EVENTMANAGER](EVENTMANAGER.md))
+Checks if event is canceled.
 
 ##### trigger(eventName [, eventArg1 [, ebentArg2 ...]])
 Triggers the event `eventName` and passes args to callbacks. (more on events: [EVENTMANAGER](EVENTMANAGER.md))

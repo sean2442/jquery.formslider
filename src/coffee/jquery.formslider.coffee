@@ -3,6 +3,6 @@
 jQuery.fn.formslider = (config) ->
   $this = $(this)
 
-  $this.formslider = new FormSlider($this, config) if config
+  $this.data('formslider', new FormSlider($this, config)) if config
 
-  return $this.formslider
+  return $this.data('formslider')

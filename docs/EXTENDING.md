@@ -16,10 +16,10 @@ Configuration merged from:
   * the container the flexslider and formslider runs on
 
 ##### @formslider
-  * formslider instance, see: [FORMSLIDER](FORMSLIDER.md#)
+  * formslider instance, see: [FORMSLIDER](FORMSLIDER.md)
 
 ##### @logger
-  * logger instance, see: [FORMSLIDER](FORMSLIDER.md#)
+  * logger instance, see: [FORMSLIDER](FORMSLIDER.md#logger)
 
 
 ### methods

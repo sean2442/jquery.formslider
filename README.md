@@ -20,7 +20,7 @@ npm install jquery.formslider --save
 ```
 
 ## Integration
-Follow the [Integration Guide](docs/INTEGRATION.md).
+Check out this guide: [INTEGRATION](docs/INTEGRATION.md).
 
 ### Example use case
 A possible use case is as follows:

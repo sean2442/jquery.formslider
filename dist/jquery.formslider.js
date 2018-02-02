@@ -964,8 +964,7 @@
     }
 
     NextSlideResolverPlugin.prototype.init = function() {
-      this.on('ready', this.onReady);
-      return this.on('before-driver-next', this.onResolve);
+      return this.on('ready', this.onReady);
     };
 
     NextSlideResolverPlugin.prototype.onReady = function(event) {
@@ -1110,6 +1109,7 @@
       animationSpeed: 300,
       adapter: 'ProgressBarAdapterPercent',
       initialProgress: null,
+      animateHeight: true,
       dontCountOnRoles: ['loader', 'contact', 'confirmation'],
       hideOnRoles: ['zipcode', 'loader', 'contact', 'confirmation']
     };
@@ -1175,18 +1175,27 @@
         return;
       }
       this.wrapper.animate({
-        opacity: 0
+        opacity: 0,
+        height: 0
       }, this.config.animationSpeed);
       return this.visible = false;
     };
 
     ProgressBarPlugin.prototype.show = function() {
+      var animationProperties, autoHeight, currentHeight;
       if (this.visible) {
         return;
       }
-      this.wrapper.animate({
+      animationProperties = {
         opacity: 1
-      }, this.config.animationSpeed);
+      };
+      if (this.config.animateHeight) {
+        currentHeight = this.wrapper.height();
+        autoHeight = this.wrapper.css('height', 'auto').height();
+        this.wrapper.css('height', currentHeight);
+        animationProperties.height = autoHeight + "px";
+      }
+      this.wrapper.animate(animationProperties, this.config.animationSpeed);
       return this.visible = true;
     };
 
@@ -1892,9 +1901,13 @@
       this.loadPlugins = bind(this.loadPlugins, this);
       this.setupDriver = bind(this.setupDriver, this);
       this.setupConfig = bind(this.setupConfig, this);
+      this.logger = new Logger('jquery.formslider');
+      if (!this.container.length) {
+        this.logger.error('container is empty');
+        return;
+      }
       this.setupConfig(config);
       this.firstInteraction = false;
-      this.logger = new Logger('jquery.formslider');
       this.events = new EventManager(this.logger);
       this.locking = new Locking(true);
       this.setupDriver();
@@ -1984,7 +1997,6 @@
       if (this.locking.locked) {
         return;
       }
-      this.events.trigger('before-driver-next');
       if (this.index() + 1 > this.driver.slides.length - 1) {
         return;
       }
@@ -2074,9 +2086,9 @@
     var $this;
     $this = $(this);
     if (config) {
-      $this.formslider = new FormSlider($this, config);
+      $this.data('formslider', new FormSlider($this, config));
     }
-    return $this.formslider;
+    return $this.data('formslider');
   };
 
 }).call(this);

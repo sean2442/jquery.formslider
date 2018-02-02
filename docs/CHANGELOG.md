@@ -1,7 +1,7 @@
 # Changelog
 
-##### 1.0.21 !WIP
-  * dont let jquery.formslider fail if wrapper not found
+##### 1.0.21
+  * don't let jquery.formslider fail if wrapper not found
   * add `animateHeight` to `ProgressbarPlugin`
   * add possibility to access formslider directly via attached element
   * add `docs/FORMSLIDER.md`

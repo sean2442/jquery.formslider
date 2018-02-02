@@ -94,7 +94,6 @@ class @FormSlider
 
   next: =>
     return if @locking.locked
-    @events.trigger('before-driver-next')
     return if @index() + 1 > @driver.slides.length - 1 # zero based
     @driver.next()
 

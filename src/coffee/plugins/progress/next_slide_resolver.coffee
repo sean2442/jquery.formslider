@@ -6,7 +6,7 @@ class @NextSlideResolverPlugin extends AbstractFormsliderPlugin
   init: =>
     @on('ready', @onReady)
     # @on('question-answered', @onQuestionAnswered)
-    @on('before-driver-next', @onResolve)
+    # @on('before-driver-next', @onResolve)
 
   # set next-id based on native order if not set for slide
   onReady: (event) =>

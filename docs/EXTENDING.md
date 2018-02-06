@@ -90,7 +90,7 @@ Retrieves slides by `data-id` attribute, depends on plugin `AddSlideClassesPlugi
 ##### configWithDataFrom(element)
 Iterate through @config keys and merge with config if element has "data-#{key}".
 
-Returns new instance from @config, so @config is untouched
+Returns cloned instance from @config, so @config is untouched
 
 ## Example implementation
 ### Example plugin

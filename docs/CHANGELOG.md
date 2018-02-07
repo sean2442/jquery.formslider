@@ -2,6 +2,8 @@
 
 ##### WIP: 1.0.22
   * do forgotten commit for `docs/EVENTMANAGER.md` ;)
+  * add `PrevOnClickPlugin`
+  * add new external plugin `NoUiSliderPlugin` to list
 
 ##### 1.0.21
   * don't let jquery.formslider fail if wrapper not found

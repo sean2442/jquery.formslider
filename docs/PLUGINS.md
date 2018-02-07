@@ -82,6 +82,8 @@ These plugins can be used to extend the formslider:
   * [formslider.animate.css](https://github.com/formslider/formslider.animate.css)
   * [formslider.dramatic.loader](https://github.com/formslider/formslider.dramatic.loader)
   * [formslider.hitory.js](https://github.com/formslider/formslider.hitory.js)
+  * [formslider.nouislider](https://github.com/formslider/formslider.nouislider)
+
 
 ### AddSlideClassesPlugin               
 Adds classes based on role and index.
@@ -310,6 +312,17 @@ Default configuration:
 ```js
 config: {
   selector: '.next-button, .answer',
+  waitAfterClick: 10
+}
+```
+
+
+### PrevOnClickPlugin                   
+Call prev if certain element clicked.
+Default configuration:
+```js
+config: {
+  selector: '.prev-button',
   waitAfterClick: 10
 }
 ```

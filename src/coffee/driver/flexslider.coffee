@@ -23,12 +23,6 @@ class @DriverFlexslider
     @container.flexslider(@config)
     @instance = @container.data('flexslider')
 
-  next: =>
-    @container.flexslider("next")
-
-  prev: =>
-    @container.flexslider("prev")
-
   goto: (indexFromZero) =>
     @container.flexslider(indexFromZero, true)
 

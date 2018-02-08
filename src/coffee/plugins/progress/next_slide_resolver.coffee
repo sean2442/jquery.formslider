@@ -5,8 +5,7 @@ class @NextSlideResolverPlugin extends AbstractFormsliderPlugin
 
   init: =>
     @on('ready', @onReady)
-    # @on('question-answered', @onQuestionAnswered)
-    # @on('before-driver-next', @onResolve)
+    @on('before-driver-next', @onResolve)
 
   # set next-id based on native order if not set for slide
   onReady: (event) =>
@@ -18,29 +17,6 @@ class @NextSlideResolverPlugin extends AbstractFormsliderPlugin
         $(slideBefore).data('next-id', $slide.data('id'))
                       .addClass("next-id-#{$slide.data('id')}")
     )
-
-  onQuestionAnswered: (event, $answer, value, slideIndex) =>
-    currentSlide = @slideByIndex(slideIndex)
-
-    answerNextId = $answer.data('next-id')
-
-    nextId       = $(currentSlide).data('next-id')
-    nextId       = answerNextId if answerNextId != undefined
-
-    @makeToNextSlide(nextId, slideIndex + 1, currentSlide)
-
-  makeToNextSlide: (nextId, insertAtIndex, currentSlide) =>
-    nextSlide = @slideById(nextId)
-
-    # console.warn '!!!', 'nextId', nextId, 'nextSlide:', nextSlide
-
-    # return unless nextSlide.length
-
-    @formslider.driver.moveSlide(nextSlide, insertAtIndex)
-    #@formslider.driver.removeSlide(nextSlide)
-    #$(nextSlide).detach().insertAfter(currentSlide)
-
-    @trigger('next-slide-changed', nextSlide)
 
   onResolve: (event) =>
     currentSlide = @formslider.driver.get(@formslider.index())
@@ -54,5 +30,5 @@ class @NextSlideResolverPlugin extends AbstractFormsliderPlugin
 
     if nextId != undefined
       nextSlide = @slideById(nextId)
-      @makeToNextSlide(nextId, $(currentSlide).index() + 1, currentSlide)
+      event.nextIndex = nextSlide.index() - 1
       @trigger('next-slide-changed', nextSlide)

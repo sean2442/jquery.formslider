@@ -76,16 +76,16 @@ Triggers the event `eventName` and passes args to callbacks. (more on events: [E
 The signature of a callback is: callbck(event [, eventArg1 [, ebentArg2 ...]])
 
 ##### track(source, value, category = null)
-This will trigger a tracking event. If the plugin `JqueryTrackingPlugin` was loaded the event will be published to google analytics for ex.
+This will trigger a tracking event. If the plugin `JqueryTracking` was loaded the event will be published to google analytics for ex.
 
 ##### slideByRole(role)
-Retrieves slides by `data-role`, depends on plugin `AddSlideClassesPlugin`.
+Retrieves slides by `data-role`, depends on plugin `AddSlideClasses`.
 
 ##### slideByIndex(indexFromZero)
 Retrieves slides by index.
 
 ##### slideById(id)
-Retrieves slides by `data-id` attribute, depends on plugin `AddSlideClassesPlugin`.
+Retrieves slides by `data-id` attribute, depends on plugin `AddSlideClasses`.
 
 ##### configWithDataFrom(element)
 Iterate through @config keys and merge with config if element has "data-#{key}".
@@ -94,7 +94,7 @@ Returns cloned instance from @config, so @config is untouched
 
 ## Example implementation
 ### Example plugin
-Here is an example of the `LoadingStatePlugin`.
+Here is an example of the `LoadingState`.
 ```coffee
 class @MySelfDefinedPlugin extends window.AbstractFormsliderPlugin
   init: =>

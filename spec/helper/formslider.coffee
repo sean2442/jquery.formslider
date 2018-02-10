@@ -24,59 +24,59 @@ helper.formslider =
         answerSelector:  '.answer'
 
       plugins: [
-        #{ class: 'NextSlideResolverPlugin' }
-        { class: 'AddSlideClassesPlugin'          }
-        { class: 'AnswerClickPlugin'              }
-        { class: 'InputFocusPlugin'               }
-        { class: 'BrowserHistoryPlugin'           }
-        { class: 'NormalizeInputAttributesPlugin' }
-        { class: 'FormSubmissionPlugin'           }
-        { class: 'JqueryValidatePlugin'           }
-        { class: 'InputSyncPlugin'                }
-        { class: 'NextOnKeyPlugin'                }
-        { class: 'ArrowNavigationPlugin'          }
-        { class: 'TabIndexSetterPlugin'           }
-        { class: 'NextOnClickPlugin'              }
-        { class: 'LoadingStatePlugin'             }
+        #{ class: 'NextSlideResolver' }
+        { class: 'AddSlideClasses'          }
+        { class: 'AnswerClick'              }
+        { class: 'InputFocus'               }
+        { class: 'BrowserHistory'           }
+        { class: 'NormalizeInputAttributes' }
+        { class: 'FormSubmission'           }
+        { class: 'JqueryValidate'           }
+        { class: 'InputSync'                }
+        { class: 'NextOnKey'                }
+        { class: 'ArrowNavigation'          }
+        { class: 'TabIndexSetter'           }
+        { class: 'NextOnClick'              }
+        { class: 'LoadingState'             }
         {
-          class: 'ProgressBarPlugin'
+          class: 'ProgressBar'
           config:
             selectorWrapper: '.progressbar-wrapper.percent'
             initialProgress: 23
         }
         {
-          class: 'ProgressBarPlugin'
+          class: 'ProgressBar'
           config:
             selectorWrapper: '.progressbar-wrapper.steps'
             adapter: 'ProgressBarAdapterSteps'
         }
         {
-          class: 'DoOnEventPlugin'
+          class: 'DoOnEvent'
           config:
             'after.question': (plugin) ->
               plugin.track('any time after question')
         }
         {
-          class: 'DoOneTimeOnEventPlugin'
+          class: 'DoOneTimeOnEvent'
           config:
             'after.question': (plugin) ->
               plugin.track('first time after question')
         }
-        { class: 'TrackUserInteractionPlugin'     }
+        { class: 'TrackUserInteraction'     }
         {
-          class: 'TrackSessionInformationPlugin'
+          class: 'TrackSessionInformation'
           config:
             onReady: (plugin) ->
               plugin.inform('custom-information-var', 'custom-information-val')
         }
         {
-          class: 'LoaderSlidePlugin'
+          class: 'LoaderSlide'
           config:
             loaderClass: 'SimpleLoaderImplementation'
             duration: 1000
         }
         {
-          class: 'DirectionPolicyByRolePlugin'
+          class: 'DirectionPolicyByRole'
           config:
             zipcode:
               commingFrom: ['question']
@@ -93,10 +93,10 @@ helper.formslider =
             confirmation:
               goingTo: ['none']
         }
-        { class: 'EqualHeightPlugin'       }
-        { class: 'ScrollUpPlugin'          }
-        { class: 'LazyLoadPlugin'          }
-        { class: 'SlideVisibilityPlugin'   }
+        { class: 'EqualHeight'       }
+        { class: 'ScrollUp'          }
+        { class: 'LazyLoad'          }
+        { class: 'SlideVisibility'   }
       ]
     )
 

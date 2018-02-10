@@ -9,7 +9,7 @@ Or after initialization:
 formslider = $('.my-formslider').formslider();
 
 formslider.loadPlugin({
-  class: 'BrowserHistoryPlugin'
+  class: 'BrowserHistory'
   config:{
     updateHash: true
   }
@@ -50,7 +50,7 @@ $('.my-formslider').formslider({
   ...
   plugins: [
     {
-      class: 'BrowserHistoryPlugin'
+      class: 'BrowserHistory'
       config:{
         updateHash: false,
         resetStatesOnLoad: true
@@ -276,7 +276,7 @@ Prevent going forward or backward based on events.
 Default configuration:
 ```js
 {
-  class: 'DirectionPolicyByRolePlugin'
+  class: 'DirectionPolicyByRole'
   config:
     zipcode:
       commingFrom: ['question']
@@ -382,7 +382,7 @@ config: {
     plugin.inform('dimension', $(window).width() + 'x' + $(window).height());
     plugin.inform('jquery.formslider.version', plugin.formslider.config.version);
 
-    if plugin.formslider.plugins.isLoaded('JqueryTrackingPlugin'){
+    if plugin.formslider.plugins.isLoaded('JqueryTracking'){
       plugin.inform('channel', $.tracking.channel());
       plugin.inform('campaign', $.tracking.campaign());
     }
@@ -413,7 +413,7 @@ Controls the loader page.
 Default configuration:
 ```js
 config: {
-  loaderClass: 'SimpleLoaderImplementationPlugin',  // loader implementation
+  loaderClass: 'SimpleLoaderImplementation',  // loader implementation
   duration: 1000                      // duration of the loader
 }
 ```

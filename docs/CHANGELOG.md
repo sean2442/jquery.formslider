@@ -1,13 +1,27 @@
 # Changelog
 
-##### WIP: 1.0.22
+##### WIP: 1.1.0
+  * rename plugins -> remove `Plugin` from names as its redundant information
+  * implement `OrderByIdController` for non native order paths
+  * introduce navgation controller plugins: `BrowserHistoryController`, `HistoryJsController`, `NativeOrderController` and `OrderByIdController`
+  * simplify driver implementation by removing `get`, `removeSlide`, `addSlide` and `moveSlide`
+  * fix: driver triggers on after before transition end when using css animations
+  * add `AnswerMemory` plugin for later logic depending on previous answers
+  * rename `NormalizeInputAttributes` -> `InputNormalizer`
+  * progessbars are now direct `AbstractFormsliderPlugin`s
+  * loader are now direct `AbstractFormsliderPlugin`s
+  * browser history is now a controller
+  * refactor navigation trigger plugins to `NavigateOnCLick` and `NavigateOnKey`
+  * refactor `LazyLoad` and `SlideVisibility` for working with non native order routing
+  * add `slide-[id]-entered` event to `TrackUserInteraction`
+  * add more comments and explcicit returns
   * do forgotten commit for `docs/EVENTMANAGER.md` ;)
-  * add `PrevOnClickPlugin`
-  * add new external plugin `NoUiSliderPlugin` to list
+  * add `PrevOnClick`
+  * add new external plugin `NoUiSlider` to list
 
 ##### 1.0.21
   * don't let jquery.formslider fail if wrapper not found
-  * add `animateHeight` to `ProgressbarPlugin`
+  * add `animateHeight` to `Progressbar`
   * add possibility to access formslider directly via attached element
   * add `docs/FORMSLIDER.md`
   * add `docs/EVENTMANAGER.md`
@@ -18,34 +32,34 @@
   * remove logging of loaded modules
 
 ##### 1.0.19
-  * add `hideAnimationDuration` to `SlideVisibilityPlugin`
+  * add `hideAnimationDuration` to `SlideVisibility`
 
 ##### 1.0.18
-  * fix `TabIndexSetterPlugin`, start from 1 and count up per slide -> fixes autofill
+  * fix `TabIndexSetter`, start from 1 and count up per slide -> fixes autofill
   * add area and object for tabindex setting and apply also to non visible because they get ignored
-  * move slide `SlideVisibilityPlugin` plugin from progress to views
+  * move slide `SlideVisibility` plugin from progress to views
 
 ##### 1.0.17
-  * add `scrollTo` and `checkElement` method to `ScrollUpPlugin` so that they can be overridden
-  * remove left and right check from `ScrollUpPlugin`
+  * add `scrollTo` and `checkElement` method to `ScrollUp` so that they can be overridden
+  * remove left and right check from `ScrollUp`
 
 ##### 1.0.16
-  * implement `SlideVisibilityPlugin`
+  * implement `SlideVisibility`
 
 ##### 1.0.15
   * fix triggering after events, when there was not an allowed transition
-  * correct description for `DirectionPolicyByRolePlugin`
+  * correct description for `DirectionPolicyByRole`
 
 ##### 1.0.14
-  * add specs for `DirectionPolicyByRolePlugin`
+  * add specs for `DirectionPolicyByRole`
   * lock navigation until current transition finished
-  * set default for `BrowserHistoryPlugin` `updateHash` to false
-  * introduce `resetStatesOnLoad` for `BrowserHistoryPlugin`
+  * set default for `BrowserHistory` `updateHash` to false
+  * introduce `resetStatesOnLoad` for `BrowserHistory`
 
 ##### 1.0.13
   * docs/INTEGRATION.md added
-  * `DirectionPolicyByRolePlugin` introduced
-  * implement `ProgressBarPlugin` with adapter:
+  * `DirectionPolicyByRole` introduced
+  * implement `ProgressBar` with adapter:
     * `ProgressBarAdapterPercent`
     * `ProgressBarAdapterSteps`
 
@@ -56,12 +70,12 @@
   * build dist ;)
 
 ##### 1.0.10
-  * add `configWithDataFrom` for `AbstractPlugin` so you can merge data attributes
-  * log warning if `ScrollUpPlugin` does not find an element to check for
-  * `ProgressbarPlugin` merges config data from progress bar wrapper by default
-  * `NextOnKeyPlugin` attaches to all inputs per default config
-  * `InputSyncPlugin` attaches to all inputs per default config
-  * refactor `FormSubmissionPlugin` and implement strategies via adapter classes
+  * add `configWithDataFrom` for `Abstract` so you can merge data attributes
+  * log warning if `ScrollUp` does not find an element to check for
+  * `Progressbar` merges config data from progress bar wrapper by default
+  * `NextOnKey` attaches to all inputs per default config
+  * `InputSync` attaches to all inputs per default config
+  * refactor `FormSubmission` and implement strategies via adapter classes
 
 ##### 1.0.09
   * build dist ;)
@@ -70,16 +84,16 @@
   * only equalize element heights at ready or resize
 
 ##### 1.0.8
-  * add feature `disableOnMobile` to `InputFocusPlugin`
-  * add feature `scrollUpOffset` to `ScrollUpPlugin`
+  * add feature `disableOnMobile` to `InputFocus`
+  * add feature `scrollUpOffset` to `ScrollUp`
   * introduce `FeatureDetector`
 
 ##### 1.0.7
   * performance
 
 ##### 1.0.6
-  * add `DoOnEventPlugin` for inline plugin definition
-  * eleminate `before` event dependency from `EqualHeightPlugin`
+  * add `DoOnEvent` for inline plugin definition
+  * eleminate `before` event dependency from `EqualHeight`
   * add `do-equal-height` event
   * move changelog to `docs/CHANGELOG.md`
 

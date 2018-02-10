@@ -1,17 +1,17 @@
 
-class @BrowserHistoryPlugin extends AbstractFormsliderPlugin
+class @BrowserHistoryController extends AbstractFormsliderPlugin
   @config =
     updateHash: true
     resetStatesOnLoad: true
 
   init: =>
-    @on('after', @onAfter)
+    @on('after', @onAfter) # just for state tracking
 
     @dontUpdateHistoryNow = false
     @time = new Date().getTime()
 
     @pushCurrentHistoryState()
-    $(window).bind('popstate', @handleHistoryChange)
+    $(window).bind('popstate', @handleHistoryChange) # browser perv/next
 
   onAfter: =>
     if @dontUpdateHistoryNow
@@ -21,19 +21,21 @@ class @BrowserHistoryPlugin extends AbstractFormsliderPlugin
     @pushCurrentHistoryState()
 
   pushCurrentHistoryState: =>
+    index = @index()
     hash = null
-    hash = "##{@formslider.index()}" if @config.updateHash
+    hash = "##{index}" if @config.updateHash
 
     @logger.debug('pushCurrentHistoryState', hash)
 
     history.pushState(
-      { index: @formslider.index(), time: @time },
-      "index #{@formslider.index()}",
+      { index: index, time: @time },
+      "index #{index}",
       hash
     )
 
+  # controller method reacting on browser prev/next
   handleHistoryChange: (event) =>
-    return unless event.originalEvent?.state?
+    return unless event.originalEvent?.state
 
     state = event.originalEvent.state
 

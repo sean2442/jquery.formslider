@@ -1,2 +1,0 @@
-
-class @SimpleLoaderImplementation extends AbstractFormsliderLoader

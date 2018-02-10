@@ -77,7 +77,6 @@ helper.formslider =
         {
           class: 'SimpleLoader'
           config:
-            loaderClass: 'SimpleLoaderImplementation'
             duration: 1000
         }
 

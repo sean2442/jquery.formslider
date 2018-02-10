@@ -1,6 +1,6 @@
 # Changelog
 
-##### WIP: 1.1.0
+##### 1.1.0
   * rename plugins -> remove `Plugin` from names as its redundant information
   * implement `OrderByIdController` for non native order paths
   * introduce navgation controller plugins: `BrowserHistoryController`, `HistoryJsController`, `NativeOrderController` and `OrderByIdController`

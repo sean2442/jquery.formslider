@@ -1,4 +1,4 @@
-class @InputSyncPlugin extends AbstractFormsliderPlugin
+class @InputSync extends AbstractFormsliderPlugin
   @config =
     selector: 'input'
     attribute: 'name'

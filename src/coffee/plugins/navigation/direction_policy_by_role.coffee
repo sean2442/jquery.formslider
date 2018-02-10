@@ -1,4 +1,4 @@
-class @DirectionPolicyByRolePlugin extends AbstractFormsliderPlugin
+class @DirectionPolicyByRole extends AbstractFormsliderPlugin
   @config = {}
 
   init: =>

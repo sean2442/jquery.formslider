@@ -1,4 +1,4 @@
-class @FormSubmissionPlugin extends AbstractFormsliderPlugin
+class @FormSubmission extends AbstractFormsliderPlugin
   @config =
     submitOnEvents: ['validation.valid.contact']
 

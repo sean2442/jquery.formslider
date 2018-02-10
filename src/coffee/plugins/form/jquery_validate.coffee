@@ -1,4 +1,4 @@
-class @JqueryValidatePlugin extends AbstractFormsliderPlugin
+class @JqueryValidate extends AbstractFormsliderPlugin
   @config =
     selector: 'input:visible'
     validateOnEvents: ['leaving.next']

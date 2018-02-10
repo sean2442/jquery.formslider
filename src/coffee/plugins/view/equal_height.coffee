@@ -1,4 +1,4 @@
-class @EqualHeightPlugin extends AbstractFormsliderPlugin
+class @EqualHeight extends AbstractFormsliderPlugin
   @config =
     selector: '.answer .text'
 

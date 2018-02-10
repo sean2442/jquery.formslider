@@ -1,4 +1,4 @@
-class @TrackSessionInformationPlugin extends AbstractFormsliderPlugin
+class @TrackSessionInformation extends AbstractFormsliderPlugin
   @config:
     onReady: null
     onReadyInternal: (plugin) ->
@@ -9,7 +9,7 @@ class @TrackSessionInformationPlugin extends AbstractFormsliderPlugin
       plugin.inform('jquery.formslider.version',
         plugin.formslider.config.version)
 
-      if plugin.formslider.plugins.isLoaded('JqueryTrackingPlugin')
+      if plugin.formslider.plugins.isLoaded('JqueryTracking')
         plugin.inform('channel', $.tracking.channel())
         plugin.inform('campaign', $.tracking.campaign())
 

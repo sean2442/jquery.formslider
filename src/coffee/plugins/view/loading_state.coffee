@@ -1,4 +1,4 @@
-class @LoadingStatePlugin extends AbstractFormsliderPlugin
+class @LoadingState extends AbstractFormsliderPlugin
   @config =
     selector: '.progressbar-wrapper, .formslider-wrapper'
     loadingClass: 'loading'

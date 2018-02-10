@@ -1,5 +1,5 @@
 
-class @ScrollUpPlugin extends AbstractFormsliderPlugin
+class @ScrollUp extends AbstractFormsliderPlugin
   @config =
     selector: '.headline'
     duration: 500

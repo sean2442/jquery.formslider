@@ -1,4 +1,4 @@
-class @InputFocusPlugin extends AbstractFormsliderPlugin
+class @InputFocus extends AbstractFormsliderPlugin
   @config =
     selector: 'input:visible'
     waitBeforeFocus: 200

@@ -1,4 +1,4 @@
-class @TrackUserInteractionPlugin extends AbstractFormsliderPlugin
+class @TrackUserInteraction extends AbstractFormsliderPlugin
   @config:
     questionAnsweredEvent: 'question-answered'
 

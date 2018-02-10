@@ -1,4 +1,4 @@
-class @AddSlideClassesPlugin extends AbstractFormsliderPlugin
+class @AddSlideClasses extends AbstractFormsliderPlugin
   init: =>
     @slides.each(@_doWithSlide)
 

@@ -1,4 +1,4 @@
-class @DoOneTimeOnEventPlugin extends AbstractFormsliderPlugin
+class @DoOneTimeOnEvent extends AbstractFormsliderPlugin
   init: =>
     $.each(@config, (eventName, callback) =>
       if typeof(callback) == 'function'

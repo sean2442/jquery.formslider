@@ -29,7 +29,7 @@ class EventManager
       # run all listener even if event stopped
       # break if event.canceled
 
-    event
+    return event
 
   # name: name[.tag1.tag2][.context]
   on: (name, callback) =>

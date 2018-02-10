@@ -24,7 +24,10 @@ class @FormSlider
     $(window).resize(@onResize)
 
   setupConfig: (config) =>
+    # reset default plugins, if custom plugin definition given
     FormSlider.config.plugins = [] if config?.plugins?
+
+    # merge class with instance config
     @config = ObjectExtender.extend({}, FormSlider.config, config)
 
   setupDriver: =>
@@ -35,11 +38,9 @@ class @FormSlider
 
   loadPlugins: =>
     @plugins = new PluginLoader(@, @config.pluginsGlobalConfig)
-    @plugins.loadAll(
-      @config.plugins
-    )
+    @plugins.loadAll @config.plugins
 
-  # called from @driver.next|prev|goto
+  # called from @driver.goto
   # return value(bool) indicates if transition allowed or not
   onBefore: (currentIndex, direction, nextIndex) =>
     return false if currentIndex == nextIndex
@@ -48,7 +49,7 @@ class @FormSlider
 
     current     = @slides.get(currentIndex)
     currentRole = $(current).data('role')
-    next        = @driver.get(nextIndex)
+    next        = @slides.get(nextIndex)
     nextRole    = $(next).data('role')
     eventData   = [ current, direction, next ]
 
@@ -61,7 +62,6 @@ class @FormSlider
     # trigger before event
     @events.trigger("before.#{nextRole}.#{direction}", eventData...)
 
-    @lastId          = @id()
     @lastCurrent     = current
     @lastNext        = next
     @lastCurrentRole = nextRole
@@ -79,7 +79,7 @@ class @FormSlider
       @firstInteraction = true
       @events.trigger('first-interaction', eventData...)
 
-    @locking.unlock()
+    setTimeout(@locking.unlock, @config.silenceAfterTransition)
 
   onReady: =>
     @ready = true
@@ -89,26 +89,13 @@ class @FormSlider
   onResize: =>
     @events.trigger('resize')
 
-  index: =>
-    @driver.index()
-
-  id: =>
-    $(@driver.get()).data('id')
-
   # prev and next could be magical resolved controller events ;)
   next: =>
-    return if @locking.locked
-
-    possibleNextIndex = @index() + 1
-
-    event = @events.trigger('before-driver-next')
-    possibleNextIndex = event.nextIndex if event?.nextIndex
-
-    @goto(possibleNextIndex)
+    @events.trigger("controller.next")
 
   # prev and next could be magical resolved controller events ;)
   prev: =>
-    @goto(@index() - 1) if @index() > 0
+    @events.trigger("controller.prev")
 
   # will be called from controller plugins (triggered from prev/next)
   goto: (indexFromZero) =>
@@ -122,10 +109,14 @@ class @FormSlider
 @FormSlider.config =
   # use for what ever you want, will be tracked by tracking plugins
   version: 1
+
+  # this helps preventing a bug, where slides getting displaced after prev
+  silenceAfterTransition: 500
+
   # the driver between "goto" and slide transitions in the browser
   driver:
     class:    'DriverFlexslider'
-    selector: '.formslider > .slide'
+    selector: '.formslider > .slide' # this have to be [wrapper] > [slides]
 
   # will be merged into every plugin instance
   pluginsGlobalConfig:
@@ -134,24 +125,28 @@ class @FormSlider
     answerSelectedClass: 'selected'
 
   plugins: [
-    { class: 'AddSlideClassesPlugin'          }
-    { class: 'AnswerClickPlugin'              }
-    { class: 'InputFocusPlugin'               }
-    { class: 'BrowserHistoryPlugin'           }
-    { class: 'JqueryValidatePlugin'           }
-    { class: 'NormalizeInputAttributesPlugin' }
-    { class: 'InputSyncPlugin'                }
-    { class: 'NextOnKeyPlugin'                }
-    { class: 'ArrowNavigationPlugin'          }
-    { class: 'TabIndexSetterPlugin'           }
-    { class: 'NextOnClickPlugin'              }
-    { class: 'LoadingStatePlugin'             }
-    { class: 'ProgressBarPlugin'              }
-    { class: 'TrackUserInteractionPlugin'     }
-    { class: 'LoaderSlidePlugin'              }
-    { class: 'ContactSlidePlugin'             }
-    { class: 'ConfirmationSlidePlugin'        }
-    { class: 'EqualHeightPlugin'              }
-    { class: 'ScrollUpPlugin'                 }
-    { class: 'LazyLoadPlugin'                 }
+    # prev/next navigation controller
+    { class: 'BrowserHistoryController' }
+    { class: 'NativeOrderController'    }
+
+    # behaviour plugins
+    { class: 'AddSlideClasses'          }
+    { class: 'AnswerClick'              }
+    { class: 'InputFocus'               }
+    { class: 'JqueryValidate'           }
+    { class: 'InputNormalizer'          }
+    { class: 'InputSync'                }
+    { class: 'NextOnKey'                }
+    { class: 'ArrowNavigation'          }
+    { class: 'TabIndexSetter'           }
+    { class: 'NextOnClick'              }
+    { class: 'LoadingState'             }
+    { class: 'ProgressBarPercent'       }
+    { class: 'TrackUserInteraction'     }
+    { class: 'SimpleLoader'             }
+    { class: 'ContactSlide'             }
+    { class: 'ConfirmationSlide'        }
+    { class: 'EqualHeight'              }
+    { class: 'ScrollUp'                 }
+    { class: 'LazyLoad'                 }
   ]

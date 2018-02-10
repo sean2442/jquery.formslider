@@ -15,7 +15,7 @@ class @DriverFlexslider
   constructor: (@container, @config, @onBefore, @onAfter, @onReady) ->
     @config = ObjectExtender.extend({}, DriverFlexslider.config, @config)
     @config.after             = @_internOnAfter
-    @config.conditionalBefore = @onBefore
+    @config.conditionalBefore = @_internOnBefore
     @config.start             = @onReady
 
     @slides                   = $(@config.selector, @container)
@@ -33,17 +33,24 @@ class @DriverFlexslider
   index: =>
     @instance.currentSlide
 
-  _internOnAfter: (slider) =>
-    # will be triggered on window resize after first slide
-    return if slider.lastSlide == slider.currentSlide
+  _internOnBefore: (currentIndex, direction, nextIndex) =>
+    result = @onBefore(currentIndex, direction, nextIndex)
+    return result if result == false
 
-    @onAfter(slider)
+    # fix: onAfter callback gets triggert to early when using css transitions
+    @start = +new Date() if @config.useCSS
 
   removeSlide: (slide) =>
     @instance.removeSlide(slide)
+  _internOnAfter: (slider) =>
+    # fix: flexslider falsy triggers onAfter on initialization
+    return if slider.lastSlide == slider.currentSlide
 
   addSlide: (slide, position) =>
     @instance.addSlide(slide, position)
+    return @onAfter() unless @config.useCSS
 
   moveSlide: (slide, position) =>
     @instance.moveSlide(slide, position)
+    # fix: onAfter callback gets triggert to early when using css transitions
+    setTimeout(@onAfter, @config.animationSpeed - ((+new Date()) - @start))

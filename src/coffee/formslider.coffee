@@ -1,11 +1,14 @@
+# require all dependencies #TODO: gulp-include breaks gulp-sourcemaps
 #= include driver/**/*.coffee
 #= include plugins/**/*.coffee
 #= include lib/**/*.coffee
 
+# the controller aka heart of the formslider
 class @FormSlider
   @config = null # see below
   constructor: (@container, config) ->
-    @logger           = new Logger('jquery.formslider')
+    @index  = 0
+    @logger = new Logger('jquery.formslider')
 
     unless @container.length
       @logger.error('container is empty')
@@ -65,7 +68,7 @@ class @FormSlider
     @lastDirection   = direction
 
   onAfter: =>
-    # not an allowed after event
+    # only allow if onBefore was called
     return unless @locking.locked
 
                 # current  , direction     , prev
@@ -92,6 +95,7 @@ class @FormSlider
   id: =>
     $(@driver.get()).data('id')
 
+  # prev and next could be magical resolved controller events ;)
   next: =>
     return if @locking.locked
 
@@ -102,21 +106,28 @@ class @FormSlider
 
     @goto(possibleNextIndex)
 
+  # prev and next could be magical resolved controller events ;)
   prev: =>
     @goto(@index() - 1) if @index() > 0
 
+  # will be called from controller plugins (triggered from prev/next)
   goto: (indexFromZero) =>
     return if @locking.locked
     return if indexFromZero < 0 || indexFromZero > @slides.length - 1
     @driver.goto(indexFromZero)
 
 
+
+# formslider static default configuration, should work with "hello world"
 @FormSlider.config =
+  # use for what ever you want, will be tracked by tracking plugins
   version: 1
+  # the driver between "goto" and slide transitions in the browser
   driver:
     class:    'DriverFlexslider'
     selector: '.formslider > .slide'
 
+  # will be merged into every plugin instance
   pluginsGlobalConfig:
     answersSelector: '.answers'
     answerSelector:  '.answer'

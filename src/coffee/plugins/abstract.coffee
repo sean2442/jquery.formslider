@@ -7,6 +7,7 @@ class @AbstractFormsliderPlugin
     @logger    = new Logger("jquery.formslider::#{@constructor.name}")
     @init()
 
+  # plugins doing their setup and event registering stuff here
   init: ->
     null
 
@@ -36,16 +37,21 @@ class @AbstractFormsliderPlugin
   trigger: () =>
     @events.trigger(arguments...)
 
-  # depends on plugins/generic/tracking
+  # needs something like JqueryTracking to make sense
   track: (source, value, category = null) =>
     @events.trigger('track', source, value, category)
 
-  # depends on plugins/view/add_slide_classes
+  index: =>
+    @formslider.driver.index()
+
+  slideByIndex: (indexFromZero = null) =>
+    indexFromZero = @index() if indexFromZero == null
+    @slides.get(indexFromZero)
+
+  # depends on plugin AddSlideClasses
   slideByRole: (role) =>
     $(".slide-role-#{role}", @container)
 
+  # depends on plugin AddSlideClasses
   slideById: (id) =>
     $(".slide-id-#{id}", @container)
-
-  slideByIndex: (indexFromZero) =>
-    @slides.get(indexFromZero)

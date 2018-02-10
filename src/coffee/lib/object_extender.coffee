@@ -16,4 +16,4 @@ class @ObjectExtender
         else
           obj[prop] = source[prop]
 
-    obj
+    return obj

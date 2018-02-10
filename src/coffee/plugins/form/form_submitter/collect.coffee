@@ -32,4 +32,4 @@ class @FormSubmitterCollect extends FormSubmitterAbstract
       $other = $(other)
       result[$other.attr('name')] = $other.val()
 
-    result
+    return result

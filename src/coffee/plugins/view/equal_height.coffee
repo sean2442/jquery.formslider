@@ -11,7 +11,7 @@ class @EqualHeightPlugin extends AbstractFormsliderPlugin
     for i in [0..@slides.length - 1]
       @doEqualize(null, @slideByIndex(i))
 
-    return
+    return # performance, dont return loops in coffee
 
   doEqualize: (event, slide) =>
     $elements = $(@config.selector, slide)
@@ -25,5 +25,3 @@ class @EqualHeightPlugin extends AbstractFormsliderPlugin
       maxHeight = Math.max(maxHeight, $element.outerHeight())
 
     $elements.css('height', maxHeight)
-
-    return

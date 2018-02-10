@@ -11,7 +11,7 @@ class @PluginLoader
 
       @load(plugin)
 
-    return
+    return # performance, dont return loops in coffee
 
   load: (plugin) =>
     PluginClass = window[plugin.class]

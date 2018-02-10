@@ -1,4 +1,4 @@
-class @SlideVisibilityPlugin extends AbstractFormsliderPlugin
+class @SlideVisibility extends AbstractFormsliderPlugin
   @config =
     hideAnimationDuration: 300
 
@@ -7,14 +7,14 @@ class @SlideVisibilityPlugin extends AbstractFormsliderPlugin
     @on('after', @hideAdjescentSlides)
 
     @hide(@slides, 0)
-    @show(@slideByIndex(@formslider.index()))
+    @show(@slideByIndex())
 
   showNextSlide: (event, current, direction, next) =>
     @show next
 
   hideAdjescentSlides: (event, current, direction, prev) =>
-    @hide @slideByIndex(@formslider.index() + 1)
-    @hide prev
+    @hide @slideByIndex(@index() + 1)
+    @hide @slideByIndex(@index() - 1)
 
   hide: (slide, duration=null) =>
     duration = @config.hideAnimationDuration if duration == null

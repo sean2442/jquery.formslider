@@ -1,19 +1,24 @@
-class @LazyLoadPlugin extends AbstractFormsliderPlugin
+class @LazyLoad extends AbstractFormsliderPlugin
   @config =
     lazyClass: 'lazy-load'
     dataKey: 'src'
+    waitBeforeLoad: 10
 
   init: =>
     @doLazyLoad(@slideByIndex(0))
-    @doLazyLoad(@slideByIndex(1))
-    @on('after', @onAfter)
+    @on('before', @onBefore)
 
-  onAfter: =>
-    currentIndex = @formslider.index()
-    @doLazyLoad(@slideByIndex(currentIndex + 1))
+  onBefore: (event, current, direction, next)=>
+    @doLazyLoad(next)
 
   doLazyLoad: (slide) =>
-    $("img.#{@config.lazyClass}", slide).each( @_loadLazyCallback )
+    setTimeout(
+      =>
+        $("img.#{@config.lazyClass}", slide).each( @_loadLazyCallback )
+        @trigger('do-equal-height', slide)
+      ,
+      @config.waitBeforeLoad
+    )
 
   _loadLazyCallback: (index, el) =>
     $el = $(el)

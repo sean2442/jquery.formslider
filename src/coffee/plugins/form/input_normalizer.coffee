@@ -1,4 +1,4 @@
-class @NormalizeInputAttributesPlugin extends AbstractFormsliderPlugin
+class @InputNormalizer extends AbstractFormsliderPlugin
   @config =
     selector: 'input:visible'
 
@@ -17,6 +17,6 @@ class @NormalizeInputAttributesPlugin extends AbstractFormsliderPlugin
         if $input.attr(attribute)
           $input.data("x-#{attribute}", $input.attr(attribute))
 
-      return
+      return # performance, dont return loops in coffee
     )
-    return
+    return # performance, dont return loops in coffee

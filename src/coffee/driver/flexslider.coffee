@@ -1,4 +1,8 @@
 
+# TODO think about implementing drivers as plugins
+#      introduce events for "driver.goto", "driver.reorder" etc.
+#      you can have multiple driver -> make sure the index is synchron
+
 class @DriverFlexslider
   @config =
     selector:       '.formslider > .slide'
@@ -24,11 +28,8 @@ class @DriverFlexslider
     @instance = @container.data('flexslider')
 
   goto: (indexFromZero) =>
-    @container.flexslider(indexFromZero, true)
-
-  get: (indexFromZero) =>
-    indexFromZero = @index() if indexFromZero == undefined
-    @slides.get(indexFromZero)
+    @container.flexslider(indexFromZero, true, true)
+    #@instance.flexAnimate(indexFromZero, true)
 
   index: =>
     @instance.currentSlide
@@ -40,17 +41,11 @@ class @DriverFlexslider
     # fix: onAfter callback gets triggert to early when using css transitions
     @start = +new Date() if @config.useCSS
 
-  removeSlide: (slide) =>
-    @instance.removeSlide(slide)
   _internOnAfter: (slider) =>
     # fix: flexslider falsy triggers onAfter on initialization
     return if slider.lastSlide == slider.currentSlide
 
-  addSlide: (slide, position) =>
-    @instance.addSlide(slide, position)
     return @onAfter() unless @config.useCSS
 
-  moveSlide: (slide, position) =>
-    @instance.moveSlide(slide, position)
     # fix: onAfter callback gets triggert to early when using css transitions
     setTimeout(@onAfter, @config.animationSpeed - ((+new Date()) - @start))

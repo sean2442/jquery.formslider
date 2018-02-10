@@ -1,0 +1,32 @@
+# doku topics
+
+  * what does it
+    * demo
+    * features
+    * performance
+    * mobile
+    * stable
+
+  * dev concepts
+    * no logic in the formslider base
+    * the logic of the fromslider base
+    * events / decoupling
+    * debugging   ? dev build with debug logs
+    * npm/bower/versioning
+
+  * app modules
+    * formslider/controller -> lifecycle
+    * driver
+    * event manager
+    * plugins loader
+
+  * plugins
+    * abstract
+    * controller
+    * navigation
+    * direction_policy_by_role
+    * loader
+    * view
+    * progress bars
+    * tracking
+    * form

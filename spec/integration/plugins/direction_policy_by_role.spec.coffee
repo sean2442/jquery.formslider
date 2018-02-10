@@ -27,7 +27,7 @@ describe 'formslider', ->
         confirmation:
           goingTo: ['none']
 
-      plugin = new DirectionPolicyByRolePlugin(formslider, pluginConfig)
+      plugin = new DirectionPolicyByRole(formslider, pluginConfig)
 
       questionSlide     = $('<div data-role="question"></div>')
       zipcodeSlide      = $('<div data-role="zipcode"></div>')

@@ -14,7 +14,7 @@ describe 'formslider', ->
 
     describe 'slide_vibility', ->
       it 'hides all slides but current onReady', ->
-        expect(formslider.index()).toEqual 0
+        expect(formslider.driver.index()).toEqual 0
 
         expect(visible(formslider.slides.get(0))).toBe true
 
@@ -24,11 +24,11 @@ describe 'formslider', ->
         expect(visible(formslider.slides.get(4))).toBe false
 
       it 'hides all slides but current after next', ->
-        expect(formslider.index()).toEqual 0
+        expect(formslider.driver.index()).toEqual 0
 
         formslider.next()
 
-        expect(formslider.index()).toEqual 1
+        expect(formslider.driver.index()).toEqual 1
 
         expect(visible(formslider.slides.get(1))).toBe true
         expect(visible(formslider.slides.get(2))).toBe false

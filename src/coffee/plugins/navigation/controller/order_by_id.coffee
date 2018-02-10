@@ -4,7 +4,7 @@ class @OrderByIdController extends AbstractFormsliderPlugin
     @on('controller.prev', @prev)
     @on('controller.next', @next)
 
-  onCalculateLongestPath: (event) =>
+  onCalculateLongestPath: (event) ->
     # TODO find longest path
     event.longest_path = 42
 

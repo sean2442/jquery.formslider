@@ -5,7 +5,7 @@ formslider = null
 
 helper.formslider =
   currentSlide: ->
-    $(formslider.driver.get(formslider.index()))
+    $(formslider.slides.get(formslider.driver.index()))
 
   init: (debug=false, waitForReady=false) ->
     $wrapper = $('.formslider-wrapper')
@@ -22,34 +22,67 @@ helper.formslider =
       pluginsGlobalConfig:
         answersSelector: '.answers'
         answerSelector:  '.answer'
+        answerSelectedClass: 'selected'
 
       plugins: [
-        #{ class: 'NextSlideResolver' }
-        { class: 'AddSlideClasses'          }
-        { class: 'AnswerClick'              }
-        { class: 'InputFocus'               }
-        { class: 'BrowserHistory'           }
-        { class: 'NormalizeInputAttributes' }
-        { class: 'FormSubmission'           }
-        { class: 'JqueryValidate'           }
-        { class: 'InputSync'                }
-        { class: 'NextOnKey'                }
-        { class: 'ArrowNavigation'          }
-        { class: 'TabIndexSetter'           }
-        { class: 'NextOnClick'              }
+        # prev/next controller plugin
+        { class: 'BrowserHistoryController'   }
+        { class: 'OrderByIdController'   }
+        { class: 'NativeOrderController' }
+
+        #view
+        { class: 'SlideVisibility'          }
+        { class: 'LazyLoad'                 }
+        { class: 'EqualHeight'              }
+        { class: 'ScrollUp'                 }
         { class: 'LoadingState'             }
+
+        # progressbar
         {
-          class: 'ProgressBar'
+          class: 'ProgressBarPercent'
           config:
             selectorWrapper: '.progressbar-wrapper.percent'
             initialProgress: 23
         }
         {
-          class: 'ProgressBar'
+          class: 'ProgressBarSteps'
           config:
             selectorWrapper: '.progressbar-wrapper.steps'
-            adapter: 'ProgressBarAdapterSteps'
         }
+
+        # form
+        { class: 'AnswerMemory'             }
+        { class: 'AnswerClick'              }
+        { class: 'JqueryValidate'           }
+        { class: 'TabIndexSetter'           }
+        { class: 'InputSync'                }
+        { class: 'InputNormalizer'          }
+        { class: 'InputFocus'               }
+        { class: 'FormSubmission'           }
+
+        # navigation
+        { class: 'NavigateOnClick'          }
+        { class: 'NavigateOnKey'            }
+
+        # tracking
+        { class: 'TrackUserInteraction'     }
+        {
+          class: 'TrackSessionInformation'
+          config:
+            onReady: (plugin) ->
+              plugin.inform('custom-information-var', 'custom-information-val')
+        }
+
+        # loader
+        {
+          class: 'SimpleLoader'
+          config:
+            loaderClass: 'SimpleLoaderImplementation'
+            duration: 1000
+        }
+
+        # generic
+        { class: 'AddSlideClasses'          }
         {
           class: 'DoOnEvent'
           config:
@@ -61,19 +94,6 @@ helper.formslider =
           config:
             'after.question': (plugin) ->
               plugin.track('first time after question')
-        }
-        { class: 'TrackUserInteraction'     }
-        {
-          class: 'TrackSessionInformation'
-          config:
-            onReady: (plugin) ->
-              plugin.inform('custom-information-var', 'custom-information-val')
-        }
-        {
-          class: 'LoaderSlide'
-          config:
-            loaderClass: 'SimpleLoaderImplementation'
-            duration: 1000
         }
         {
           class: 'DirectionPolicyByRole'
@@ -93,10 +113,6 @@ helper.formslider =
             confirmation:
               goingTo: ['none']
         }
-        { class: 'EqualHeight'       }
-        { class: 'ScrollUp'          }
-        { class: 'LazyLoad'          }
-        { class: 'SlideVisibility'   }
       ]
     )
 
@@ -109,6 +125,6 @@ helper.formslider =
       #   break if formslider?.ready == true
     else
       formslider.onReady()
-      
+
 
     return formslider

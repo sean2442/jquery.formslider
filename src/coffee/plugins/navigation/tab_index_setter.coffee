@@ -1,4 +1,5 @@
-class @TabIndexSetterPlugin extends AbstractFormsliderPlugin
+# fix: jump between slides by pressing tab for next focus
+class @TabIndexSetter extends AbstractFormsliderPlugin
   @config =
     selector: 'input, a, select, textarea, button, area, object'
 

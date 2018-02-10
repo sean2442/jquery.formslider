@@ -5,6 +5,7 @@ class @AbstractFormsliderLoader extends AbstractFormsliderPlugin
   init: =>
     @on('after.loader', @onLoaderStart)
     @on('leaving.loader', @onLeaving)
+    @locking = new Locking(false)
 
   onLoaderStart: (event, currentSlide, direction, nextSlide) =>
     @start() unless @locking.locked

@@ -26,6 +26,18 @@ The following variables and methods are accessible by the instance.
 ##### config
   * the configuration object you passed in during setup
 
+Structure:
+```bash
+  version: 1                      # use for what ever you want, will be triggert from TrackSessionInformation
+
+  silenceAfterTransition: 500     # wait after transition, fixes slide depositions on going back when using FlesliderDriver with css transitions (useCss: true)
+
+  driver:                         # options for the driver
+    ...
+
+  plugins:                        # setup your plugins
+    ...
+```
 ##### container
   * the container you used to setup the formslider
 
@@ -71,19 +83,13 @@ The following variables and methods are accessible by the instance.
 
 ### Methods
 ##### next()
-  * try to go one forward
+  * try to go one forward (triggers `controller.next`)
 
 ##### prev()
-  * try to go one backward
+  * try to go one backward (triggers `controller.prev`)
 
 ##### goto(indexFromZero)
-  * try to go to specific index (zero based)
-
-##### index()
-  * get the current index (zero based)
-
-##### id()
-  * get the id from the current slide
+  * try to go to specific index (zero based, calls driver)
 
 
 ### Events

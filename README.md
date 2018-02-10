@@ -35,43 +35,47 @@ This functionality is provided by plugins. You can develop your own flow as you 
 ### List of bundeled (core-)plugins
 ```bash
 # form plugins
-  * AnswerClickPlugin                   # add answered classes and triggers track events
-  * FormSubmissionPlugin                # submits a form if valid
-  * InputFocusPlugin                    # focusses first input on current slide
-  * InputSyncPlugin                     # syncs inputs with the same name
-  * JqueryValidatePlugin                # validates inputs before leaving a slide, uses jquery-validate
-  * NormalizeInputAttributesPlugin      # does n´some normalization on inputs
-  * TabIndexSetterPlugin                # fixes tab order on current visible slide
+  * AnswerClick                   # add answered classes and triggers track events
+  * AnswerMemory                  # memorizes answers for later usage
+  * FormSubmission                # submits a form if valid
+  * InputFocus                    # focusses first input on current slide
+  * InputNormalizer               # does some normalization on inputs
+  * InputSync                     # syncs inputs with the same name
+  * JqueryValidate                # validates inputs before leaving a slide, uses jquery-validate
 
 # generic plugins
-  * AddSlideClassesPlugin               # adds classes based on role and index
-  * DoOnEventPlugin                     # Generic plugin to for inline implementing a plugin.
-  * DoOneTimeOnEventPlugin              # run a callback first time a specific event occurs
+  * AddSlideClasses               # adds classes based on role and index
+  * DoOnEvent                     # Generic plugin to for inline implementing a plugin.
+  * DoOneTimeOnEvent              # run a callback first time a specific event occurs
 
-# navigation
-  * ArrowNavigationPlugin               # adds arrow navigation feature
-  * BrowserHistoryPlugin                # adds browser history entries
-  * NextOnClickPlugin                   # call next if certain element clicked
-  * NextOnKeyPlugin                     # can trigger next if enter pressed
-  * DirectionPolicyByRolePlugin         # can prevent going forward or backward based on events
+# loader
+  * SimpleLoader                  # controls a loading page with no user interaction allowed
 
-# progress  
-  * ProgressBarPlugin                   # manages progress animation
-  * TODO: NextSlideResolver             # adds individual slide targeting per answer or slide
+# navigation controller           # controller can be stacked as they cancel the `controller.*` events when they succeed
+  * BrowserHistoryController      # adds browser history entries and reacts on browser prev/next
+  * NativeOrderController         # navigates prev/next by the native order of the slides
+  * OrderByIdController           # navigates prev/next by next-id data attributes
 
-# slides
-  * LoaderSlidePlugin                   # controls the loader page
+# navigation plugins
+  * DirectionPolicyByRole         # can prevent going forward or backward based on events and current/next roles
+  * NavigateOnClick               # call next/prev if certain element clicked
+  * NavigateOnKey                 # can trigger next/prev if enter or arrow keys pressed
+  * TabIndexSetter                # fixes tab order on current visible slide, prevents jumping between slides
+
+# progressbar  
+  * ProgressBarPercent            # manages progress with percent progess
+  * ProgressBarSteps              # manages progress with steps progress
 
 # tracking
-  * TrackSessionInformationPlugin       # triggers track events for useragent, device dimension etc.
-  * TrackUserInteractionPlugin          # triggers track events for current/next page transition etc.
+  * TrackSessionInformation       # triggers track events for useragent, device dimension etc.
+  * TrackUserInteraction          # triggers track events for current/next page transition etc.
 
 # view
-  * EqualHeightPlugin                   # equalizes the height of elements
-  * LazyLoadPlugin                      # load images from the next slides
-  * LoadingStatePlugin                  # manipulates loading classes on ready
-  * ScrollUpPlugin                      # scrolls up if a question is not in viewport
-  * SlideVisibilityPlugin               # hides slides before and after current until transition is allowed
+  * EqualHeight                   # equalizes the height of elements
+  * LazyLoad                      # load images from the next slides
+  * LoadingState                  # manipulates loading classes on ready
+  * ScrollUp                      # scrolls up if a question is not in viewport
+  * SlideVisibility               # hides slides before and after current until transition is allowed
 ```
 
 For a full list and detailed informations check out this guide: [PLUGINS](docs/PLUGINS.md)

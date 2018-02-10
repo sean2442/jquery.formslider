@@ -84,24 +84,8 @@ These plugins can be used to extend the formslider:
   * [formslider.hitory.js](https://github.com/formslider/formslider.hitory.js)
   * [formslider.nouislider](https://github.com/formslider/formslider.nouislider)
 
-
-### AddSlideClassesPlugin               
-Adds classes based on role and index.
-Adds:
-  * class `answer-count-[answerCount]` based on global `answerSelector`
-  * attribute `data-answer-count=[answerCount]`
-  * class `slide-role-[slideRole]` based on slide attribute `data-role=slideRole`
-  * class `slide-number-[index]` based on slide order  
-  * attribute `data-slide-number=[index]`
-
-Default configuration:
-```js
-config: {
-  answerSelector:  '.answer' // from global config
-}
-```
-
-### AnswerClickPlugin                   
+### form plugins
+##### *AnswerClick*
 Add answered classes and triggers track events.
 Default configuration:
 ```js
@@ -117,89 +101,13 @@ The Plugin triggers the following events:
 @trigger('question-answered', $answer, value, slideIndex)
 ```
 
-### SlideVisibilityPlugin
-Hides slides before and after current until transition is allowed.
-Default configuration:
-```js
-config: {
-  hideAnimationDuration: 300
-}
-```
+##### *AnswerMemory*
+Memorizes answers for later usage.
 
-### InputFocusPlugin                    
-Focusses first input on current slide.
-Default configuration:
-```js
-config: {
-  selector: 'input:visible',
-  waitBeforeFocus: 50           // have to wait a little for flexslider reasons
-  disableOnMobile: true
-}
-```
+Access by `@formslider.plugins.get('AnswerMemory').memoryBySlideId`.
 
 
-### BrowserHistoryPlugin                       
-Adds browser history entries.
-Default configuration:
-```js
-config: {
-  updateHash: false,          // change browser url or not
-  resetStatesOnLoad: true    // only allow states since browser reload
-}
-```
-
-### NormalizeInputAttributesPlugin                       
-Adds
-  * `required="required"` if `required` attribute isset
-  * `aria-required` if `required` attribute isset
-  * `x-inputmode` id `inputmode` isset
-  * `x-autocompletetype` id `autocompletetype` isset
-
-Default configuration:
-```js
-config: {
-  selector: 'input:visible'
-}
-```
-
-### JqueryValidatePlugin               
-Validates inputs based on attributes. Uses [jquery-validation](https://github.com/jquery-validation/jquery-validation).
-Default configuration:
-```js
-config: {
-  selector: 'input:visible'
-  validateOnEvents: ['leaving.next']
-  forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-  messages:
-    required:  'Required'
-    maxlength: 'To long'
-    minlength: 'To short'
-    email:     'Enter valid E-Mail'
-
-}
-```
-
-The plugin automatically detects the following attributes:
-```bash
-  * required                    # also add aria-required="true"
-  * minlength
-  * maxlength
-  * type="email"
-  * type="number"
-  * data-force-max-length="1"   # will truncate input if longer
-  * data-without-spinner"1"     # will prevent spinner input on number types
-```
-
-The Plugin triggers the following events:
-```coffee
-@trigger("validation.prepared")
-@trigger("validation.valid.#{currentRole}", currentSlide)
-@trigger("validation.invalid.#{currentRole}", currentSlide)
-```
-
-_Note:_ This plugin will log an error if no surrounding form tag was found
-
-### FormSubmissionPlugin                
+##### *FormSubmission*
 Submits a form if valid.
 Default configuration:
 ```js
@@ -237,7 +145,35 @@ config: {
 ```
 
 
-### InputSyncPlugin                     
+##### *InputFocus*
+Focusses first input on current slide.
+Default configuration:
+```js
+config: {
+  selector: 'input:visible',
+  waitBeforeFocus: 50           // have to wait a little for flexslider reasons
+  disableOnMobile: true
+}
+```
+
+
+##### *InputNormalizer*
+Does some normalization on inputs.
+Adds
+  * `required="required"` if `required` attribute isset
+  * `aria-required` if `required` attribute isset
+  * `x-inputmode` id `inputmode` isset
+  * `x-autocompletetype` id `autocompletetype` isset
+
+Default configuration:
+```js
+config: {
+  selector: 'input:visible'
+}
+```
+
+
+##### *InputSync*
 Syncs inputs with the same name.
 Default configuration:
 ```js
@@ -248,31 +184,124 @@ config: {
 ```
 
 
-### NextOnKeyPlugin                     
-Can trigger next if key pressed.
+##### *JqueryValidate*
+Validates inputs before leaving a slide. Uses [jquery-validation](https://github.com/jquery-validation/jquery-validation).
 Default configuration:
 ```js
 config: {
-  selector: 'input',
-  keyCode: 13                 //enter
+  selector: 'input:visible'
+  validateOnEvents: ['leaving.next']
+  forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+  messages:
+    required:  'Required'
+    maxlength: 'To long'
+    minlength: 'To short'
+    email:     'Enter valid E-Mail'
+
+}
+```
+
+The plugin automatically detects the following attributes:
+```bash
+  * required                    # also add aria-required="true"
+  * minlength
+  * maxlength
+  * type="email"
+  * type="number"
+  * data-force-max-length="1"   # will truncate input if longer
+  * data-without-spinner"1"     # will prevent spinner input on number types
+```
+
+The Plugin triggers the following events:
+```coffee
+@trigger("validation.prepared")
+@trigger("validation.valid.#{currentRole}", currentSlide)
+@trigger("validation.invalid.#{currentRole}", currentSlide)
+```
+
+_Note:_ This plugin will log an error if no surrounding form tag was found.
+
+
+###  generic plugins
+##### *AddSlideClasses*
+Adds classes based on role and index.
+Adds:
+  * class `answer-count-[answerCount]` based on global `answerSelector`
+  * attribute `data-answer-count=[answerCount]`
+  * class `slide-role-[slideRole]` based on slide attribute `data-role=slideRole`
+  * class `slide-number-[index]` based on slide order  
+  * attribute `data-slide-number=[index]`
+
+Default configuration:
+```js
+config: {
+  answerSelector:  '.answer' // from global config
 }
 ```
 
 
-### ArrowNavigationPlugin               
-Can trigger next/prev if arrow keys pressed.
+##### *DoOnEvent*
+Generic plugin to for inline implementing a plugin..
 Default configuration:
 ```js
 config: {
-  selector: document,
-  keyCodeLeft: 37,
-  keyCodeRight: 39
+    'after.question': function (plugin){
+      plugin.track('any after question');
+    }
 }
 ```
 
 
-### DirectionPolicyByRolePlugin
-Prevent going forward or backward based on events.
+##### *DoOneTimeOnEvent*
+Run a callback first time a specific event occurs.
+Default configuration:
+```js
+config: {
+    'after.question': function (plugin){
+      plugin.formslider.track('first time after question');
+    }
+}
+```
+
+
+###  loader plugins
+##### *SimpleLoader*
+Controlls a loading page with no user interaction allowed.
+Default configuration:
+```js
+config: {
+  duration: 1000  // duration of the loader
+}
+```
+
+For your custom loader implementation have alook at https://github.com/formslider/formslider.dramatic.loader.
+
+
+### navigation controller plugins          
+controller can be stacked as they cancel the `controller.*` events when they succeed
+
+##### *BrowserHistoryController*
+Adds browser history entries and reacts on browser prev/next.
+Default configuration:
+```js
+config: {
+  updateHash: false,          // change browser url or not
+  resetStatesOnLoad: true    // only allow states since browser reload
+}
+```
+
+
+##### *NativeOrderController*
+Navigates prev/next by the native order of the slides.
+
+
+##### *OrderByIdController*
+Navigates prev/next by next-id data attributes.
+
+
+### navigation plugins
+##### *DirectionPolicyByRole*
+Can prevent going forward or backward based on events and current/next roles.
 Default configuration:
 ```js
 {
@@ -296,8 +325,63 @@ Default configuration:
 ```
 
 
-### TabIndexSetterPlugin               
-Fixes tab behavior, only enables on current slide.
+##### *NavigateOnClick*
+Call next/prev if certain element clicked.
+Default configuration:
+```js
+config: {
+  actions: [
+    {
+      selector: '.answer',
+      action: 'next',
+      wait: 200
+    },
+    {
+      selector: '.next-button',
+      action: 'next',
+      wait: 10
+    },
+    {
+      selector: '.prev-button',
+      action: 'prev',
+      wait: 10
+    }
+  ]
+}
+```
+
+
+##### *NavigateOnKey*
+Can trigger next/prev if enter or arrow keys pressed.
+Default configuration:
+```js
+config: {
+  actions: [
+    { // right arrow
+      context: document,
+      action: 'next',
+      code: 39,
+      wait: 100
+    },
+    { // return
+      selector: 'input',
+      action: 'next',
+      code: 13,
+      wait: 100
+    },
+    { // left arrow
+      context: document,
+      action: 'prev',
+      code: 37,
+      wait: 100
+    }
+  ]
+}
+```
+
+
+##### *TabIndexSetter*
+Fixes tab order on current visible slide, prevents jumping between slides.
 Default configuration:
 ```js
 config: {
@@ -306,69 +390,42 @@ config: {
 ```
 
 
-### NextOnClickPlugin                   
-Call next if certain element clicked.
-Default configuration:
-```js
-config: {
-  selector: '.next-button, .answer',
-  waitAfterClick: 10
-}
-```
-
-
-### PrevOnClickPlugin                   
-Call prev if certain element clicked.
-Default configuration:
-```js
-config: {
-  selector: '.prev-button',
-  waitAfterClick: 10
-}
-```
-
-
-### LoadingStatePlugin            
-Manipulates loading classes on ready.
-Default configuration:
-```js
-config: {
-  selector: '.nextbar-wrapper, .formslider-wrapper',
-  loadingClass: 'loading',          // will be removed
-  loadedClass: 'loaded'             // will be added
-}
-```
-
-
-### ProgressBarPlugin                   
+### progressbar plugins
 Manages progress animation, looks for data attributes on progress bar wrapper. Use `data-type="steps"` for ex.
-
 Default configuration:
 ```js
-config: {
-  selectorWrapper: '.progressbar-wrapper'
+@config = {
+  selectorWrapper: '.progressbar-wrapper',
   selectorText: '.progress-text',
   selectorProgress: '.progress',
   animationSpeed: 300,
-  adapter: 'ProgressBarAdapterPercent',  // animate progress in percent or 'steps' (1/6) (ProgressBarAdapterSteps)
-  initialProgress: '15',                 // initial bar width, when type percent also the initial value
-  animateHeight: true
+  initialProgress: null, // initial bar width in percent
+  animateHeight: true,
   dontCountOnRoles: [
-    'loader'
-    'contact'
+    'loader',
+    'contact',
     'confirmation'
   ],
   hideOnRoles: [
-    'zipcode'
-    'loader'
-    'contact'
+    'zipcode',
+    'loader',
+    'contact',
     'confirmation'
   ]
 }
 ```
 
 
-### TrackSessionInformationPlugin       
+##### *ProgressBarPercent*
+Manages progress with percent progess.
+
+
+##### *ProgressBarSteps*
+Manages progress with steps progress.
+
+
+### tracking plugins
+##### *TrackSessionInformation*
 Triggers track events for useragent, device dimension etc and adds an hidden input field for later form submission.
 Triggers after first user interaction for clean bounce rate tracking.
 Default configuration:
@@ -391,7 +448,7 @@ config: {
 ```
 
 
-### TrackUserInteractionPlugin          
+##### *TrackUserInteraction*
 Triggers track events for current/next page transition.
 Triggers:
   * `slide-[index]-entered` = [direction]
@@ -407,33 +464,8 @@ config: {
 }
 ```
 
-
-### LoaderSlidePlugin                    
-Controls the loader page.
-Default configuration:
-```js
-config: {
-  loaderClass: 'SimpleLoaderImplementation',  // loader implementation
-  duration: 1000                      // duration of the loader
-}
-```
-
-For you custom loader implementation have alook at https://github.com/formslider/jquery.formslider/tree/master/src/coffee/plugins/slides/loader.
-
-
-### ContactSlidePlugin                   
-  * controls the contact page.
-  * has no configuration.
-  * prevents going back
-
-
-### ConfirmationSlidePlugin              
-  * controls the confirmation page.
-  * has no configuration.
-  * prevents going forth/back
-
-
-### EqualHeightPlugin                   
+### view plugins
+##### *EqualHeight*
 Equalizes the height of elements on the current slide.
 Default configuration:
 ```js
@@ -444,7 +476,30 @@ config: {
 Listens also on event `do-equal-height`. To trigger this event: `@trigger('do-equal-height', slideToEqualize)`.
 
 
-### ScrollUpPlugin                      
+##### *LazyLoad*
+Load images from the next slides.
+Default configuration:
+```js
+config: {
+  lazyClass: 'lazy-load',
+  dataKey: 'src'
+}
+```
+
+
+##### *LoadingState*
+Manipulates loading classes on ready.
+Default configuration:
+```js
+config: {
+  selector: '.nextbar-wrapper, .formslider-wrapper',
+  loadingClass: 'loading',          // will be removed
+  loadedClass: 'loaded'             // will be added
+}
+```
+
+
+##### *ScrollUp*
 Scrolls up if a question is not in viewport and logs warning if no element found by `@config.selector`.
 
 Default configuration:
@@ -464,36 +519,12 @@ config: {
 ```
 
 
-### LazyLoadPlugin                   
-Load images from the next slides, not all together.
+##### *SlideVisibility*
+Hides slides before and after current until transition is allowed.
+Hides slides before and after current until transition is allowed.
 Default configuration:
 ```js
 config: {
-  lazyClass: 'lazy-load',
-  dataKey: 'src'
-}
-```
-
-### DoOnEventPlugin
-Generic plugin to for inline implementing a plugin.
-
-Default configuration:
-```js
-config: {
-    'after.question': function (plugin){
-      plugin.track('any after question');
-    }
-}
-```
-
-### DoOneTimeOnEventPlugin
-Execute a callback first time an event was seen.
-
-Default configuration:
-```js
-config: {
-    'after.question': function (plugin){
-      plugin.formslider.track('first time after question');
-    }
+  hideAnimationDuration: 300
 }
 ```

@@ -1,10 +1,9 @@
-class @ProgressBarPlugin extends AbstractFormsliderPlugin
+class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
   @config =
     selectorWrapper: '.progressbar-wrapper'
     selectorText: '.progress-text'
     selectorProgress: '.progress'
     animationSpeed: 300
-    adapter: 'ProgressBarAdapterPercent'
     initialProgress: null
     animateHeight: true
     dontCountOnRoles: [
@@ -23,21 +22,21 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
     @on('after', @doUpdate)
 
     @visible  = true
+    @countMax = @slidesThatCount()
     @wrapper  = $(@config.selectorWrapper)
-
     @config   = @configWithDataFrom(@wrapper)
 
     @progressText = $(@config.selectorText, @wrapper)
     @bar          = $(@config.selectorProgress, @wrapper)
-
     @bar.css('transition-duration', (@config.animationSpeed / 1000) + 's')
 
-    @countMax = @slidesThatCount()
+    @_set(0)
 
-    @adapter  = new window[@config.adapter](@, @config)
+  set: (indexFromZero, percent) ->
+    # this is the method you have to implement
 
-    @set(0)
-
+  # TODO calculate longest path based on controller plugins
+  #      do it on init and after each transition
   slidesThatCount: =>
     substract = 0
     for role in @config.dontCountOnRoles
@@ -45,16 +44,16 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
 
     @slides.length - substract
 
-  doUpdate: (e, current, direction, next) =>
-    index = @formslider.index()
+  doUpdate: (_event, current, direction, prev) =>
+    index = @index()
     unless @shouldBeVisible(current)
-      @set(index)
+      @_set(index)
       return @hide()
 
     @show()
-    @set(index) # we are on first step initial
+    @_set(index) # we are on first step initial
 
-  set: (indexFromZero) =>
+  _set: (indexFromZero) =>
     indexFromZero = @countMax if indexFromZero > @countMax
     indexFromZero = 0 if indexFromZero < 0
 
@@ -65,18 +64,19 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
 
     @bar.css('width', percent + '%')
 
-    @adapter.set(indexFromZero, percent)
+    @set(indexFromZero, percent)
 
   shouldBeVisible: (slide) =>
     ! ($(slide).data('role') in @config.hideOnRoles)
 
   hide: =>
     return unless @visible
-    @wrapper.animate({opacity: 0, height: 0}, @config.animationSpeed)
     @visible = false
+    @wrapper.stop().animate({opacity: 0, height: 0}, @config.animationSpeed)
 
   show: =>
     return if @visible
+    @visible = true
 
     animationProperties =
       opacity: 1
@@ -88,7 +88,4 @@ class @ProgressBarPlugin extends AbstractFormsliderPlugin
 
       animationProperties.height = "#{autoHeight}px"
 
-    @wrapper.animate(animationProperties, @config.animationSpeed)
-
-
-    @visible = true
+    @wrapper.stop().animate(animationProperties, @config.animationSpeed)

@@ -1,10 +1,7 @@
-class @ProgressBarAdapterPercent extends ProgressBarAdapterAbstract
+class @ProgressBarPercent extends AbstractFormsliderProgressBar
   set: (indexFromZero, percent) =>
-    @_setPercent(percent)
-
-  # optimize
-  _setPercent: (percent) =>
-    startFrom = parseInt(@plugin.progressText.text()) || 13
+    # load initial value from dom element or 1
+    startFrom = parseInt(@progressText.text()) || 1
 
     $(Counter: startFrom)
       .animate(
@@ -17,5 +14,6 @@ class @ProgressBarAdapterPercent extends ProgressBarAdapterAbstract
         }
     )
 
+  # instance callback for performance reasons
   _setPercentStepCallback: (percent) =>
-    @plugin.progressText.text(Math.ceil(percent) + '%')
+    @progressText.text(Math.ceil(percent) + '%')

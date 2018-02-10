@@ -8,10 +8,12 @@ class @TrackUserInteraction extends AbstractFormsliderPlugin
 
   setupTransportTracking: =>
     @on("after", (event, currentSlide, direction, prevSlide) =>
-      index = @formslider.index()
       role  = $(currentSlide).data('role')
-      @track("slide-#{index}-entered", direction)
-      @track("slide-role-#{role}-entered")
+      id    = $(currentSlide).data('id')
+      
+      @track("slide-#{@index()}-entered",  direction)
+      @track("slide-role-#{role}-entered", direction)
+      @track("slide-id-#{id}-entered",     direction) if id
     )
 
   setupQuestionAnswerTracking: =>

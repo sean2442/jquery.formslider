@@ -15,5 +15,5 @@ class @AnswerClick extends AbstractFormsliderPlugin
     @trigger('question-answered',
       $answer,
       $('input', $answer).val(),
-      @formslider.index()
+      @index()
     )

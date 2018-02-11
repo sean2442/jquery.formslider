@@ -35,4 +35,5 @@ class @OrderByIdController extends AbstractFormsliderPlugin
     if prevId != undefined
       nextSlide = @slideById(prevId)
       @cancel(event)
+      $(currentSlide).data('prev-id', undefined)
       @formslider.goto(nextSlide.index())

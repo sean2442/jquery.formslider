@@ -141,7 +141,7 @@
     };
 
     AbstractFormsliderPlugin.prototype.index = function() {
-      return this.formslider.driver.index();
+      return this.formslider.index();
     };
 
     AbstractFormsliderPlugin.prototype.slideByIndex = function(indexFromZero) {
@@ -935,6 +935,7 @@
       if (prevId !== void 0) {
         nextSlide = this.slideById(prevId);
         this.cancel(event);
+        $(currentSlide).data('prev-id', void 0);
         return this.formslider.goto(nextSlide.index());
       }
     };
@@ -1917,6 +1918,7 @@
       this.goto = bind(this.goto, this);
       this.prev = bind(this.prev, this);
       this.next = bind(this.next, this);
+      this.index = bind(this.index, this);
       this.onResize = bind(this.onResize, this);
       this.onReady = bind(this.onReady, this);
       this.onAfter = bind(this.onAfter, this);
@@ -1924,7 +1926,6 @@
       this.loadPlugins = bind(this.loadPlugins, this);
       this.setupDriver = bind(this.setupDriver, this);
       this.setupConfig = bind(this.setupConfig, this);
-      this.index = 0;
       this.logger = new Logger('jquery.formslider');
       if (!this.container.length) {
         this.logger.error('container is empty');
@@ -2006,6 +2007,10 @@
 
     FormSlider.prototype.onResize = function() {
       return this.events.trigger('resize');
+    };
+
+    FormSlider.prototype.index = function() {
+      return this.driver.index();
     };
 
     FormSlider.prototype.next = function() {

@@ -1,5 +1,9 @@
 # Changelog
 
+##### 1.1.1
+  * " `OrderByIdController`:reset prev-id after navigating back"
+  * re introduce formlsider.index
+
 ##### 1.1.0
   * rename plugins -> remove `Plugin` from names as its redundant information
   * implement `OrderByIdController` for non native order paths

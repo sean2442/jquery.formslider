@@ -296,7 +296,7 @@ Navigates prev/next by the native order of the slides.
 
 
 ##### *OrderByIdController*
-Navigates prev/next by next-id data attributes.
+Navigates prev/next by next-id data attributes. You should not use `driver.touch=true` when using fexslider, because the touch transition only respects native slide order.
 
 
 ### navigation plugins

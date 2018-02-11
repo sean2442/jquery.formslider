@@ -7,7 +7,6 @@
 class @FormSlider
   @config = null # see below
   constructor: (@container, config) ->
-    @index  = 0
     @logger = new Logger('jquery.formslider')
 
     unless @container.length
@@ -88,6 +87,9 @@ class @FormSlider
 
   onResize: =>
     @events.trigger('resize')
+
+  index: =>
+    @driver.index()
 
   # prev and next could be magical resolved controller events ;)
   next: =>

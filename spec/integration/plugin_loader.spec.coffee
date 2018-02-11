@@ -9,7 +9,7 @@ describe 'formslider', ->
   describe 'plugin_loader', ->
     describe 'load', ->
       it 'can load self defined plugins', ->
-        expect(formslider.driver.index()).toBe 0
+        expect(formslider.index()).toBe 0
 
         class window.MySelfDefinedPlugin extends AbstractFormsliderPlugin
           init: =>
@@ -30,7 +30,7 @@ describe 'formslider', ->
           formslider.next()
         )
 
-        expect(formslider.driver.index()).toBe 1
+        expect(formslider.index()).toBe 1
 
         expect(plugins.isLoaded('MySelfDefinedPlugin')).toBe true
 

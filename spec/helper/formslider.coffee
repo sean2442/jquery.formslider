@@ -5,7 +5,7 @@ formslider = null
 
 helper.formslider =
   currentSlide: ->
-    $(formslider.slides.get(formslider.driver.index()))
+    $(formslider.slides.get(formslider.index()))
 
   init: (debug=false, waitForReady=false) ->
     $wrapper = $('.formslider-wrapper')

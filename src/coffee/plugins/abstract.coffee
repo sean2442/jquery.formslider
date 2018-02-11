@@ -42,7 +42,7 @@ class @AbstractFormsliderPlugin
     @events.trigger('track', source, value, category)
 
   index: =>
-    @formslider.driver.index()
+    @formslider.index()
 
   slideByIndex: (indexFromZero = null) =>
     indexFromZero = @index() if indexFromZero == null

@@ -82,6 +82,9 @@ Structure:
 
 
 ### Methods
+##### index()
+  * return current index
+
 ##### next()
   * try to go one forward (triggers `controller.next`)
 

@@ -127,28 +127,41 @@ class @FormSlider
     answerSelectedClass: 'selected'
 
   plugins: [
-    # prev/next navigation controller
-    { class: 'BrowserHistoryController' }
-    { class: 'NativeOrderController'    }
+      # prev/next controller plugin
+      { class: 'BrowserHistoryController'   }
+      { class: 'NativeOrderController' }
 
-    # behaviour plugins
-    { class: 'AddSlideClasses'          }
-    { class: 'AnswerClick'              }
-    { class: 'InputFocus'               }
-    { class: 'JqueryValidate'           }
-    { class: 'InputNormalizer'          }
-    { class: 'InputSync'                }
-    { class: 'NextOnKey'                }
-    { class: 'ArrowNavigation'          }
-    { class: 'TabIndexSetter'           }
-    { class: 'NextOnClick'              }
-    { class: 'LoadingState'             }
-    { class: 'ProgressBarPercent'       }
-    { class: 'TrackUserInteraction'     }
-    { class: 'SimpleLoader'             }
-    { class: 'ContactSlide'             }
-    { class: 'ConfirmationSlide'        }
-    { class: 'EqualHeight'              }
-    { class: 'ScrollUp'                 }
-    { class: 'LazyLoad'                 }
+      #view
+      { class: 'SlideVisibility'          }
+      { class: 'LazyLoad'                 }
+      { class: 'EqualHeight'              }
+      { class: 'ScrollUp'                 }
+      { class: 'LoadingState'             }
+
+      # progressbar
+      { class: 'ProgressBarPercent'       }
+
+      # form
+      { class: 'AnswerMemory'             }
+      { class: 'AnswerClick'              }
+      { class: 'JqueryValidate'           }
+      { class: 'TabIndexSetter'           }
+      { class: 'InputSync'                }
+      { class: 'InputNormalizer'          }
+      { class: 'InputFocus'               }
+      { class: 'FormSubmission'           }
+
+      # navigation
+      { class: 'NavigateOnClick'          }
+      { class: 'NavigateOnKey'            }
+
+      # tracking
+      { class: 'TrackUserInteraction'     }
+      { class: 'TrackSessionInformation'  }
+
+      # loader
+      { class: 'SimpleLoader'             }
+
+      # generic
+      { class: 'AddSlideClasses'          }
   ]

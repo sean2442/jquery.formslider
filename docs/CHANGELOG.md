@@ -1,5 +1,9 @@
 # Changelog
 
+##### 1.1.2
+  * add link to minimal demo implementation
+  * fix empty first initialization with jquery plugin
+
 ##### 1.1.1
   * " `OrderByIdController`:reset prev-id after navigating back"
   * re introduce formlsider.index

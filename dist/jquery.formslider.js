@@ -2053,54 +2053,61 @@
       }, {
         "class": 'NativeOrderController'
       }, {
-        "class": 'AddSlideClasses'
+        "class": 'SlideVisibility'
       }, {
-        "class": 'AnswerClick'
-      }, {
-        "class": 'InputFocus'
-      }, {
-        "class": 'JqueryValidate'
-      }, {
-        "class": 'InputNormalizer'
-      }, {
-        "class": 'InputSync'
-      }, {
-        "class": 'NextOnKey'
-      }, {
-        "class": 'ArrowNavigation'
-      }, {
-        "class": 'TabIndexSetter'
-      }, {
-        "class": 'NextOnClick'
-      }, {
-        "class": 'LoadingState'
-      }, {
-        "class": 'ProgressBarPercent'
-      }, {
-        "class": 'TrackUserInteraction'
-      }, {
-        "class": 'SimpleLoader'
-      }, {
-        "class": 'ContactSlide'
-      }, {
-        "class": 'ConfirmationSlide'
+        "class": 'LazyLoad'
       }, {
         "class": 'EqualHeight'
       }, {
         "class": 'ScrollUp'
       }, {
-        "class": 'LazyLoad'
+        "class": 'LoadingState'
+      }, {
+        "class": 'ProgressBarPercent'
+      }, {
+        "class": 'AnswerMemory'
+      }, {
+        "class": 'AnswerClick'
+      }, {
+        "class": 'JqueryValidate'
+      }, {
+        "class": 'TabIndexSetter'
+      }, {
+        "class": 'InputSync'
+      }, {
+        "class": 'InputNormalizer'
+      }, {
+        "class": 'InputFocus'
+      }, {
+        "class": 'FormSubmission'
+      }, {
+        "class": 'NavigateOnClick'
+      }, {
+        "class": 'NavigateOnKey'
+      }, {
+        "class": 'TrackUserInteraction'
+      }, {
+        "class": 'TrackSessionInformation'
+      }, {
+        "class": 'SimpleLoader'
+      }, {
+        "class": 'AddSlideClasses'
       }
     ]
   };
 
   jQuery.fn.formslider = function(config) {
-    var $this;
-    $this = $(this);
-    if (config) {
-      $this.data('formslider', new FormSlider($this, config));
+    var $this, instance;
+    if (config == null) {
+      config = null;
     }
-    return $this.data('formslider');
+    $this = $(this);
+    instance = $this.data('formslider');
+    if (!instance || config !== null) {
+      $this.data('formslider', new FormSlider($this, config || {}));
+      instance = $this.data('formslider');
+    }
+    return instance;
   };
 
 }).call(this);

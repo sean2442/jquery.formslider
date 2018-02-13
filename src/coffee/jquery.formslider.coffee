@@ -1,8 +1,12 @@
 #= include formslider.coffee
 
-jQuery.fn.formslider = (config) ->
+jQuery.fn.formslider = (config = null) ->
   $this = $(this)
 
-  $this.data('formslider', new FormSlider($this, config)) if config
+  instance = $this.data('formslider')
 
-  return $this.data('formslider')
+  if !instance || config != null
+    $this.data('formslider', new FormSlider($this, config || {}))
+    instance = $this.data('formslider')
+
+  return instance

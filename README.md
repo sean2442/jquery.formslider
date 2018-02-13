@@ -22,6 +22,8 @@ npm install jquery.formslider --save
 ## Integration
 Check out this guide: [INTEGRATION](docs/INTEGRATION.md).
 
+A minimal demo can bechecked out here: https://github.com/formslider/jquery.formslider.demo.
+
 ### Example use case
 A possible use case is as follows:
   * you have a few **question slides** the user can answer and go forth and back

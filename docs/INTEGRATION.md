@@ -1,5 +1,7 @@
 # Integration
 
+A minimal demo can bechecked out here: https://github.com/formslider/jquery.formslider.demo.
+
 ## Load dependencies
 Insert the following dependencies into you html file:
 ```html

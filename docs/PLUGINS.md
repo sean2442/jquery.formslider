@@ -161,8 +161,9 @@ Does some normalization on inputs.
 Adds
   * `required="required"` if `required` attribute isset
   * `aria-required` if `required` attribute isset
-  * `x-inputmode` id `inputmode` isset
-  * `x-autocompletetype` id `autocompletetype` isset
+  * `x-inputmode` if `inputmode` isset
+  * `x-autocompletetype` if `autocompletetype` or `autocomplete` isset
+  * `autocomplete` and `autocompletetype` if one of them isset
 
 Default configuration:
 ```js

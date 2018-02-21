@@ -25,8 +25,6 @@ class @BrowserHistoryController extends AbstractFormsliderPlugin
     hash = null
     hash = "##{index}" if @config.updateHash
 
-    @logger.debug('pushCurrentHistoryState', hash)
-
     history.pushState(
       { index: index, time: @time },
       "index #{index}",
@@ -35,6 +33,7 @@ class @BrowserHistoryController extends AbstractFormsliderPlugin
 
   # controller method reacting on browser prev/next
   handleHistoryChange: (event) =>
+    return if @formslider.locking.locked
     return unless event.originalEvent?.state
 
     state = event.originalEvent.state

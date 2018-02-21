@@ -1,29 +1,19 @@
 class @SlideVisibility extends AbstractFormsliderPlugin
-  @config =
-    hideAnimationDuration: 300
-
   init: =>
     @on('before', @showNextSlide)
-    @on('after', @hideAdjescentSlides)
+    @on('after',  @hideOtherSlides)
 
-    @hide(@slides, 0)
+    @hide(@slides)
     @show(@slideByIndex())
 
   showNextSlide: (event, current, direction, next) =>
-    @show next
+    @show(next)
 
-  hideAdjescentSlides: (event, current, direction, prev) =>
-    @hide @slideByIndex(@index() + 1)
-    @hide @slideByIndex(@index() - 1)
-
-  hide: (slide, duration=null) =>
-    duration = @config.hideAnimationDuration if duration == null
-    $(slide)
-      .animate({opacity: 0}, duration)
-      .data('slide-visibility', 0)
+  hideOtherSlides: (event, current, direction, prev) =>
+    @hide(@slides.not(current))
+    
+  hide: (slide) =>
+    $(slide).css('opacity', 0)
 
   show: (slide) ->
-    $(slide)
-      .finish()
-      .css('opacity', 1)
-      .data('slide-visibility', 1)
+    $(slide).css('opacity', 1)

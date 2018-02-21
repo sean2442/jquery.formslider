@@ -1,5 +1,8 @@
 # Changelog
 
+##### WIP: 1.1.3
+  * adjust `SlideVisibility` plugin for unordered jumps, enhance performance
+
 ##### 1.1.2
   * add link to minimal demo implementation
   * fix empty first initialization with jquery plugin

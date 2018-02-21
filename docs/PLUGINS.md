@@ -520,11 +520,4 @@ config: {
 
 
 ##### *SlideVisibility*
-Hides slides before and after current until transition is allowed.
-Hides slides before and after current until transition is allowed.
-Default configuration:
-```js
-config: {
-  hideAnimationDuration: 300
-}
-```
+Hides slides before and after current slide until transition is allowed.

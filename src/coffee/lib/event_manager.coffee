@@ -13,13 +13,15 @@ class EventManager
     tags    = name.split('.')   # event name is first segment
     name    = tags.shift()      # tags are the rest
 
-    return unless @listener[name]?
-
     event = {
       type: name
       tags: tags
       canceled: false
     }
+
+    return event unless @listener[name]?
+
+
 
     for listener in @listener[name]
       # call listeners without tags or listeners with all tags

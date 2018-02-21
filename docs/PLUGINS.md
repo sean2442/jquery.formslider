@@ -400,6 +400,7 @@ Default configuration:
   animationSpeed: 300,
   initialProgress: null, // initial bar width in percent
   animateHeight: true,
+  dataKeyForMaxLength: 'progressbar-longest-path', // set count max based on data attribute
   dontCountOnRoles: [
     'loader',
     'contact',

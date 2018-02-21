@@ -5,6 +5,7 @@
   * remove `waitBeforeFocus` option from `InputFocus` as it works as expected after fixing after trigger timer issue with 1.1.0
   * return an event even when there is no listener (`EventManager`)
   * `BrowserHostoryController` only react if slider is unlocked
+  * `AbstractFormsliderProgressBar` now respects the data attribute `dataKeyForMaxLength`
 
 ##### 1.1.2
   * add link to minimal demo implementation

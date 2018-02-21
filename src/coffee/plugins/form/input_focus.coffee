@@ -1,7 +1,6 @@
 class @InputFocus extends AbstractFormsliderPlugin
   @config =
     selector: 'input:visible'
-    waitBeforeFocus: 200
     disableOnMobile: true
 
   init: =>
@@ -16,8 +15,4 @@ class @InputFocus extends AbstractFormsliderPlugin
       document.activeElement.blur() if "activeElement" in document
       return
 
-    setTimeout(
-      ->
-        $input.first().focus()
-    ,
-    @config.waitBeforeFocus)
+    $input.first().focus()

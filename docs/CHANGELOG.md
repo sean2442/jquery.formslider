@@ -2,6 +2,7 @@
 
 ##### WIP: 1.1.3
   * adjust `SlideVisibility` plugin for unordered jumps, enhance performance
+  * remove `waitBeforeFocus` option from `InputFocus` as it works as expected after fixing after trigger timer issue with 1.1.0
 
 ##### 1.1.2
   * add link to minimal demo implementation

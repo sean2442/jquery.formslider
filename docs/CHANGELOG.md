@@ -8,6 +8,7 @@
   * `AbstractFormsliderProgressBar` now respects the data attribute `dataKeyForMaxLength`
   * enhance `InputNormalizer`
   * `AnswerMemory` plugin now memorizes by question input id and answer input id
+  * `JqueryValidate` validtates now only writable inputs (not readonly)
 
 ##### 1.1.2
   * add link to minimal demo implementation

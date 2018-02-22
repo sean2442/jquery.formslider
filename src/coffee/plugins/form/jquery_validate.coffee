@@ -1,6 +1,6 @@
 class @JqueryValidate extends AbstractFormsliderPlugin
   @config =
-    selector: 'input:visible'
+    selector: 'input:visible:not([readonly])'
     validateOnEvents: ['leaving.next']
     # coffeelint: disable
     forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"

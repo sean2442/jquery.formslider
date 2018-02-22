@@ -9,7 +9,8 @@
   * enhance `InputNormalizer`
   * `AnswerMemory` plugin now memorizes by question input id and answer input id
   * `JqueryValidate` validtates now only writable inputs (not readonly)
-  * `AnswerClick` trigger now events in form of @trigger('question-answered', questionId, answerId, asnwerValue)
+  * `AnswerClick` trigger now events in form of @trigger('question-answered', questionId, answerId, asnwerValue, slideIndex)
+  * `TrackUserInteraction` respects new `AnswerClick` event signature
 
 ##### 1.1.2
   * add link to minimal demo implementation

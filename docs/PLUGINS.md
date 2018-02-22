@@ -104,7 +104,7 @@ The Plugin triggers the following events:
 ##### *AnswerMemory*
 Memorizes answers for later usage.
 
-Access by `@formslider.plugins.get('AnswerMemory').memoryBySlideId`.
+Access by `@formslider.plugins.get('AnswerMemory').memoryByQuestionId`.
 
 
 ##### *FormSubmission*

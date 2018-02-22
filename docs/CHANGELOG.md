@@ -7,6 +7,7 @@
   * `BrowserHostoryController` only react if slider is unlocked
   * `AbstractFormsliderProgressBar` now respects the data attribute `dataKeyForMaxLength`
   * enhance `InputNormalizer`
+  * `AnswerMemory` plugin now memorizes by question input id and answer input id
 
 ##### 1.1.2
   * add link to minimal demo implementation

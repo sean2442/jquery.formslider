@@ -93,8 +93,9 @@ $('.formslider-wrapper').formslider(
     touch:          true
 
   pluginsGlobalConfig:
-    answersSelector: '.answers'
-    answerSelector:  '.answer'
+    questionSelector: '.question-input'
+    answersSelector:  '.answers'
+    answerSelector:   '.answer'
     answerSelectedClass: 'selected'
 
   plugins: [

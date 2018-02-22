@@ -1,7 +1,6 @@
 class @AnswerClick extends AbstractFormsliderPlugin
   init: =>
-    $answers = $(@config.answerSelector, @container)
-    $answers.on('mouseup', @onAnswerClicked)
+    @container.on('mouseup', @config.answerSelector, @onAnswerClicked)
 
   onAnswerClicked: (event) =>
     event.preventDefault()
@@ -12,8 +11,13 @@ class @AnswerClick extends AbstractFormsliderPlugin
     $allAnswersinRow.removeClass(@config.answerSelectedClass)
     $answer.addClass(@config.answerSelectedClass)
 
+    $slide = @slideByIndex()
+
+    $questionInput = $(@config.questionSelector, $slide)
+    $answerInput   = $('input', $answer)
+
     @trigger('question-answered',
-      $answer,
-      $('input', $answer).val(),
-      @index()
+      $questionInput.prop('id'),
+      $answerInput.prop('id'),
+      $answerInput.val()
     )

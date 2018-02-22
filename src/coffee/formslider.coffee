@@ -122,8 +122,9 @@ class @FormSlider
 
   # will be merged into every plugin instance
   pluginsGlobalConfig:
-    answersSelector: '.answers'
-    answerSelector:  '.answer'
+    questionSelector: '.question-input'
+    answersSelector:  '.answers'
+    answerSelector:   '.answer'
     answerSelectedClass: 'selected'
 
   plugins: [

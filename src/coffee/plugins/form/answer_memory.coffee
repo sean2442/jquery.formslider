@@ -1,12 +1,13 @@
 class @AnswerMemory extends AbstractFormsliderPlugin
   init: =>
     @on('question-answered', @memorize)
-    @memoryBySlideId = {}
+    @memoryByQuestionId = {}
 
-  memorize: (event, $answer, value, slideIndex) =>
-    $slide       = $(@slides.get(slideIndex))
-    slideId      = $slide.data('id')
-
-    @memoryBySlideId[slideId] =
-      id:    $('input', $answer).prop('id')
+  memorize: (event, questionId, answerId, value) =>
+    @memoryByQuestionId[questionId] =
+      id:    answerId
       value: value
+
+    @trigger('answer-memory-updated',
+      @memoryByQuestionId
+    )

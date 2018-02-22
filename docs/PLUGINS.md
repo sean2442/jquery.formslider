@@ -98,7 +98,7 @@ config: {
 
 The Plugin triggers the following events:
 ```coffee
-@trigger('question-answered', $answer, value, slideIndex)
+@trigger('question-answered', questionId, answerId, asnwerValue)
 ```
 
 ##### *AnswerMemory*

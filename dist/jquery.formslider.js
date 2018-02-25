@@ -176,20 +176,21 @@
     }
 
     AnswerClick.prototype.init = function() {
-      var $answers;
-      $answers = $(this.config.answerSelector, this.container);
-      return $answers.on('mouseup', this.onAnswerClicked);
+      return this.container.on('mouseup', this.config.answerSelector, this.onAnswerClicked);
     };
 
     AnswerClick.prototype.onAnswerClicked = function(event) {
-      var $allAnswersinRow, $answer, $answerRow;
+      var $allAnswersinRow, $answer, $answerInput, $answerRow, $questionInput, $slide;
       event.preventDefault();
       $answer = $(event.currentTarget);
       $answerRow = $answer.closest(this.config.answersSelector);
       $allAnswersinRow = $(this.config.answerSelector, $answerRow);
       $allAnswersinRow.removeClass(this.config.answerSelectedClass);
       $answer.addClass(this.config.answerSelectedClass);
-      return this.trigger('question-answered', $answer, $('input', $answer).val(), this.index());
+      $slide = this.slideByIndex();
+      $questionInput = $(this.config.questionSelector, $slide);
+      $answerInput = $('input', $answer);
+      return this.trigger('question-answered', $questionInput.prop('id'), $answerInput.prop('id'), $answerInput.val(), this.index());
     };
 
     return AnswerClick;
@@ -207,17 +208,15 @@
 
     AnswerMemory.prototype.init = function() {
       this.on('question-answered', this.memorize);
-      return this.memoryBySlideId = {};
+      return this.memoryByQuestionId = {};
     };
 
-    AnswerMemory.prototype.memorize = function(event, $answer, value, slideIndex) {
-      var $slide, slideId;
-      $slide = $(this.slides.get(slideIndex));
-      slideId = $slide.data('id');
-      return this.memoryBySlideId[slideId] = {
-        id: $('input', $answer).prop('id'),
+    AnswerMemory.prototype.memorize = function(event, questionId, answerId, value) {
+      this.memoryByQuestionId[questionId] = {
+        id: answerId,
         value: value
       };
+      return this.trigger('answer-memory-updated', this.memoryByQuestionId);
     };
 
     return AnswerMemory;
@@ -411,7 +410,6 @@
 
     InputFocus.config = {
       selector: 'input:visible',
-      waitBeforeFocus: 200,
       disableOnMobile: true
     };
 
@@ -431,9 +429,7 @@
         }
         return;
       }
-      return setTimeout(function() {
-        return $input.first().focus();
-      }, this.config.waitBeforeFocus);
+      return $input.first().focus();
     };
 
     return InputFocus;
@@ -459,17 +455,25 @@
 
     InputNormalizer.prototype.prepareInputs = function() {
       $(this.config.selector, this.container).each(function(index, input) {
-        var $input, attribute, j, len, ref;
+        var $input, attribute, autocompleete, j, len, ref;
         $input = $(input);
         if ($input.attr('required')) {
           $input.data('required', 'required');
           $input.data('aria-required', 'true');
         }
+        autocompleete = $input.attr('autocompletetype');
+        if (!autocompleete) {
+          autocompleete = $input.attr('autocomplete');
+        }
+        if (autocompleete) {
+          $input.attr('autocompletetype', autocompleete);
+          $input.attr('autocomplete', autocompleete);
+        }
         ref = ['inputmode', 'autocompletetype'];
         for (j = 0, len = ref.length; j < len; j++) {
           attribute = ref[j];
           if ($input.attr(attribute)) {
-            $input.data("x-" + attribute, $input.attr(attribute));
+            $input.attr("x-" + attribute, $input.attr(attribute));
           }
         }
       });
@@ -536,7 +540,7 @@
     }
 
     JqueryValidate.config = {
-      selector: 'input:visible',
+      selector: 'input:visible:not([readonly])',
       validateOnEvents: ['leaving.next'],
       forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);",
       messages: {
@@ -823,7 +827,6 @@
       if (this.config.updateHash) {
         hash = "#" + index;
       }
-      this.logger.debug('pushCurrentHistoryState', hash);
       return history.pushState({
         index: index,
         time: this.time
@@ -832,6 +835,9 @@
 
     BrowserHistoryController.prototype.handleHistoryChange = function(event) {
       var ref, state;
+      if (this.formslider.locking.locked) {
+        return;
+      }
       if (!((ref = event.originalEvent) != null ? ref.state : void 0)) {
         return;
       }
@@ -1166,6 +1172,7 @@
       this._set = bind(this._set, this);
       this.doUpdate = bind(this.doUpdate, this);
       this.slidesThatCount = bind(this.slidesThatCount, this);
+      this.setCountMax = bind(this.setCountMax, this);
       this.init = bind(this.init, this);
       return AbstractFormsliderProgressBar.__super__.constructor.apply(this, arguments);
     }
@@ -1178,22 +1185,54 @@
       initialProgress: null,
       animateHeight: true,
       dontCountOnRoles: ['loader', 'contact', 'confirmation'],
-      hideOnRoles: ['zipcode', 'loader', 'contact', 'confirmation']
+      hideOnRoles: ['zipcode', 'loader', 'contact', 'confirmation'],
+      dataKeyForMaxLength: 'progressbar-longest-path'
     };
 
     AbstractFormsliderProgressBar.prototype.init = function() {
+      this.on('after.next', (function(_this) {
+        return function() {
+          return _this.currentIndex++;
+        };
+      })(this));
+      this.on('after.prev', (function(_this) {
+        return function() {
+          return _this.currentIndex--;
+        };
+      })(this));
       this.on('after', this.doUpdate);
       this.visible = true;
-      this.countMax = this.slidesThatCount();
+      this.setCountMax();
       this.wrapper = $(this.config.selectorWrapper);
       this.config = this.configWithDataFrom(this.wrapper);
       this.progressText = $(this.config.selectorText, this.wrapper);
       this.bar = $(this.config.selectorProgress, this.wrapper);
       this.bar.css('transition-duration', (this.config.animationSpeed / 1000) + 's');
-      return this._set(0);
+      this.currentIndex = 0;
+      return this._set(this.currentIndex);
     };
 
     AbstractFormsliderProgressBar.prototype.set = function(indexFromZero, percent) {};
+
+    AbstractFormsliderProgressBar.prototype.setCountMax = function(slide) {
+      var possibleCountMax;
+      if (slide == null) {
+        slide = null;
+      }
+      if (!this.config.dataKeyForMaxLength) {
+        this.countMax = this.slidesThatCount();
+        return;
+      }
+      if (slide === null) {
+        slide = this.slideByIndex();
+      }
+      possibleCountMax = $(slide).data(this.config.dataKeyForMaxLength);
+      if (!possibleCountMax) {
+        return;
+      }
+      possibleCountMax = parseInt(possibleCountMax, 10);
+      return this.countMax = possibleCountMax;
+    };
 
     AbstractFormsliderProgressBar.prototype.slidesThatCount = function() {
       var j, len, ref, role, substract;
@@ -1207,14 +1246,13 @@
     };
 
     AbstractFormsliderProgressBar.prototype.doUpdate = function(_event, current, direction, prev) {
-      var index;
-      index = this.index();
+      this.setCountMax(current);
       if (!this.shouldBeVisible(current)) {
-        this._set(index);
+        this._set(this.currentIndex);
         return this.hide();
       }
       this.show();
-      return this._set(index);
+      return this._set(this.currentIndex);
     };
 
     AbstractFormsliderProgressBar.prototype._set = function(indexFromZero) {
@@ -1406,7 +1444,7 @@
 
     TrackUserInteraction.prototype.setupQuestionAnswerTracking = function() {
       return this.on('question-answered', (function(_this) {
-        return function(event, $answer, value, slideIndex) {
+        return function(event, questionId, answerId, value, slideIndex) {
           var eventName;
           eventName = _this.config.questionAnsweredEvent;
           _this.track(eventName, slideIndex);
@@ -1600,21 +1638,16 @@
     extend(SlideVisibility, superClass);
 
     function SlideVisibility() {
-      this.hide = bind(this.hide, this);
-      this.hideAdjescentSlides = bind(this.hideAdjescentSlides, this);
+      this.hideOtherSlides = bind(this.hideOtherSlides, this);
       this.showNextSlide = bind(this.showNextSlide, this);
       this.init = bind(this.init, this);
       return SlideVisibility.__super__.constructor.apply(this, arguments);
     }
 
-    SlideVisibility.config = {
-      hideAnimationDuration: 300
-    };
-
     SlideVisibility.prototype.init = function() {
       this.on('before', this.showNextSlide);
-      this.on('after', this.hideAdjescentSlides);
-      this.hide(this.slides, 0);
+      this.on('after', this.hideOtherSlides);
+      this.hide(this.slides);
       return this.show(this.slideByIndex());
     };
 
@@ -1622,25 +1655,16 @@
       return this.show(next);
     };
 
-    SlideVisibility.prototype.hideAdjescentSlides = function(event, current, direction, prev) {
-      this.hide(this.slideByIndex(this.index() + 1));
-      return this.hide(this.slideByIndex(this.index() - 1));
+    SlideVisibility.prototype.hideOtherSlides = function(event, current, direction, prev) {
+      return this.hide(this.slides.not(current));
     };
 
-    SlideVisibility.prototype.hide = function(slide, duration) {
-      if (duration == null) {
-        duration = null;
-      }
-      if (duration === null) {
-        duration = this.config.hideAnimationDuration;
-      }
-      return $(slide).animate({
-        opacity: 0
-      }, duration).data('slide-visibility', 0);
+    SlideVisibility.prototype.hide = function(slide) {
+      return $(slide).css('opacity', 0).data('slide-visibility', 0);
     };
 
     SlideVisibility.prototype.show = function(slide) {
-      return $(slide).finish().css('opacity', 1).data('slide-visibility', 1);
+      return $(slide).css('opacity', 1).data('slide-visibility', 1);
     };
 
     return SlideVisibility;
@@ -1662,14 +1686,14 @@
       name = data.shift();
       tags = name.split('.');
       name = tags.shift();
-      if (this.listener[name] == null) {
-        return;
-      }
       event = {
         type: name,
         tags: tags,
         canceled: false
       };
+      if (this.listener[name] == null) {
+        return event;
+      }
       ref = this.listener[name];
       for (j = 0, len = ref.length; j < len; j++) {
         listener = ref[j];
@@ -2043,6 +2067,7 @@
       selector: '.formslider > .slide'
     },
     pluginsGlobalConfig: {
+      questionSelector: '.question-input',
       answersSelector: '.answers',
       answerSelector: '.answer',
       answerSelectedClass: 'selected'

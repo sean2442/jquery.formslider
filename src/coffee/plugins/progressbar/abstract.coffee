@@ -17,7 +17,8 @@ class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
       'contact'
       'confirmation'
     ]
-    dataKeyForMaxLength: 'progressbar-longest-path'
+    # if you need to manually adjust max length when using OrderByIdController
+    # dataKeyForMaxLength: 'progressbar-longest-path'
 
   init: =>
     @on('after.next', =>
@@ -45,7 +46,7 @@ class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
 
 
   setCountMax: (slide = null) =>
-    unless @config.dataKeyForMaxLength
+    unless @config?.dataKeyForMaxLength
       @countMax = @slidesThatCount()
       return
 

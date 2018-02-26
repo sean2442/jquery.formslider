@@ -71,7 +71,7 @@ coffee
 ```
 
 Have a look at [AbstractFormsliderPlugin::configWithDataFromElement](EXTENDING.md#configwithdatafromelement)
-and  [ProgressBarPlugin](https://github.com/formslider/jquery.formslider/blob/master/src/coffee/plugins/progress/progress_bar.coffee#L27) for an example implementation.
+and  [ProgressBarPlugin](https://github.com/formslider/jquery.formslider/blob/master/src/coffee/plugins/progressbar/absract.coffee#L35) for an example implementation.
 
 
 ## Available plugins
@@ -413,6 +413,9 @@ Default configuration:
     'contact',
     'confirmation'
   ]
+  // if you need to manually adjust max length when using OrderByIdController
+  // dataKeyForMaxLength: 'progressbar-longest-path'
+
 }
 ```
 

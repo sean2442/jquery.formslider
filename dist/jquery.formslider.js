@@ -1185,8 +1185,7 @@
       initialProgress: null,
       animateHeight: true,
       dontCountOnRoles: ['loader', 'contact', 'confirmation'],
-      hideOnRoles: ['zipcode', 'loader', 'contact', 'confirmation'],
-      dataKeyForMaxLength: 'progressbar-longest-path'
+      hideOnRoles: ['zipcode', 'loader', 'contact', 'confirmation']
     };
 
     AbstractFormsliderProgressBar.prototype.init = function() {
@@ -1215,11 +1214,11 @@
     AbstractFormsliderProgressBar.prototype.set = function(indexFromZero, percent) {};
 
     AbstractFormsliderProgressBar.prototype.setCountMax = function(slide) {
-      var possibleCountMax;
+      var possibleCountMax, ref;
       if (slide == null) {
         slide = null;
       }
-      if (!this.config.dataKeyForMaxLength) {
+      if (!((ref = this.config) != null ? ref.dataKeyForMaxLength : void 0)) {
         this.countMax = this.slidesThatCount();
         return;
       }

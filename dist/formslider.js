@@ -28,12 +28,13 @@
       this.onReady = onReady;
       this._internOnAfter = bind(this._internOnAfter, this);
       this._internOnBefore = bind(this._internOnBefore, this);
+      this._internOnReady = bind(this._internOnReady, this);
       this.index = bind(this.index, this);
       this.goto = bind(this.goto, this);
       this.config = ObjectExtender.extend({}, DriverFlexslider.config, this.config);
       this.config.after = this._internOnAfter;
       this.config.conditionalBefore = this._internOnBefore;
-      this.config.start = this.onReady;
+      this.config.start = this._internOnReady;
       this.slides = $(this.config.selector, this.container);
       this.container.flexslider(this.config);
       this.instance = this.container.data('flexslider');
@@ -45,6 +46,15 @@
 
     DriverFlexslider.prototype.index = function() {
       return this.instance.currentSlide;
+    };
+
+    DriverFlexslider.prototype._internOnReady = function(slider) {
+      return setTimeout((function(_this) {
+        return function() {
+          $(window).trigger('resize');
+          return _this.onReady();
+        };
+      })(this), 10);
     };
 
     DriverFlexslider.prototype._internOnBefore = function(currentIndex, direction, nextIndex) {
@@ -1200,15 +1210,19 @@
         };
       })(this));
       this.on('after', this.doUpdate);
+      this.on('ready', (function(_this) {
+        return function() {
+          _this.setCountMax();
+          return _this._set(_this.currentIndex);
+        };
+      })(this));
       this.visible = true;
-      this.setCountMax();
       this.wrapper = $(this.config.selectorWrapper);
       this.config = this.configWithDataFrom(this.wrapper);
       this.progressText = $(this.config.selectorText, this.wrapper);
       this.bar = $(this.config.selectorProgress, this.wrapper);
       this.bar.css('transition-duration', (this.config.animationSpeed / 1000) + 's');
-      this.currentIndex = 0;
-      return this._set(this.currentIndex);
+      return this.currentIndex = 0;
     };
 
     AbstractFormsliderProgressBar.prototype.set = function(indexFromZero, percent) {};

@@ -8,7 +8,7 @@ The main goal is to have different actions and policies triggered depending on w
 
 The jquery.formslider runs in production, is performance optimized, full responsive and touch capable. You can easily write you own plugins and implement custom slide behaviors.
 
-Have a look at the demo implementation [formslider.github.io](https://formslider.github.io/).
+Check out the demo implementation: [formslider.github.io](https://formslider.github.io/).
 
 ## Installation
 ```bash

@@ -28,9 +28,12 @@ class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
       @currentIndex--
     )
     @on('after', @doUpdate)
+    @on('ready', =>
+      @setCountMax()
+      @_set(@currentIndex)
+    )
 
     @visible  = true
-    @setCountMax()
     @wrapper  = $(@config.selectorWrapper)
     @config   = @configWithDataFrom(@wrapper)
 
@@ -39,7 +42,6 @@ class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
     @bar.css('transition-duration', (@config.animationSpeed / 1000) + 's')
 
     @currentIndex = 0
-    @_set(@currentIndex)
 
   set: (indexFromZero, percent) ->
     # this is the method you have to implement

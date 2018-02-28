@@ -2,7 +2,8 @@
 
 ##### 1.1.5
   * fix resize issue with `DriverFlexslider`
-  
+  * fix loading issue with `AbstractFormsliderProgressBar`
+
 ##### 1.1.4
   * dont set `dataKeyForMaxLength` per default for `AbstractFormsliderProgressBar`
 

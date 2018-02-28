@@ -4,7 +4,7 @@
 
 This jquery.formslider integrates a modified [Flexslider](https://github.com/formslider/FlexSlider) with logical slide pages that can have features and behaviors provided by plugins.
 
-The main goal is to have different actions triggered depending on what type the actual slide page is. You can stop going forward when a formula is invalid for example.
+The main goal is to have different actions and policies triggered depending on what role the actual slide is. For example: You can stop going forward when a formula input is invalid.
 
 The Library is very small, performance optimized, full responsive and touch capable. You can easily write you own plugins and implement custom slide behavior.
 

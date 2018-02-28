@@ -38,8 +38,8 @@ class @DriverFlexslider
     # fix: trigger resize on ready, so smooth height will not fail
     setTimeout(
       =>
-         $(window).trigger('resize')
-         @onReady()
+        $(window).trigger('resize')
+        @onReady()
     , 10)
 
   _internOnBefore: (currentIndex, direction, nextIndex) =>

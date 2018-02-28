@@ -78,7 +78,7 @@ class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
     @_set(@currentIndex) # we are on first step initial
 
   _set: (indexFromZero) =>
-    indexFromZero = @countMax if indexFromZero > @countMax
+    indexFromZero = @countMax - 1 if indexFromZero > @countMax - 1
     indexFromZero = 0 if indexFromZero < 0
 
     percent = ((indexFromZero + 1) / @countMax) * 100

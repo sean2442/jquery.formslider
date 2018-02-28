@@ -1,5 +1,8 @@
 # Changelog
 
+##### 1.1.6
+  * fix 100% check for `AbstractFormsliderProgressBar`
+  
 ##### 1.1.5
   * fix resize issue with `DriverFlexslider`
   * fix loading issue with `AbstractFormsliderProgressBar`

@@ -1270,8 +1270,8 @@
 
     AbstractFormsliderProgressBar.prototype._set = function(indexFromZero) {
       var percent;
-      if (indexFromZero > this.countMax) {
-        indexFromZero = this.countMax;
+      if (indexFromZero > this.countMax - 1) {
+        indexFromZero = this.countMax - 1;
       }
       if (indexFromZero < 0) {
         indexFromZero = 0;

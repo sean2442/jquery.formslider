@@ -8,7 +8,7 @@ The main goal is to have different actions triggered depending on what type the 
 
 The Library is very small, performance optimized, full responsive and touch capable. You can easily write you own plugins and implement custom slide behavior.
 
-Have a look at the example implementation [formslider.github.io](https://formslider.github.io/).
+Have a look at the demo implementation [formslider.github.io](https://formslider.github.io/).
 
 ## Installation
 ```bash
@@ -22,17 +22,17 @@ npm install jquery.formslider --save
 ## Integration
 Check out this guide: [INTEGRATION](docs/INTEGRATION.md).
 
-A minimal demo can bechecked out here: https://github.com/formslider/jquery.formslider.demo.
+Source code for a minmal setup without any styling: https://github.com/formslider/jquery.formslider.demo.
 
 ### Example use case
-A possible use case is as follows:
+This is a typical use case for marketer customers journey:
   * you have a few **question slides** the user can answer and go forth and back
-  * there is a **zipcode slide** the user enters a valid zip code
-  * the **loader slide** makes a loading animation while navigation is blocked
-  * the **contact slide** collects contact information and submits them together with the answers if the input is valid
-  * the **confirmation slide** show information while no further navigation allowed
+  * there is a **zipcode slide** the user can enter a 4-5 digit zipcode
+  * the **loader slide** shows a loading animation while navigation is blocked
+  * the **contact slide** collects contact information and submits them together with the answers
+  * the **confirmation slide** shows error/success message and gives more deeplinks
 
-This functionality is provided by plugins. You can develop your own flow as you like by extend or configure plugins.
+This functionality is provided by core or optional plugins. You can also develop your own logical flow by extend, interact  or configure these plugins.
 
 ### List of bundeled (core-)plugins
 ```bash

@@ -29,7 +29,13 @@ class @DriverFlexslider
 
   goto: (indexFromZero) =>
     @container.flexslider(indexFromZero, true, true)
-    #@instance.flexAnimate(indexFromZero, true)
+
+    # @instance.flexAnimate(indexFromZero, true)
+
+    # animationSpeed = @instance.vars.animationSpeed
+    # @instance.vars.animationSpeed = 0
+    # @instance.flexAnimate(indexFromZero)
+    # @instance.vars.animationSpeed = animationSpeed
 
   index: =>
     @instance.currentSlide

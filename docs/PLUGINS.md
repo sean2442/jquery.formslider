@@ -217,9 +217,13 @@ The Plugin triggers the following events:
 @trigger("validation.prepared")
 @trigger("validation.valid.#{currentRole}", currentSlide)
 @trigger("validation.invalid.#{currentRole}", currentSlide)
+$(window).trigger('resize') # if one ore more inputs are invalid -> height can be adjusted
 ```
 
-_Note:_ This plugin will log an error if no surrounding form tag was found.
+_Note:_ This plugin will throw an error if no surrounding form tag is present found.
+
+
+
 
 
 ###  generic plugins

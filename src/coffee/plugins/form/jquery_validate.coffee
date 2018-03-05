@@ -29,6 +29,11 @@ class @JqueryValidate extends AbstractFormsliderPlugin
       $inputs.filter('.error').first().focus()
       @trigger("validation.invalid.#{currentRole}", currentSlide)
       event.canceled = true
+      setTimeout(
+        ->
+          $(window).trigger('resize')
+        , 400
+      )
       return false
 
     @trigger("validation.valid.#{currentRole}", currentSlide)

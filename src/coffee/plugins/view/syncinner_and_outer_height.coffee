@@ -25,5 +25,4 @@ class @SyncInnerAndOuterHeight extends AbstractFormsliderPlugin
     return if $innerElements.length == 0 || $outerElements.length == 0
 
     newHeight = $innerElements.outerHeight(true)
-    console.log newHeight
     $outerElements.animate({'height': "#{newHeight}px"}, @config.animationDuration)

@@ -2,6 +2,7 @@
 
 ##### WIP: 1.1.7
   * fix trigger resize after `JqueryValidate.onValidate`
+  * add `SyncInnerAndOuterHeight` plugin for better unbounce integration
 
 ##### 1.1.6
   * fix 100% check for `AbstractFormsliderProgressBar`

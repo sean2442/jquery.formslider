@@ -529,3 +529,21 @@ config: {
 
 ##### *SlideVisibility*
 Hides slides before and after current slide until transition is allowed.
+
+##### *SyncInnerAndOuterHeight*
+Can adjustr the height of an fixed height outer lement that wraps around the slider.
+
+This could be helpfull with the ugly unbounce absolute poistioned layout builder.
+
+Default configuration:
+```js
+config: {
+  wait: 200,
+  animationDuration: 400,
+  selectorInnerElement: '.formslider-wrapper',
+  selectorOuterElement: '.formslider-wrapper',
+  selectParent: function (plugin){
+    return $(plugin.config.selectorOuterElement).parent();
+  }
+}
+```

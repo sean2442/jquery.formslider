@@ -126,12 +126,6 @@ config: {
     method:   'POST'
   }
 
-  submitter: {
-    class: 'FormSubmitterCollect',
-    endpoint: '#',
-    method:   'POST'
-  }  
-
   // submitter: {
   //   class: 'FormSubmitterSubmit'
   // }    

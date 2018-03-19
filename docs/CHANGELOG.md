@@ -1,6 +1,6 @@
 # Changelog
 
-##### WIP: 1.1.7
+##### 1.1.7
   * fix trigger resize after `JqueryValidate.onValidate`
   * fix `FormSubmission` null/false check for `loadHiddenFrameOnSuccess`
   * `FormSubmitterAbstract` respects now static config for submitter implementation

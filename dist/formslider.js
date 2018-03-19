@@ -288,7 +288,8 @@
     };
 
     FormSubmission.prototype.loadHiddenFrameOnSuccess = function(url) {
-      if (this.config.loadHiddenFrameOnSuccess == null) {
+      var ref;
+      if (!((ref = this.config) != null ? ref.loadHiddenFrameOnSuccess : void 0)) {
         return;
       }
       return $('<iframe>', {
@@ -312,6 +313,7 @@
       this.config = config1;
       this.form = form;
       this.supressNaturalFormSubmit = bind(this.supressNaturalFormSubmit, this);
+      this.config = ObjectExtender.extend({}, this.constructor.config, this.config);
     }
 
     FormSubmitterAbstract.prototype.supressNaturalFormSubmit = function() {
@@ -349,6 +351,10 @@
   this.FormSubmitterCollect = (function(superClass) {
     extend(FormSubmitterCollect, superClass);
 
+    FormSubmitterCollect.config = {
+      visitedSlideSelector: '.slide-visited'
+    };
+
     function FormSubmitterCollect(plugin1, config1, form) {
       this.plugin = plugin1;
       this.config = config1;
@@ -369,11 +375,18 @@
     };
 
     FormSubmitterCollect.prototype.collectInputs = function() {
-      var $input, $inputs, $other, $others, input, j, k, len, len1, other, result;
+      var $container, $input, $inputs, input, j, k, len, len1, result;
       result = {};
-      $inputs = $('input', this.plugin.container);
+      $inputs = $("input[name~='info']", $container);
       for (j = 0, len = $inputs.length; j < len; j++) {
         input = $inputs[j];
+        $input = $(input);
+        result[$input.attr('name')] = $input.val();
+      }
+      $container = $(this.config.visitedSlideSelector, $container);
+      $inputs = $('input, select, textarea', $container);
+      for (k = 0, len1 = $inputs.length; k < len1; k++) {
+        input = $inputs[k];
         $input = $(input);
         if ($input.is(':checkbox') || $input.is(':radio')) {
           if ($input.is(':checked')) {
@@ -382,12 +395,6 @@
         } else {
           result[$input.attr('name')] = $input.val();
         }
-      }
-      $others = $('select, textarea', this.plugin.container);
-      for (k = 0, len1 = $others.length; k < len1; k++) {
-        other = $others[k];
-        $other = $(other);
-        result[$other.attr('name')] = $other.val();
       }
       return result;
     };
@@ -583,6 +590,9 @@
         $inputs.filter('.error').first().focus();
         this.trigger("validation.invalid." + currentRole, currentSlide);
         event.canceled = true;
+        setTimeout(function() {
+          return $(window).trigger('resize');
+        }, 400);
         return false;
       }
       return this.trigger("validation.valid." + currentRole, currentSlide);
@@ -630,14 +640,20 @@
     extend(AddSlideClasses, superClass);
 
     function AddSlideClasses() {
+      this.addVisitedClass = bind(this.addVisitedClass, this);
       this._addAnswerCountClasses = bind(this._addAnswerCountClasses, this);
       this._doWithSlide = bind(this._doWithSlide, this);
       this.init = bind(this.init, this);
       return AddSlideClasses.__super__.constructor.apply(this, arguments);
     }
 
+    AddSlideClasses.config = {
+      slideVisitedClass: 'slide-visited'
+    };
+
     AddSlideClasses.prototype.init = function() {
-      return this.slides.each(this._doWithSlide);
+      this.slides.each(this._doWithSlide);
+      return this.on('after', this.addVisitedClass);
     };
 
     AddSlideClasses.prototype._doWithSlide = function(index, slide) {
@@ -672,6 +688,12 @@
         id = $slide.data('role');
       }
       return $slide.addClass("slide-id-" + id);
+    };
+
+    AddSlideClasses.prototype.addVisitedClass = function(event, current, direction, prev) {
+      console.log('huhu');
+      $(prev).addClass(this.config.slideVisitedClass);
+      return $(current).addClass(this.config.slideVisitedClass);
     };
 
     return AddSlideClasses;

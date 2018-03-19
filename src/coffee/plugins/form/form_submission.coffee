@@ -38,7 +38,7 @@ class @FormSubmission extends AbstractFormsliderPlugin
     @trigger(@config.errorEventName)
 
   loadHiddenFrameOnSuccess: (url) ->
-    return unless @config.loadHiddenFrameOnSuccess?
+    return unless @config?.loadHiddenFrameOnSuccess
     $('<iframe>', {
       src: @config.loadHiddenFrameOnSuccess
       id:  'formslider_conversion_frame'

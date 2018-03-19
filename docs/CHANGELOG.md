@@ -2,6 +2,7 @@
 
 ##### WIP: 1.1.7
   * fix trigger resize after `JqueryValidate.onValidate`
+  * fix `FormSubmission` null/false check for `loadHiddenFrameOnSuccess`
 
 ##### 1.1.6
   * fix 100% check for `AbstractFormsliderProgressBar`

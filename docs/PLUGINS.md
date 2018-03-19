@@ -229,11 +229,13 @@ Adds:
   * class `slide-role-[slideRole]` based on slide attribute `data-role=slideRole`
   * class `slide-number-[index]` based on slide order  
   * attribute `data-slide-number=[index]`
+  * adds `slide-visited` class to slide after transition
 
 Default configuration:
 ```js
 config: {
-  answerSelector:  '.answer' // from global config
+  answerSelector:  '.answer', // from global config
+  slideVisitedClass: 'slide-visited'
 }
 ```
 

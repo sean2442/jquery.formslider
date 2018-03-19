@@ -1,4 +1,7 @@
 class @FormSubmitterCollect extends FormSubmitterAbstract
+  @config =
+    visitedSlideSelector: '.slide-visited'
+
   constructor: (@plugin, @config, @form) ->
     super(@plugin, @config, @form)
     @supressNaturalFormSubmit()
@@ -16,20 +19,21 @@ class @FormSubmitterCollect extends FormSubmitterAbstract
   collectInputs: =>
     result = {}
 
-    $inputs = $('input', @plugin.container)
+    # all info inputs
+    $inputs = $("input[name~='info']", $container)
     for input in $inputs
       $input = $(input)
+      result[$input.attr('name')] = $input.val()
 
+    # inputs on visited slides
+    $container = $(@config.visitedSlideSelector, $container)
+    $inputs = $('input, select, textarea', $container)
+    for input in $inputs
+      $input = $(input)
       if $input.is(':checkbox') || $input.is(':radio')
-        if $input.is(':checked')
-          result[$input.attr('name')] = $input.val()
+        result[$input.attr('name')] = $input.val() if $input.is(':checked')
 
       else
         result[$input.attr('name')] = $input.val()
-
-    $others = $('select, textarea', @plugin.container)
-    for other in $others
-      $other = $(other)
-      result[$other.attr('name')] = $other.val()
 
     return result

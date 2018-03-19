@@ -5,6 +5,7 @@
   * fix `FormSubmission` null/false check for `loadHiddenFrameOnSuccess`
   * `FormSubmitterAbstract` respects now static config for submitter implementation
   * `AddSlideClasses` now adds a class to a slide that indicates that a slide was visited
+  * `FormSubmitterCollect` now selects inputs only from visited slides
 
 ##### 1.1.6
   * fix 100% check for `AbstractFormsliderProgressBar`

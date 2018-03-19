@@ -124,6 +124,7 @@ config: {
     class: 'FormSubmitterCollect',
     endpoint: '#',
     method:   'POST'
+    visitedSlideSelector: '.slide-visited'
   }
 
   // submitter: {

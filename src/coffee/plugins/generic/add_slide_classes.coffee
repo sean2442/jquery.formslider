@@ -33,6 +33,5 @@ class @AddSlideClasses extends AbstractFormsliderPlugin
     $slide.addClass("slide-id-#{id}")
 
   addVisitedClass: (event, current, direction, prev) =>
-    console.log 'huhu'
     $(prev).addClass(@config.slideVisitedClass)
     $(current).addClass(@config.slideVisitedClass)

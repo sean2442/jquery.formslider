@@ -4,6 +4,8 @@
   * add class ‚info‘ to hidden user information inputs
   * add `buildHiddenInput` to config for `TrackSessionInformation`
   * fix `FormSubmitterCollect` selects informational inputs now via class
+  * fix `InputSync` now handles radios/checkbox correctly
+  * add `syncGlobal` to `InputSync` so we can sync outside the the formslider
 
 ##### 1.1.7
   * fix trigger resize after `JqueryValidate.onValidate`

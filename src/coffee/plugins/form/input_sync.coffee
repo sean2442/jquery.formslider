@@ -2,22 +2,45 @@ class @InputSync extends AbstractFormsliderPlugin
   @config =
     selector: 'input'
     attribute: 'name'
+    syncGlobal: false
 
   init: =>
     @storage = {}
     @on('after', @onAfter)
 
   onAfter: (event, currentSlide, direction, prevSlide) =>
-    $inputsHere  = $(@config.selector, prevSlide)
+    $inputsHere = @readInputs(prevSlide)
+
+    @writeInputs(currentSlide, $inputsHere)
+
+  readInputs: (slide) =>
+    $inputsHere  = $(@config.selector, slide)
 
     $inputsHere.each( (index, input) =>
       $input = $(input)
-      @storage[$input.attr(@config.attribute)] = $input.val()
+      if $input.is(':checkbox') || $input.is(':radio')
+        if $input.is(':checked')
+          @storage[$input.attr(@config.attribute)] = $input.val()
+
+      else
+        @storage[$input.attr(@config.attribute)] = $input.val()
     )
 
-    $inputsThere = $(@config.selector, currentSlide)
-    $inputsThere.each( (index, input) =>
-      $input = $(input)
+  writeInputs: (slide, $inputsHere) =>
+    if @config.syncGlobal
+      $inputsThere = $(@config.selector)
+    else
+      $inputsThere = $(@config.selector, slide)
+
+    $inputsThere.not($inputsHere).each( (index, input) =>
+      $input    = $(input)
       inputName = $input.attr(@config.attribute)
-      $input.val(@storage[inputName]) if @storage[inputName]
+
+      return unless @storage[inputName]
+
+      if $input.is(':checkbox') || $input.is(':radio')
+        if $input.attr('value') == @storage[inputName]
+          $input.attr('checked', 'checked')
+      else
+        $input.val(@storage[inputName])
     )

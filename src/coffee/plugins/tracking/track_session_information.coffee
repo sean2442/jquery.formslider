@@ -13,6 +13,14 @@ class @TrackSessionInformation extends AbstractFormsliderPlugin
         plugin.inform('channel', $.tracking.channel())
         plugin.inform('campaign', $.tracking.campaign())
 
+    buildHiddenInput: (name, value) ->
+      $('<input>', {
+        type: 'hidden'
+        name: "info[#{name}]"
+        class: 'info'
+        value: value
+      })
+
   init: =>
     @on('first-interaction', @onFirstInteraction)
 
@@ -24,10 +32,5 @@ class @TrackSessionInformation extends AbstractFormsliderPlugin
     @track(name, value, 'info')
 
     @container.append(
-      $('<input>', {
-        type: 'hidden'
-        name: "info[#{name}]"
-        class: 'info'
-        value: value
-      })
+      @config.buildHiddenInput(name, value)
     )

@@ -448,6 +448,14 @@ config: {
       plugin.inform('channel', $.tracking.channel());
       plugin.inform('campaign', $.tracking.campaign());
     }
+  },
+  buildHiddenInput: function(name, value){
+    $('<input>', {
+      type: 'hidden',
+      name: "info[#{name}]",
+      class: 'info',
+      value: value
+    });
   }
 }
 ```

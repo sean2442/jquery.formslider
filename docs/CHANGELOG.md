@@ -2,6 +2,7 @@
 
 ##### WIP: 1.1.8
   * add class ‚info‘ to hidden user information inputs
+  * add `buildHiddenInput` to config for `TrackSessionInformation`
 
 ##### 1.1.7
   * fix trigger resize after `JqueryValidate.onValidate`

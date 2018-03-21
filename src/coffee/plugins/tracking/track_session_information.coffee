@@ -27,6 +27,7 @@ class @TrackSessionInformation extends AbstractFormsliderPlugin
       $('<input>', {
         type: 'hidden'
         name: "info[#{name}]"
+        class: 'info'
         value: value
       })
     )

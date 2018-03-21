@@ -3,6 +3,7 @@
 ##### WIP: 1.1.8
   * add class ‚info‘ to hidden user information inputs
   * add `buildHiddenInput` to config for `TrackSessionInformation`
+  * fix `FormSubmitterCollect` selects informational inputs now via class
 
 ##### 1.1.7
   * fix trigger resize after `JqueryValidate.onValidate`

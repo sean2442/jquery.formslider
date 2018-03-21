@@ -20,7 +20,7 @@ class @FormSubmitterCollect extends FormSubmitterAbstract
     result = {}
 
     # all info inputs
-    $inputs = $("input[name~='info']", $container)
+    $inputs = $("input.info", $container)
     for input in $inputs
       $input = $(input)
       result[$input.attr('name')] = $input.val()

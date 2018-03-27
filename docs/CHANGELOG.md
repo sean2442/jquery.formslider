@@ -1,7 +1,8 @@
 # Changelog
 
 ##### WIP: 1.1.8
-  * add class ‚info‘ to hidden user information inputs
+  * track google client id via `formslider.tracking` plugin
+  * add class `info` to hidden user information inputs
   * add `buildHiddenInput` to config for `TrackSessionInformation`
   * fix `FormSubmitterCollect` selects informational inputs now via class
   * fix `InputSync` now handles radios/checkbox correctly

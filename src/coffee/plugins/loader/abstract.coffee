@@ -6,6 +6,7 @@ class @AbstractFormsliderLoader extends AbstractFormsliderPlugin
     @on('after.loader', @onLoaderStart)
     @on('leaving.loader', @onLeaving)
     @locking = new Locking(false)
+    @slide   = @slideByRole('loader')
 
   onLoaderStart: (event, currentSlide, direction, nextSlide) =>
     @start() unless @locking.locked
@@ -17,10 +18,10 @@ class @AbstractFormsliderLoader extends AbstractFormsliderPlugin
   start: =>
     return false if @locking.locked
     @locking.lock()
-    @logger.debug "start(#{@config.duration})"
+    @logger.debug "start(#{@config?.duration || 1000})"
     setTimeout(
       @doAnimation,
-      @config.duration
+      @config?.duration || 1000
     )
 
   doAnimation: ->

@@ -1,6 +1,7 @@
 # Changelog
 
 ##### WIP: 1.1.8
+  * add `@slide` to `AbstractFormsliderLoader`
   * track google client id via `formslider.tracking` plugin
   * add class `info` to hidden user information inputs
   * add `buildHiddenInput` to config for `TrackSessionInformation`

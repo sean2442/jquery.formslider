@@ -156,6 +156,7 @@ Does some normalization on inputs.
 Adds
   * `required="required"` if `required` attribute isset
   * `aria-required` if `required` attribute isset
+  * adds `inputmode="..."` for inptuts of type number, tel, email, url
   * `x-inputmode` if `inputmode` isset
   * `x-autocompletetype` if `autocompletetype` or `autocomplete` isset
   * `autocomplete` and `autocompletetype` if one of them isset

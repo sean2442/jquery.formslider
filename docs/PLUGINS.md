@@ -181,19 +181,28 @@ config: {
 
 
 ##### *JqueryValidate*
-Validates inputs before leaving a slide. Uses [jquery-validation](https://github.com/jquery-validation/jquery-validation).
+Validates inputs on current slide before leaving this slide. Will stop leaving when not all inputs are valid. Uses [jquery-validation](https://github.com/jquery-validation/jquery-validation).
+
 Default configuration:
 ```js
 config: {
-  selector: 'input:visible'
-  validateOnEvents: ['leaving.next']
-  forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-  messages:
-    required:  'Required'
-    maxlength: 'To long'
-    minlength: 'To short'
-    email:     'Enter valid E-Mail'
-
+  validationSelector: 'input:visible:not([readonly])',
+  preparationSelector: 'input:not([readonly])',
+  validateOnEvents: ['leaving.next'],
+  forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);",
+  pattern:{
+    numeric: '\\d*',
+    tel: '^[0-9\\-\\+\\s\\(\\)]*$'
+  },
+  messages:{
+    required:  'Required',
+    maxlength: 'To long',
+    minlength: 'To short',
+    tel:       'Enter valid phone number',
+    email:     'Enter valid email',
+    number:    'Enter valid number',
+    pattern:   'Invalid input'
+  }
 }
 ```
 
@@ -204,6 +213,8 @@ The plugin automatically detects the following attributes:
   * maxlength
   * type="email"
   * type="number"
+  * type="tel"
+  * pattern="..."
   * data-force-max-length="1"   # will truncate input if longer
   * data-without-spinner"1"     # will prevent spinner input on number types
 ```
@@ -213,12 +224,21 @@ The Plugin triggers the following events:
 @trigger("validation.prepared")
 @trigger("validation.valid.#{currentRole}", currentSlide)
 @trigger("validation.invalid.#{currentRole}", currentSlide)
-$(window).trigger('resize') # if one ore more inputs are invalid -> height can be adjusted
+$(window).trigger('resize') # if one ore more inputs are invalid -> height could be adjusted
 ```
 
-_Note:_ This plugin will throw an error if no surrounding form tag is present found.
+_Note:_ This plugin will throw an error if no surrounding form tag is present.
 
+_Note:_ `data-without-spinner"1"` needs some additional styling:
+```sass
+input.without-spinner
+  -moz-appearance: textfield
 
+input.without-spinner::-webkit-outer-spin-button,
+input.without-spinner::-webkit-inner-spin-button
+  -webkit-appearance: none
+  margin: 0
+```
 
 
 

@@ -1,6 +1,7 @@
 # Changelog
 
 ##### WIP: 1.1.8
+  * refactor `JqueryValidate`, real validation for number, email, tel or pattern based
   * refactor `InputNormalizer`, adds `inputmode="..."` for inptuts of type number, tel, email, url
   * add `@slide` to `AbstractFormsliderLoader`
   * track google client id via `formslider.tracking` plugin

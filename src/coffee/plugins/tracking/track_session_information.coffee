@@ -12,7 +12,7 @@ class @TrackSessionInformation extends AbstractFormsliderPlugin
       if plugin.formslider.plugins.isLoaded('JqueryTracking')
         plugin.inform('channel', $.tracking.channel())
         plugin.inform('campaign', $.tracking.campaign())
-        JqueryTrackingGHelper.getClientId( (id) =>
+        JqueryTrackingGHelper.getClientId( (id) ->
           plugin.inform('clientId', id)
         )
 

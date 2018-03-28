@@ -16,13 +16,13 @@ class @InputNormalizer extends AbstractFormsliderPlugin
     )
     return # performance, dont return loops in coffee
 
-  normalizeRequired: ($input) =>
+  normalizeRequired: ($input) ->
     return unless $input.attr('required')
 
     $input.data('required', 'required')
     $input.data('aria-required', 'true')
 
-  normalizeAutocomplete: ($input) =>
+  normalizeAutocomplete: ($input) ->
     autocompleete = $input.attr('autocompletetype')
     autocompleete = $input.attr('autocomplete') unless autocompleete
 
@@ -31,7 +31,7 @@ class @InputNormalizer extends AbstractFormsliderPlugin
     $input.attr('autocompletetype', autocompleete)
     $input.attr('autocomplete', autocompleete)
 
-  normalizeInputmode: ($input) =>
+  normalizeInputmode: ($input) ->
     return if $input.attr('inputmode')
 
     switch $input.attr('type')
@@ -41,7 +41,7 @@ class @InputNormalizer extends AbstractFormsliderPlugin
       when 'url'    then $input.attr('inputmode', 'url')
 
   # Firefox OS
-  normalizeXAttributes: ($input) =>
+  normalizeXAttributes: ($input) ->
     for attribute in ['inputmode', 'autocompletetype']
       if $input.attr(attribute)
         $input.attr("x-#{attribute}", $input.attr(attribute))

@@ -53,16 +53,16 @@ class @JqueryValidate extends AbstractFormsliderPlugin
     )
 
   setupValidationRules: ->
-    jQuery.validator.addMethod( 'pattern', (value, element, options) =>
+    jQuery.validator.addMethod( 'pattern', (value, element, options) ->
       return value.match($(element).attr('pattern'))
     )
 
-    jQuery.validator.addMethod( 'tel', (value, element, options) =>
+    jQuery.validator.addMethod( 'tel', (value, element, options) ->
       pattern = $(element).attr('pattern') || @config.pattern.tel
       return value.match(pattern)
     )
 
-    jQuery.validator.addMethod( 'number', (value, element, options) =>
+    jQuery.validator.addMethod( 'number', (value, element, options) ->
       pattern = $(element).attr('pattern') || @config.pattern.number
       return value.match(pattern)
     )

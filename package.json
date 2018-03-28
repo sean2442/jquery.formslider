@@ -1,6 +1,6 @@
 {
   "name": "jquery.formslider",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "This module helps to handle formslider clicks and events with google analytics.",
   "main": "dist/jquery.formslider.js",
   "repository": {
@@ -52,5 +52,7 @@
     "flexslider",
     "formslider"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "npm": "^5.8.0"
+  }
 }

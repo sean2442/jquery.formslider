@@ -377,7 +377,7 @@
     FormSubmitterCollect.prototype.collectInputs = function() {
       var $container, $input, $inputs, input, j, k, len, len1, result;
       result = {};
-      $inputs = $("input[name~='info']", $container);
+      $inputs = $("input.info", $container);
       for (j = 0, len = $inputs.length; j < len; j++) {
         input = $inputs[j];
         $input = $(input);
@@ -457,43 +457,78 @@
     extend(InputNormalizer, superClass);
 
     function InputNormalizer() {
-      this.prepareInputs = bind(this.prepareInputs, this);
+      this.mormalizeInputs = bind(this.mormalizeInputs, this);
       this.init = bind(this.init, this);
       return InputNormalizer.__super__.constructor.apply(this, arguments);
     }
 
     InputNormalizer.config = {
-      selector: 'input:visible'
+      selector: 'input'
     };
 
     InputNormalizer.prototype.init = function() {
-      return this.prepareInputs();
+      return this.mormalizeInputs();
     };
 
-    InputNormalizer.prototype.prepareInputs = function() {
-      $(this.config.selector, this.container).each(function(index, input) {
-        var $input, attribute, autocompleete, j, len, ref;
-        $input = $(input);
-        if ($input.attr('required')) {
-          $input.data('required', 'required');
-          $input.data('aria-required', 'true');
+    InputNormalizer.prototype.mormalizeInputs = function() {
+      $(this.config.selector, this.container).each((function(_this) {
+        return function(index, input) {
+          var $input;
+          $input = $(input);
+          _this.normalizeRequired($input);
+          _this.normalizeAutocomplete($input);
+          _this.normalizeInputmode($input);
+          return _this.normalizeXAttributes($input);
+        };
+      })(this));
+    };
+
+    InputNormalizer.prototype.normalizeRequired = function($input) {
+      if (!$input.attr('required')) {
+        return;
+      }
+      $input.data('required', 'required');
+      return $input.data('aria-required', 'true');
+    };
+
+    InputNormalizer.prototype.normalizeAutocomplete = function($input) {
+      var autocompleete;
+      autocompleete = $input.attr('autocompletetype');
+      if (!autocompleete) {
+        autocompleete = $input.attr('autocomplete');
+      }
+      if (!autocompleete) {
+        return;
+      }
+      $input.attr('autocompletetype', autocompleete);
+      return $input.attr('autocomplete', autocompleete);
+    };
+
+    InputNormalizer.prototype.normalizeInputmode = function($input) {
+      if ($input.attr('inputmode')) {
+        return;
+      }
+      switch ($input.attr('type')) {
+        case 'number':
+          return $input.attr('inputmode', 'numeric');
+        case 'tel':
+          return $input.attr('inputmode', 'tel');
+        case 'email':
+          return $input.attr('inputmode', 'email');
+        case 'url':
+          return $input.attr('inputmode', 'url');
+      }
+    };
+
+    InputNormalizer.prototype.normalizeXAttributes = function($input) {
+      var attribute, j, len, ref;
+      ref = ['inputmode', 'autocompletetype'];
+      for (j = 0, len = ref.length; j < len; j++) {
+        attribute = ref[j];
+        if ($input.attr(attribute)) {
+          $input.attr("x-" + attribute, $input.attr(attribute));
         }
-        autocompleete = $input.attr('autocompletetype');
-        if (!autocompleete) {
-          autocompleete = $input.attr('autocomplete');
-        }
-        if (autocompleete) {
-          $input.attr('autocompletetype', autocompleete);
-          $input.attr('autocomplete', autocompleete);
-        }
-        ref = ['inputmode', 'autocompletetype'];
-        for (j = 0, len = ref.length; j < len; j++) {
-          attribute = ref[j];
-          if ($input.attr(attribute)) {
-            $input.attr("x-" + attribute, $input.attr(attribute));
-          }
-        }
-      });
+      }
     };
 
     return InputNormalizer;
@@ -504,6 +539,8 @@
     extend(InputSync, superClass);
 
     function InputSync() {
+      this.writeInputs = bind(this.writeInputs, this);
+      this.readInputs = bind(this.readInputs, this);
       this.onAfter = bind(this.onAfter, this);
       this.init = bind(this.init, this);
       return InputSync.__super__.constructor.apply(this, arguments);
@@ -511,7 +548,8 @@
 
     InputSync.config = {
       selector: 'input',
-      attribute: 'name'
+      attribute: 'name',
+      syncGlobal: false
     };
 
     InputSync.prototype.init = function() {
@@ -520,22 +558,49 @@
     };
 
     InputSync.prototype.onAfter = function(event, currentSlide, direction, prevSlide) {
-      var $inputsHere, $inputsThere;
-      $inputsHere = $(this.config.selector, prevSlide);
-      $inputsHere.each((function(_this) {
+      var $inputsHere;
+      $inputsHere = this.readInputs(prevSlide);
+      return this.writeInputs(currentSlide, $inputsHere);
+    };
+
+    InputSync.prototype.readInputs = function(slide) {
+      var $inputsHere;
+      $inputsHere = $(this.config.selector, slide);
+      return $inputsHere.each((function(_this) {
         return function(index, input) {
           var $input;
           $input = $(input);
-          return _this.storage[$input.attr(_this.config.attribute)] = $input.val();
+          if ($input.is(':checkbox') || $input.is(':radio')) {
+            if ($input.is(':checked')) {
+              return _this.storage[$input.attr(_this.config.attribute)] = $input.val();
+            }
+          } else {
+            return _this.storage[$input.attr(_this.config.attribute)] = $input.val();
+          }
         };
       })(this));
-      $inputsThere = $(this.config.selector, currentSlide);
-      return $inputsThere.each((function(_this) {
+    };
+
+    InputSync.prototype.writeInputs = function(slide, $inputsHere) {
+      var $inputsThere;
+      if (this.config.syncGlobal) {
+        $inputsThere = $(this.config.selector);
+      } else {
+        $inputsThere = $(this.config.selector, slide);
+      }
+      return $inputsThere.not($inputsHere).each((function(_this) {
         return function(index, input) {
           var $input, inputName;
           $input = $(input);
           inputName = $input.attr(_this.config.attribute);
-          if (_this.storage[inputName]) {
+          if (!_this.storage[inputName]) {
+            return;
+          }
+          if ($input.is(':checkbox') || $input.is(':radio')) {
+            if ($input.attr('value') === _this.storage[inputName]) {
+              return $input.attr('checked', 'checked');
+            }
+          } else {
             return $input.val(_this.storage[inputName]);
           }
         };
@@ -557,14 +622,22 @@
     }
 
     JqueryValidate.config = {
-      selector: 'input:visible:not([readonly])',
+      validationSelector: 'input:visible:not([readonly])',
+      preparationSelector: 'input:not([readonly])',
       validateOnEvents: ['leaving.next'],
       forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);",
+      pattern: {
+        numeric: '\\d*',
+        tel: '^[0-9\\-\\+\\s\\(\\)]*$'
+      },
       messages: {
         required: 'Required',
         maxlength: 'To long',
         minlength: 'To short',
-        email: 'Enter valid E-Mail'
+        tel: 'Enter valid phone number',
+        email: 'Enter valid email',
+        number: 'Enter valid number',
+        pattern: 'Invalid input'
       }
     };
 
@@ -575,58 +648,91 @@
         eventName = ref[j];
         this.on(eventName, this.onValidate);
       }
+      this.setupValidationRules();
       this.prepareInputs();
       return this.trigger("validation.prepared");
     };
 
     JqueryValidate.prototype.onValidate = function(event, currentSlide, direction, nextSlide) {
       var $inputs, currentRole;
-      $inputs = $(this.config.selector, currentSlide);
+      $inputs = $(this.config.validationSelector, currentSlide);
       if (!$inputs.length) {
         return;
       }
       currentRole = $(currentSlide).data('role');
-      if (!$inputs.valid()) {
-        $inputs.filter('.error').first().focus();
-        this.trigger("validation.invalid." + currentRole, currentSlide);
-        event.canceled = true;
-        setTimeout(function() {
-          return $(window).trigger('resize');
-        }, 400);
-        return false;
+      if ($inputs.valid()) {
+        this.trigger("validation.valid." + currentRole, currentSlide);
+        return;
       }
-      return this.trigger("validation.valid." + currentRole, currentSlide);
+      $inputs.filter('.error').first().focus();
+      this.trigger("validation.invalid." + currentRole, currentSlide);
+      event.canceled = true;
+      return setTimeout(function() {
+        return $(window).trigger('resize');
+      }, 400);
     };
 
-    JqueryValidate.prototype.prepareInputs = function() {
-      return $(this.config.selector, this.container).each((function(_this) {
+    JqueryValidate.prototype.setupValidationRules = function() {
+      jQuery.validator.addMethod('pattern', function(value, element, options) {
+        return value.match($(element).attr('pattern'));
+      });
+      jQuery.validator.addMethod('tel', function(value, element, options) {
+        var pattern;
+        pattern = $(element).attr('pattern') || this.config.pattern.tel;
+        return value.match(pattern);
+      });
+      return jQuery.validator.addMethod('number', function(value, element, options) {
+        var pattern;
+        pattern = $(element).attr('pattern') || this.config.pattern.number;
+        return value.match(pattern);
+      });
+    };
+
+    JqueryValidate.prototype.setAttrUnless = function($target, attributeName, value) {
+      if (!$target.attr(attributeName)) {
+        return $target.attr(attributeName, value);
+      }
+    };
+
+    JqueryValidate.prototype.prepareInputs = function($inputs) {
+      return $(this.config.preparationSelector, this.container).each((function(_this) {
         return function(index, input) {
-          var $input, attribute, j, len, ref;
+          var $input, attribute, j, k, len, len1, ref, ref1;
           $input = $(input);
-          if ($input.attr('required')) {
-            $input.data('data-rule-required', 'true');
-            $input.data('data-msg-required', _this.config.messages.required);
+          switch ($input.attr('type')) {
+            case 'number':
+              $input.attr('data-rule-number', 'true');
+              _this.setAttrUnless($input, "data-msg-number", _this.config.messages.number);
+              break;
+            case 'tel':
+              $input.attr('data-rule-tel', 'true');
+              _this.setAttrUnless($input, "data-msg-tel", _this.config.messages.tel);
+              break;
+            case 'email':
+              $input.attr('data-rule-email', 'true');
+              _this.setAttrUnless($input, 'data-msg-email', _this.config.messages.email);
           }
-          if ($input.data('type') === 'number') {
-            $input.attr('pattern', '\\d*');
-            $input.attr('inputmode', 'numeric');
-          }
-          if ($input.data('without-spinner')) {
-            $input.addClass('without-spinner');
-          }
-          ref = ['maxlength', 'minlength'];
+          ref = ['required', 'pattern'];
           for (j = 0, len = ref.length; j < len; j++) {
             attribute = ref[j];
             if ($input.attr(attribute)) {
-              $input.data("data-rule-" + attribute, $input.attr(attribute));
-              $input.data("data-msg-" + attribute, _this.config.messages[attribute]);
+              $input.attr("data-rule-" + attribute, 'true');
+              _this.setAttrUnless($input, "data-msg-" + attribute, _this.config.messages[attribute]);
             }
           }
-          if ($input.data('force-max-length')) {
+          ref1 = ['maxlength', 'minlength'];
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            attribute = ref1[k];
+            if ($input.attr(attribute)) {
+              _this.setAttrUnless($input, "data-rule-" + attribute, $input.attr(attribute));
+              _this.setAttrUnless($input, "data-msg-" + attribute, _this.config.messages[attribute]);
+            }
+          }
+          if ($input.attr('data-force-max-length')) {
             $input.attr('oninput', _this.config.forceMaxLengthJs);
           }
-          if ($input.attr('type') === 'email') {
-            return $input.data('data-msg-email', _this.config.messages.email);
+          if ($input.attr('data-without-spinner')) {
+            return $input.addClass('without-spinner');
           }
         };
       })(this));
@@ -691,7 +797,6 @@
     };
 
     AddSlideClasses.prototype.addVisitedClass = function(event, current, direction, prev) {
-      console.log('huhu');
       $(prev).addClass(this.config.slideVisitedClass);
       return $(current).addClass(this.config.slideVisitedClass);
     };
@@ -768,7 +873,8 @@
     AbstractFormsliderLoader.prototype.init = function() {
       this.on('after.loader', this.onLoaderStart);
       this.on('leaving.loader', this.onLeaving);
-      return this.locking = new Locking(false);
+      this.locking = new Locking(false);
+      return this.slide = this.slideByRole('loader');
     };
 
     AbstractFormsliderLoader.prototype.onLoaderStart = function(event, currentSlide, direction, nextSlide) {
@@ -784,12 +890,13 @@
     };
 
     AbstractFormsliderLoader.prototype.start = function() {
+      var ref, ref1;
       if (this.locking.locked) {
         return false;
       }
       this.locking.lock();
-      this.logger.debug("start(" + this.config.duration + ")");
-      return setTimeout(this.doAnimation, this.config.duration);
+      this.logger.debug("start(" + (((ref = this.config) != null ? ref.duration : void 0) || 1000) + ")");
+      return setTimeout(this.doAnimation, ((ref1 = this.config) != null ? ref1.duration : void 0) || 1000);
     };
 
     AbstractFormsliderLoader.prototype.doAnimation = function() {};
@@ -811,6 +918,10 @@
       this.doAnimation = bind(this.doAnimation, this);
       return SimpleLoader.__super__.constructor.apply(this, arguments);
     }
+
+    SimpleLoader.config = {
+      duration: 1000
+    };
 
     SimpleLoader.prototype.doAnimation = function() {
       return this.stop();
@@ -1412,8 +1523,19 @@
         plugin.inform('jquery.formslider.version', plugin.formslider.config.version);
         if (plugin.formslider.plugins.isLoaded('JqueryTracking')) {
           plugin.inform('channel', $.tracking.channel());
-          return plugin.inform('campaign', $.tracking.campaign());
+          plugin.inform('campaign', $.tracking.campaign());
+          return JqueryTrackingGHelper.getClientId(function(id) {
+            return plugin.inform('clientId', id);
+          });
         }
+      },
+      buildHiddenInput: function(name, value) {
+        return $('<input>', {
+          type: 'hidden',
+          name: "info[" + name + "]",
+          "class": 'info',
+          value: value
+        });
       }
     };
 
@@ -1432,11 +1554,7 @@
 
     TrackSessionInformation.prototype.inform = function(name, value) {
       this.track(name, value, 'info');
-      return this.container.append($('<input>', {
-        type: 'hidden',
-        name: "info[" + name + "]",
-        value: value
-      }));
+      return this.container.append(this.config.buildHiddenInput(name, value));
     };
 
     return TrackSessionInformation;

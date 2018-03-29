@@ -2,6 +2,8 @@
 
 ##### 1.1.10
   * fix `JqueryValidate` transition prevention
+  * better integration tests for `JqueryValidate`
+
 ##### 1.1.9
   * add specs for plugin `JqueryValidate`
   * better performance for `JqueryValidate`

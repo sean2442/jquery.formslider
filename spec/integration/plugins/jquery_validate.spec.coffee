@@ -91,3 +91,22 @@ describe 'formslider', ->
 
         $input.attr('value', '1234a')
         expect(plugin.validate($input)).toBe false
+
+      it 'prevents going forward if invalid', ->
+        expect(formslider.index()).toEqual 0
+
+        formslider.next()
+
+        expect(formslider.index()).toEqual 0
+
+      it 'allows going forward if valid', ->
+        expect(formslider.index()).toEqual 0
+
+        $('input[type=text]').val('valid text value')
+        $('input[type=number]').val('12345')
+        $('input[type=tel]').val('+49 /30 42424242 - 23')
+        $('input[type=email]').val('tom@creative-workflow.berlin')
+
+        formslider.next()
+
+        expect(formslider.index()).toEqual 1

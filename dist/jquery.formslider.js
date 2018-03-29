@@ -616,19 +616,20 @@
 
     function JqueryValidate() {
       this.prepareInputs = bind(this.prepareInputs, this);
+      this.setupValidationRules = bind(this.setupValidationRules, this);
+      this.validate = bind(this.validate, this);
       this.onValidate = bind(this.onValidate, this);
       this.init = bind(this.init, this);
       return JqueryValidate.__super__.constructor.apply(this, arguments);
     }
 
     JqueryValidate.config = {
-      validationSelector: 'input:visible:not([readonly])',
-      preparationSelector: 'input:not([readonly])',
+      selector: 'input:visible:not([readonly])',
       validateOnEvents: ['leaving.next'],
       forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);",
       pattern: {
         numeric: '\\d*',
-        tel: '^[0-9\\-\\+\\s\\(\\)]*$'
+        tel: '^[0-9/\\-\\+\\s\\(\\)]*$'
       },
       messages: {
         required: 'Required',
@@ -648,23 +649,17 @@
         eventName = ref[j];
         this.on(eventName, this.onValidate);
       }
-      this.setupValidationRules();
-      this.prepareInputs();
-      return this.trigger("validation.prepared");
+      return this.setupValidationRules();
     };
 
-    JqueryValidate.prototype.onValidate = function(event, currentSlide, direction, nextSlide) {
+    JqueryValidate.prototype.onValidate = function(event, currentSlide, direction, prevSlide) {
       var $inputs, currentRole;
-      $inputs = $(this.config.validationSelector, currentSlide);
-      if (!$inputs.length) {
-        return;
-      }
       currentRole = $(currentSlide).data('role');
-      if ($inputs.valid()) {
+      $inputs = $(this.config.validationSelector, currentSlide);
+      if (this.validate($inputs)) {
         this.trigger("validation.valid." + currentRole, currentSlide);
         return;
       }
-      $inputs.filter('.error').first().focus();
       this.trigger("validation.invalid." + currentRole, currentSlide);
       event.canceled = true;
       return setTimeout(function() {
@@ -672,20 +667,36 @@
       }, 400);
     };
 
+    JqueryValidate.prototype.validate = function($inputs) {
+      if (!$inputs.length) {
+        return true;
+      }
+      this.prepareInputs($inputs);
+      if ($inputs.valid()) {
+        return true;
+      }
+      $inputs.filter('.error').first().focus();
+      return false;
+    };
+
     JqueryValidate.prototype.setupValidationRules = function() {
       jQuery.validator.addMethod('pattern', function(value, element, options) {
         return value.match($(element).attr('pattern'));
       });
-      jQuery.validator.addMethod('tel', function(value, element, options) {
-        var pattern;
-        pattern = $(element).attr('pattern') || this.config.pattern.tel;
-        return value.match(pattern);
-      });
-      return jQuery.validator.addMethod('number', function(value, element, options) {
-        var pattern;
-        pattern = $(element).attr('pattern') || this.config.pattern.number;
-        return value.match(pattern);
-      });
+      jQuery.validator.addMethod('tel', (function(_this) {
+        return function(value, element, options) {
+          var pattern;
+          pattern = $(element).attr('pattern') || _this.config.pattern.tel;
+          return value.match(pattern);
+        };
+      })(this));
+      return jQuery.validator.addMethod('number', (function(_this) {
+        return function(value, element, options) {
+          var pattern;
+          pattern = $(element).attr('pattern') || _this.config.pattern.number;
+          return value.match(pattern);
+        };
+      })(this));
     };
 
     JqueryValidate.prototype.setAttrUnless = function($target, attributeName, value) {
@@ -695,7 +706,7 @@
     };
 
     JqueryValidate.prototype.prepareInputs = function($inputs) {
-      return $(this.config.preparationSelector, this.container).each((function(_this) {
+      return $inputs.each((function(_this) {
         return function(index, input) {
           var $input, attribute, j, k, len, len1, ref, ref1;
           $input = $(input);
@@ -1979,19 +1990,19 @@
     };
 
     Logger.prototype.warn = function() {
-      var ref;
+      var ref, ref1;
       arguments[0] = this.namespace + "::" + arguments[0];
-      if ($.debug.isEnabled()) {
-        return (ref = $.debug).warn.apply(ref, arguments);
+      if ((ref = $.debug) != null ? ref.isEnabled() : void 0) {
+        return (ref1 = $.debug).warn.apply(ref1, arguments);
       }
       return typeof console !== "undefined" && console !== null ? typeof console.warn === "function" ? console.warn.apply(console, arguments) : void 0 : void 0;
     };
 
     Logger.prototype.error = function() {
-      var ref;
+      var ref, ref1;
       arguments[0] = this.namespace + "::" + arguments[0];
-      if ($.debug.isEnabled()) {
-        return (ref = $.debug).error.apply(ref, arguments);
+      if ((ref = $.debug) != null ? ref.isEnabled() : void 0) {
+        return (ref1 = $.debug).error.apply(ref1, arguments);
       }
       return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error.apply(console, arguments) : void 0 : void 0;
     };

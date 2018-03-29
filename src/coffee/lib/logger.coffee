@@ -15,7 +15,7 @@ class Logger
   warn: =>
     arguments[0] = "#{@namespace}::#{arguments[0]}"
 
-    return $.debug.warn(arguments...) if $.debug.isEnabled()
+    return $.debug.warn(arguments...) if $.debug?.isEnabled()
 
     # always log warnings to browser console
     console?.warn?(arguments...)
@@ -23,7 +23,7 @@ class Logger
   error: =>
     arguments[0] = "#{@namespace}::#{arguments[0]}"
 
-    return $.debug.error(arguments...) if $.debug.isEnabled()
+    return $.debug.error(arguments...) if $.debug?.isEnabled()
 
     # always log errors to browser console
     console?.error?(arguments...)

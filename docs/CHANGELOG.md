@@ -1,6 +1,10 @@
 # Changelog
 
+##### 1.1.9
   * add specs for plugin `JqueryValidate`
+  * better performance for `JqueryValidate`
+  * better error checking in `Logger`
+
 ##### 1.1.8
   * refactor `JqueryValidate`, real validation for number, email, tel or pattern based
   * refactor `InputNormalizer`, adds `inputmode="..."` for inptuts of type number, tel, email, url

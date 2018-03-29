@@ -186,13 +186,12 @@ Validates inputs on current slide before leaving this slide. Will stop leaving w
 Default configuration:
 ```js
 config: {
-  validationSelector: 'input:visible:not([readonly])',
-  preparationSelector: 'input:not([readonly])',
+  selector: 'input:visible:not([readonly])',
   validateOnEvents: ['leaving.next'],
   forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);",
   pattern:{
     numeric: '\\d*',
-    tel: '^[0-9\\-\\+\\s\\(\\)]*$'
+    tel: '^[0-9/\\-\\+\\s\\(\\)]*$'
   },
   messages:{
     required:  'Required',
@@ -221,7 +220,6 @@ The plugin automatically detects the following attributes:
 
 The Plugin triggers the following events:
 ```coffee
-@trigger("validation.prepared")
 @trigger("validation.valid.#{currentRole}", currentSlide)
 @trigger("validation.invalid.#{currentRole}", currentSlide)
 $(window).trigger('resize') # if one ore more inputs are invalid -> height could be adjusted

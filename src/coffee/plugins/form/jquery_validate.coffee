@@ -1,7 +1,6 @@
 class @JqueryValidate extends AbstractFormsliderPlugin
   @config =
-    validationSelector: 'input:visible:not([readonly])'
-    preparationSelector: 'input:not([readonly])'
+    selector: 'input:visible:not([readonly])'
 
     validateOnEvents: ['leaving.next']
     # coffeelint: disable
@@ -10,7 +9,7 @@ class @JqueryValidate extends AbstractFormsliderPlugin
 
     pattern:
       numeric: '\\d*'
-      tel: '^[0-9\\-\\+\\s\\(\\)]*$'
+      tel: '^[0-9/\\-\\+\\s\\(\\)]*$'
 
     messages:
       required:  'Required'
@@ -21,27 +20,21 @@ class @JqueryValidate extends AbstractFormsliderPlugin
       number:    'Enter valid number'
       pattern:   'Invalid input'
 
-
   init: =>
     for eventName in @config.validateOnEvents
       @on(eventName, @onValidate)
 
     @setupValidationRules()
-    @prepareInputs()
-    @trigger("validation.prepared")
 
-  onValidate: (event, currentSlide, direction, nextSlide) =>
-    $inputs = $(@config.validationSelector, currentSlide)
-
-    return if !$inputs.length
-
+  onValidate: (event, currentSlide, direction, prevSlide) =>
     currentRole = $(currentSlide).data('role')
 
-    if $inputs.valid()
+    $inputs = $(@config.validationSelector, currentSlide)
+
+    if @validate($inputs)
       @trigger("validation.valid.#{currentRole}", currentSlide)
       return
 
-    $inputs.filter('.error').first().focus()
     @trigger("validation.invalid.#{currentRole}", currentSlide)
     event.canceled = true
 
@@ -52,17 +45,27 @@ class @JqueryValidate extends AbstractFormsliderPlugin
       , 400
     )
 
-  setupValidationRules: ->
+  validate: ($inputs) =>
+    return true if !$inputs.length
+
+    @prepareInputs($inputs)
+
+    return true if $inputs.valid()
+
+    $inputs.filter('.error').first().focus()
+    false
+
+  setupValidationRules: =>
     jQuery.validator.addMethod( 'pattern', (value, element, options) ->
       return value.match($(element).attr('pattern'))
     )
 
-    jQuery.validator.addMethod( 'tel', (value, element, options) ->
+    jQuery.validator.addMethod( 'tel', (value, element, options) =>
       pattern = $(element).attr('pattern') || @config.pattern.tel
       return value.match(pattern)
     )
 
-    jQuery.validator.addMethod( 'number', (value, element, options) ->
+    jQuery.validator.addMethod( 'number', (value, element, options) =>
       pattern = $(element).attr('pattern') || @config.pattern.number
       return value.match(pattern)
     )
@@ -71,7 +74,7 @@ class @JqueryValidate extends AbstractFormsliderPlugin
     $target.attr(attributeName, value) unless $target.attr(attributeName)
 
   prepareInputs: ($inputs)=>
-    $(@config.preparationSelector, @container).each( (index, input) =>
+    $inputs.each( (index, input) =>
       $input = $(input)
 
       switch $input.attr('type')

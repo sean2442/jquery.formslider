@@ -655,7 +655,7 @@
     JqueryValidate.prototype.onValidate = function(event, currentSlide, direction, prevSlide) {
       var $inputs, currentRole;
       currentRole = $(currentSlide).data('role');
-      $inputs = $(this.config.validationSelector, currentSlide);
+      $inputs = $(this.config.selector, currentSlide);
       if (this.validate($inputs)) {
         this.trigger("validation.valid." + currentRole, currentSlide);
         return;

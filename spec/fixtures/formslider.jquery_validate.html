@@ -1,0 +1,67 @@
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>jquery.fromslider - Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+
+<form action="#">
+  <div class="formslider-wrapper loading">
+    <div class="formslider">
+
+      <div class="slide" data-role="contact" data-id="contact">
+        <div class="headline">Get in contact!</div>
+        <div class="sub-headline">You have enough sun hours, may be I will join =)</div>
+        <div class="name row">
+          <label for="input_name_0">Name:</label>
+          <input type="text" name="contact[first_name]" placeholder="Given Name" required="required" minlength="3" autocompletetype="given-name" id="input_name_0">
+          <input type="text" name="contact[last_name]"  placeholder="Last Name"  required="required" minlength="3" id="input_name_1">
+        </div>
+        <div class="row zipcode">
+          <label for="input_zipcode_0">Post Code:</label>
+          <input type="number" name="contact[zipcode]" placeholder="Post Code" maxlength="5" required="required" autocompletetype="postal-code" id="input_zipcode_0" data-force-max-length="1" data-without-spinner="1">
+        </div>
+        <div class="phone row">
+          <label for="input_phone_0">Phone:</label>
+          <input type="tel" name="contact[phone]" placeholder="for further questions" required="required" minlength="3" autocompletetype="tel-local" id="input_phone_0">
+        </div>
+        <div class="email row">
+          <label for="input_email_0">E-Mail:</label>
+          <input type="email" name="contact[email]" placeholder="E-Mail" required="required" autocompletetype="email" id="input_email_0"></div>
+        <div class="button-row row">
+          <a class="next-button submit-button" href="#" onclick="return false">continue</a>
+        </div>
+      </div>
+
+      <div class="slide" data-role="confirmation" data-id="confirmation">
+        <div class="headline">Thank you =)</div>
+        <div class="content">I think we will meet next time! For quicker response write me <a href="mailto:tom@creative-workflow.berlin">tom@creative-workflow.berlin</a></div>
+      </div>
+
+    </div>
+  </div>
+</form>
+
+
+  <div class="progressbar-wrapper percent loading">
+    <div class="progress-text">0%</div>
+    <div class="progress-bar">
+      <div class="progress" style="width: 0;"></div>
+    </div>
+  </div>
+
+  <div class="progressbar-wrapper steps loading">
+    <div class="progress-text">0/0</div>
+    <div class="progress-bar">
+      <div class="progress" style="width: 0;"></div>
+    </div>
+  </div>
+
+
+</body>
+
+</html>

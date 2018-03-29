@@ -29,7 +29,7 @@ class @JqueryValidate extends AbstractFormsliderPlugin
   onValidate: (event, currentSlide, direction, prevSlide) =>
     currentRole = $(currentSlide).data('role')
 
-    $inputs = $(@config.validationSelector, currentSlide)
+    $inputs = $(@config.selector, currentSlide)
 
     if @validate($inputs)
       @trigger("validation.valid.#{currentRole}", currentSlide)

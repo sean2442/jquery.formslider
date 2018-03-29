@@ -1,5 +1,7 @@
 # Changelog
 
+##### 1.1.10
+  * fix `JqueryValidate` transition prevention
 ##### 1.1.9
   * add specs for plugin `JqueryValidate`
   * better performance for `JqueryValidate`

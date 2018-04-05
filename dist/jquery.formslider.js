@@ -453,6 +453,40 @@
 
   })(AbstractFormsliderPlugin);
 
+  this.InputForceMaxlength = (function(superClass) {
+    extend(InputForceMaxlength, superClass);
+
+    function InputForceMaxlength() {
+      this.prepareInputs = bind(this.prepareInputs, this);
+      this.init = bind(this.init, this);
+      return InputForceMaxlength.__super__.constructor.apply(this, arguments);
+    }
+
+    InputForceMaxlength.config = {
+      selector: 'input, textarea',
+      forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+    };
+
+    InputForceMaxlength.prototype.init = function() {
+      return this.prepareInputs($(this.config.selector));
+    };
+
+    InputForceMaxlength.prototype.prepareInputs = function($inputs) {
+      return $inputs.each((function(_this) {
+        return function(index, input) {
+          var $input;
+          $input = $(input);
+          if ($input.data('force-max-length')) {
+            return $input.attr('oninput', _this.config.forceMaxLengthJs);
+          }
+        };
+      })(this));
+    };
+
+    return InputForceMaxlength;
+
+  })(AbstractFormsliderPlugin);
+
   this.InputNormalizer = (function(superClass) {
     extend(InputNormalizer, superClass);
 
@@ -611,52 +645,49 @@
 
   })(AbstractFormsliderPlugin);
 
-  this.JqueryValidate = (function(superClass) {
-    extend(JqueryValidate, superClass);
+  this.JqueryInputValidator = (function(superClass) {
+    extend(JqueryInputValidator, superClass);
 
-    function JqueryValidate() {
-      this.prepareInputs = bind(this.prepareInputs, this);
-      this.setupValidationRules = bind(this.setupValidationRules, this);
+    function JqueryInputValidator() {
       this.validate = bind(this.validate, this);
       this.onValidate = bind(this.onValidate, this);
       this.init = bind(this.init, this);
-      return JqueryValidate.__super__.constructor.apply(this, arguments);
+      return JqueryInputValidator.__super__.constructor.apply(this, arguments);
     }
 
-    JqueryValidate.config = {
-      selector: 'input:visible:not([readonly])',
-      validateOnEvents: ['leaving.next'],
-      forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);",
-      pattern: {
-        numeric: '\\d*',
-        tel: '^[0-9/\\-\\+\\s\\(\\)]*$'
+    JqueryInputValidator.config = {
+      selectors: {
+        elements: 'input, textarea, select',
+        ignore: ':hidden, [readonly]'
       },
+      validateOnEvents: ['leaving.next'],
       messages: {
-        required: 'Required',
-        maxlength: 'To long',
-        minlength: 'To short',
-        tel: 'Enter valid phone number',
-        email: 'Enter valid email',
-        number: 'Enter valid number',
-        pattern: 'Invalid input'
+        generic: 'invalid',
+        email: 'invalid email',
+        tel: 'invalid phone number',
+        number: 'invalid number',
+        minlength: 'to short',
+        maxlength: 'to long',
+        required: 'required'
       }
     };
 
-    JqueryValidate.prototype.init = function() {
-      var eventName, j, len, ref;
+    JqueryInputValidator.prototype.init = function() {
+      var eventName, j, len, ref, results;
+      this.validator = this.container.iValidator(this.config);
       ref = this.config.validateOnEvents;
+      results = [];
       for (j = 0, len = ref.length; j < len; j++) {
         eventName = ref[j];
-        this.on(eventName, this.onValidate);
+        results.push(this.on(eventName, this.onValidate));
       }
-      return this.setupValidationRules();
+      return results;
     };
 
-    JqueryValidate.prototype.onValidate = function(event, currentSlide, direction, prevSlide) {
-      var $inputs, currentRole;
+    JqueryInputValidator.prototype.onValidate = function(event, currentSlide, direction, nextSlide) {
+      var currentRole;
       currentRole = $(currentSlide).data('role');
-      $inputs = $(this.config.selector, currentSlide);
-      if (this.validate($inputs)) {
+      if (this.validate(currentSlide) === true) {
         this.trigger("validation.valid." + currentRole, currentSlide);
         return;
       }
@@ -667,89 +698,11 @@
       }, 400);
     };
 
-    JqueryValidate.prototype.validate = function($inputs) {
-      if (!$inputs.length) {
-        return true;
-      }
-      this.prepareInputs($inputs);
-      if ($inputs.valid()) {
-        return true;
-      }
-      $inputs.filter('.error').first().focus();
-      return false;
+    JqueryInputValidator.prototype.validate = function($inputs) {
+      return this.validator.validate($inputs);
     };
 
-    JqueryValidate.prototype.setupValidationRules = function() {
-      jQuery.validator.addMethod('pattern', function(value, element, options) {
-        return value.match($(element).attr('pattern'));
-      });
-      jQuery.validator.addMethod('tel', (function(_this) {
-        return function(value, element, options) {
-          var pattern;
-          pattern = $(element).attr('pattern') || _this.config.pattern.tel;
-          return value.match(pattern);
-        };
-      })(this));
-      return jQuery.validator.addMethod('number', (function(_this) {
-        return function(value, element, options) {
-          var pattern;
-          pattern = $(element).attr('pattern') || _this.config.pattern.number;
-          return value.match(pattern);
-        };
-      })(this));
-    };
-
-    JqueryValidate.prototype.setAttrUnless = function($target, attributeName, value) {
-      if (!$target.attr(attributeName)) {
-        return $target.attr(attributeName, value);
-      }
-    };
-
-    JqueryValidate.prototype.prepareInputs = function($inputs) {
-      return $inputs.each((function(_this) {
-        return function(index, input) {
-          var $input, attribute, j, k, len, len1, ref, ref1;
-          $input = $(input);
-          switch ($input.attr('type')) {
-            case 'number':
-              $input.attr('data-rule-number', 'true');
-              _this.setAttrUnless($input, "data-msg-number", _this.config.messages.number);
-              break;
-            case 'tel':
-              $input.attr('data-rule-tel', 'true');
-              _this.setAttrUnless($input, "data-msg-tel", _this.config.messages.tel);
-              break;
-            case 'email':
-              $input.attr('data-rule-email', 'true');
-              _this.setAttrUnless($input, 'data-msg-email', _this.config.messages.email);
-          }
-          ref = ['required', 'pattern'];
-          for (j = 0, len = ref.length; j < len; j++) {
-            attribute = ref[j];
-            if ($input.attr(attribute)) {
-              $input.attr("data-rule-" + attribute, 'true');
-              _this.setAttrUnless($input, "data-msg-" + attribute, _this.config.messages[attribute]);
-            }
-          }
-          ref1 = ['maxlength', 'minlength'];
-          for (k = 0, len1 = ref1.length; k < len1; k++) {
-            attribute = ref1[k];
-            if ($input.attr(attribute)) {
-              _this.setAttrUnless($input, "data-rule-" + attribute, $input.attr(attribute));
-              _this.setAttrUnless($input, "data-msg-" + attribute, _this.config.messages[attribute]);
-            }
-          }
-          if ($input.attr('data-force-max-length')) {
-            $input.attr('oninput', _this.config.forceMaxLengthJs);
-          }
-          if ($input.attr('data-without-spinner')) {
-            return $input.addClass('without-spinner');
-          }
-        };
-      })(this));
-    };
-
-    return JqueryValidate;
+    return JqueryInputValidator;
 
   })(AbstractFormsliderPlugin);
 
@@ -2258,7 +2211,7 @@
       }, {
         "class": 'AnswerClick'
       }, {
-        "class": 'JqueryValidate'
+        "class": 'JqueryInputValidator'
       }, {
         "class": 'TabIndexSetter'
       }, {
@@ -2269,6 +2222,8 @@
         "class": 'InputFocus'
       }, {
         "class": 'FormSubmission'
+      }, {
+        "class": 'InputForceMaxlength'
       }, {
         "class": 'NavigateOnClick'
       }, {

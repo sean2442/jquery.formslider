@@ -83,6 +83,7 @@ These plugins can be used to extend the formslider:
   * [formslider.dramatic.loader](https://github.com/formslider/formslider.dramatic.loader)
   * [formslider.hitory.js](https://github.com/formslider/formslider.hitory.js)
   * [formslider.nouislider](https://github.com/formslider/formslider.nouislider)
+  * [formslider.jquery-validation](https://github.com/formslider/formslider.jquery-validation) *old validation implementation
 
 ### form plugins
 ##### *AnswerClick*
@@ -151,6 +152,17 @@ config: {
 ```
 
 
+##### *InputForceMaxlength*
+Adds javascript to inputs and textareas that truncates the input by given length when attribute 'data-force-maxlength'.
+Default configuration:
+```js
+config: {
+  selector: 'input, textarea',
+  forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+}
+```
+
+
 ##### *InputNormalizer*
 Does some normalization on inputs.
 Adds
@@ -179,65 +191,26 @@ config: {
 }
 ```
 
-
-##### *JqueryValidate*
-Validates inputs on current slide before leaving this slide. Will stop leaving when not all inputs are valid. Uses [jquery-validation](https://github.com/jquery-validation/jquery-validation).
-
-Default configuration:
+##### *JqueryInputValidator*
+Validates inputs, selects and textareas by html5 attributes (see: [jquery.input.validator](https://github.com/creative-workflow/jquery.input.validator)).
 ```js
-config: {
-  selector: 'input:visible:not([readonly])',
-  validateOnEvents: ['leaving.next'],
-  forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);",
-  pattern:{
-    numeric: '\\d*',
-    tel: '^[0-9/\\-\\+\\s\\(\\)]*$'
+config:{
+  selectors:{
+    elements: 'input, textarea, select'
+    ignore:   ':hidden, [readonly]'
   },
+  validateOnEvents: ['leaving.next'],
   messages:{
-    required:  'Required',
-    maxlength: 'To long',
-    minlength: 'To short',
-    tel:       'Enter valid phone number',
-    email:     'Enter valid email',
-    number:    'Enter valid number',
-    pattern:   'Invalid input'
+    generic:   'invalid'
+    email:     'invalid email'
+    tel:       'invalid phone number'
+    number:    'invalid number'
+    minlength: 'to short'
+    maxlength: 'to long'
+    required:  'required'
   }
 }
 ```
-
-The plugin automatically detects the following attributes:
-```bash
-  * required                    # also add aria-required="true"
-  * minlength
-  * maxlength
-  * type="email"
-  * type="number"
-  * type="tel"
-  * pattern="..."
-  * data-force-max-length="1"   # will truncate input if longer
-  * data-without-spinner"1"     # will prevent spinner input on number types
-```
-
-The Plugin triggers the following events:
-```coffee
-@trigger("validation.valid.#{currentRole}", currentSlide)
-@trigger("validation.invalid.#{currentRole}", currentSlide)
-$(window).trigger('resize') # if one ore more inputs are invalid -> height could be adjusted
-```
-
-_Note:_ This plugin will throw an error if no surrounding form tag is present.
-
-_Note:_ `data-without-spinner"1"` needs some additional styling:
-```sass
-input.without-spinner
-  -moz-appearance: textfield
-
-input.without-spinner::-webkit-outer-spin-button,
-input.without-spinner::-webkit-inner-spin-button
-  -webkit-appearance: none
-  margin: 0
-```
-
 
 
 ###  generic plugins

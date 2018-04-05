@@ -53,12 +53,13 @@ helper.formslider =
         # form
         { class: 'AnswerMemory'             }
         { class: 'AnswerClick'              }
-        { class: 'JqueryValidate'           }
+        { class: 'JqueryInputValidator'     }
         { class: 'TabIndexSetter'           }
         { class: 'InputSync'                }
         { class: 'InputNormalizer'          }
         { class: 'InputFocus'               }
         { class: 'FormSubmission'           }
+        { class: 'InputForceMaxlength'      }
 
         # navigation
         { class: 'NavigateOnClick'          }

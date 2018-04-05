@@ -25,7 +25,7 @@
   "dependencies": {
     "jquery": ">=1.8.0",
     "flexslider": "conditional-flexslider#^2.6.4",
-    "jquery-validation": "^1.17.0",
-    "jquery.debug": "^1.0.3"
+    "jquery.debug": "^1.0.3",
+    "jquery.input.validator": "^1.0.12"
   }
 }

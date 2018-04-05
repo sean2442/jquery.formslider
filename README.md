@@ -43,7 +43,7 @@ This functionality is provided by core or optional plugins. You can also develop
   * InputFocus                    # focusses first input on current slide
   * InputNormalizer               # does some normalization on inputs
   * InputSync                     # syncs inputs with the same name
-  * JqueryValidate                # validates inputs before leaving a slide, uses jquery-validate
+  * JqueryInputValidator          # Validates inputs, selects and textareas by html5 attributes.
 
 # generic plugins
   * AddSlideClasses               # adds classes based on role and index

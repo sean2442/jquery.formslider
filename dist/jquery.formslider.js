@@ -685,13 +685,14 @@
     };
 
     JqueryInputValidator.prototype.onValidate = function(event, currentSlide, direction, nextSlide) {
-      var currentRole;
+      var currentRole, errors;
       currentRole = $(currentSlide).data('role');
-      if (this.validate(currentSlide) === true) {
+      errors = this.validate(currentSlide);
+      if (errors === true) {
         this.trigger("validation.valid." + currentRole, currentSlide);
         return;
       }
-      this.trigger("validation.invalid." + currentRole, currentSlide);
+      this.trigger("validation.invalid." + currentRole, currentSlide, errors);
       event.canceled = true;
       return setTimeout(function() {
         return $(window).trigger('resize');

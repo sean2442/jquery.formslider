@@ -100,18 +100,18 @@ Read more about events: [EVENTMANAGER](EVENTMANAGER.md)
 
 ##### `leaving.[currentRole].[direction]`
   * triggered before possible cycling
-  * payload: `(event, currentSlide, direction, nextSLide)`
+  * payload: `(event, currentSlide, direction, nextSlide)`
   * if `event.canceled` is true, no cycling will happen
   * attention: eventhandler will block swiping, to much of them could lead to hacky transitions
 
 ##### `before.[nextRole].[direction]`
   * triggered after `leaving` event, when cycling is allowed
-  * payload: `(event, currentSlide, direction, nextSLide)`
+  * payload: `(event, currentSlide, direction, nextSlide)`
   * attention: eventhandler will block swiping, to much of them could lead to hacky transitions
 
 ##### `after.[lastCurrentRole].[lastDirection]`
   * triggered after cycling finished
-  * payload: `(event, currentSlide, direction, prevSLide)`
+  * payload: `(event, currentSlide, direction, prevSlide)`
 
 ##### `first-interaction`
   * triggered after first successful cycling

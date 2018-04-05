@@ -24,11 +24,12 @@ class @JqueryInputValidator extends AbstractFormsliderPlugin
   onValidate: (event, currentSlide, direction, nextSlide) =>
     currentRole = $(currentSlide).data('role')
 
-    if @validate(currentSlide) == true
+    errors = @validate(currentSlide)
+    if errors == true
       @trigger("validation.valid.#{currentRole}", currentSlide)
       return
 
-    @trigger("validation.invalid.#{currentRole}", currentSlide)
+    @trigger("validation.invalid.#{currentRole}", currentSlide, errors)
     event.canceled = true
 
     # trigger resize if error labels changed the dom

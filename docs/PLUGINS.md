@@ -213,6 +213,26 @@ config:{
 ```
 
 
+The plugin automatically detects the following attributes:
+```bash
+  * required                    # also add aria-required="true"
+  * minlength
+  * maxlength
+  * type="email"
+  * type="number"
+  * type="tel"
+  * pattern="..."
+  * data-force-max-length="1"   # will truncate input if longer
+```
+
+The Plugin triggers the following events:
+```coffee
+@trigger("validation.valid.#{currentRole}", currentSlide)
+@trigger("validation.invalid.#{currentRole}", currentSlide, errors=[])
+$(window).trigger('resize') # if one ore more inputs are invalid -> height could be adjusted
+```
+
+
 ###  generic plugins
 ##### *AddSlideClasses*
 Adds classes based on role and index.

@@ -24,7 +24,7 @@ module.exports = (config) ->
     # preprocess matching files before serving them to the browser
     # available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      '**/*.coffee': ['coffee']
+      '**/*.coffee': ['coffee', 'coverage']
     }
 
     coffeePreprocessor:
@@ -57,7 +57,7 @@ module.exports = (config) ->
     # test results reporter to use
     # possible values: 'dots', 'progress'
     # available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['spec']
+    reporters: ['spec', 'coverage', 'coveralls']
 
     specReporter:
       maxLogLines: 5              # limit number of lines logged per test
@@ -67,6 +67,13 @@ module.exports = (config) ->
       suppressSkipped: true       # do not print information about skipped tests
       showSpecTiming: false       # print the time elapsed for each spec
       failFast: false             # test would finish with error when a first fail occurs.
+
+    coverageReporter:
+      dir: 'coverage/'
+      reporters:[
+        { type: 'html', subdir: 'report-html' }
+        { type: 'lcov' }
+      ]
 
 
     # web server port

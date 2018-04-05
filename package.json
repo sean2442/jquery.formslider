@@ -1,6 +1,6 @@
 {
   "name": "jquery.formslider",
-  "version": "1.1.10",
+  "version": "1.2.0",
   "description": "This module helps to handle formslider clicks and events with google analytics.",
   "main": "dist/jquery.formslider.js",
   "repository": {
@@ -32,6 +32,8 @@
     "karma": "*",
     "karma-chrome-launcher": "*",
     "karma-coffee-preprocessor": "^1.0.1",
+    "karma-coverage": "^1.1.1",
+    "karma-coveralls": "^1.1.2",
     "karma-jasmine": "*",
     "karma-jasmine-jquery": "*",
     "karma-sourcemap-loader": "^0.3.7",

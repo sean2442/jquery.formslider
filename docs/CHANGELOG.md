@@ -3,6 +3,7 @@
 ##### 1.2.0
   * replace `JqueryValidate` with `JqueryInputValidator` (JqueryValidate is now independent plugin: https://github.com/formslider/formslider.jquery-validation)
   * extract `InputForceMaxlength`
+  * add coverage reporter
 
 ##### 1.1.10
   * fix `JqueryValidate` transition prevention

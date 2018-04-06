@@ -16,6 +16,7 @@ class @FormSlider
 
     @setupConfig(config)
     @firstInteraction = false
+    @ready            = false
     @events           = new EventManager(@logger)
     @locking          = new Locking(true)
     @setupDriver()
@@ -82,6 +83,7 @@ class @FormSlider
     setTimeout(@locking.unlock, @config.silenceAfterTransition)
 
   onReady: =>
+    return if @ready
     @ready = true
     @events.trigger('ready')
     @locking.unlock()

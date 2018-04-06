@@ -1,5 +1,7 @@
 # Changelog
 
+##### 1.2.2
+  * prevent `Formslider` from duplicate `ready` event triggering
 ##### 1.2.1
   * update dependencies
 

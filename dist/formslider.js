@@ -251,9 +251,7 @@
       loadHiddenFrameOnSuccess: null,
       formSelector: 'form',
       submitter: {
-        "class": 'FormSubmitterCollect',
-        endpoint: '#',
-        method: 'POST'
+        "class": 'FormSubmitterSubmit'
       }
     };
 
@@ -410,7 +408,9 @@
       return FormSubmitterSubmit.__super__.constructor.apply(this, arguments);
     }
 
-    FormSubmitterSubmit.prototype.submit = function(event, slide) {};
+    FormSubmitterSubmit.prototype.submit = function(event, slide) {
+      return this.form.submit();
+    };
 
     return FormSubmitterSubmit;
 
@@ -649,6 +649,7 @@
     extend(JqueryInputValidator, superClass);
 
     function JqueryInputValidator() {
+      this.onNaturalFormSubmit = bind(this.onNaturalFormSubmit, this);
       this.validate = bind(this.validate, this);
       this.onValidate = bind(this.onValidate, this);
       this.init = bind(this.init, this);
@@ -661,6 +662,7 @@
         ignore: ':hidden, [readonly]'
       },
       validateOnEvents: ['leaving.next'],
+      formSelector: 'form',
       messages: {
         generic: 'invalid',
         email: 'invalid email',
@@ -673,15 +675,17 @@
     };
 
     JqueryInputValidator.prototype.init = function() {
-      var eventName, j, len, ref, results;
+      var eventName, j, len, ref;
       this.validator = this.container.iValidator(this.config);
       ref = this.config.validateOnEvents;
-      results = [];
       for (j = 0, len = ref.length; j < len; j++) {
         eventName = ref[j];
-        results.push(this.on(eventName, this.onValidate));
+        this.on(eventName, this.onValidate);
       }
-      return results;
+      if (this.config.formSelector) {
+        this.form = $(this.config.formSelector);
+        return this.form.submit(this.onNaturalFormSubmit);
+      }
     };
 
     JqueryInputValidator.prototype.onValidate = function(event, currentSlide, direction, nextSlide) {
@@ -701,6 +705,13 @@
 
     JqueryInputValidator.prototype.validate = function($inputs) {
       return this.validator.validate($inputs);
+    };
+
+    JqueryInputValidator.prototype.onNaturalFormSubmit = function(e) {
+      if (this.validator.validate(this.form) !== true) {
+        e.preventDefault();
+        return false;
+      }
     };
 
     return JqueryInputValidator;
@@ -1181,6 +1192,7 @@
         }, {
           selector: 'input',
           action: 'next',
+          prevent: true,
           code: 13,
           wait: 100
         }, {
@@ -1207,12 +1219,15 @@
     };
 
     NavigateOnKey.prototype.onKey = function(event) {
-      var keyCode;
+      var keyCode, ref;
       keyCode = event.keyCode || event.which;
       if (keyCode !== event.data.code) {
         return;
       }
-      return this.runTimeout(this.formslider[event.data.action], event.data.wait);
+      this.runTimeout(this.formslider[event.data.action], event.data.wait);
+      if ((ref = event.data) != null ? ref.prevent : void 0) {
+        return event.preventDefault();
+      }
     };
 
     NavigateOnKey.prototype.runTimeout = function(callback, wait) {
@@ -1619,6 +1634,156 @@
     };
 
     return EqualHeight;
+
+  })(AbstractFormsliderPlugin);
+
+  this.JqueryAnimate = (function(superClass) {
+    extend(JqueryAnimate, superClass);
+
+    function JqueryAnimate() {
+      this.doAnimation = bind(this.doAnimation, this);
+      this.prepareAnimations = bind(this.prepareAnimations, this);
+      this.init = bind(this.init, this);
+      return JqueryAnimate.__super__.constructor.apply(this, arguments);
+    }
+
+    JqueryAnimate.config = {
+      dataPrefix: 'animate',
+      defaultDuration: 600
+    };
+
+    JqueryAnimate.prototype.init = function() {
+      return this.prepareAnimations(this.container);
+    };
+
+    JqueryAnimate.prototype.prepareAnimations = function(context) {
+      var $elements, dataKey;
+      dataKey = "" + this.config.dataPrefix;
+      $elements = $("[data-" + dataKey + "]", context);
+      if (!$elements.length) {
+        return;
+      }
+      return $elements.each((function(_this) {
+        return function(index, element) {
+          var $element, data, event, j, len, ref;
+          $element = $(element);
+          data = $element.data(dataKey);
+          if (!(data != null ? data.on : void 0)) {
+            return;
+          }
+          ref = data.on.split(',');
+          for (j = 0, len = ref.length; j < len; j++) {
+            event = ref[j];
+            _this.on(event.trim(), function(e, current, direction, next) {
+              _this.doAnimation($element, data);
+              if (data != null ? data.once : void 0) {
+                return _this.off(event.trim());
+              }
+            });
+          }
+        };
+      })(this));
+    };
+
+    JqueryAnimate.prototype.doAnimation = function($element, data) {
+      var callback, duration;
+      $element = (data != null ? data.selector : void 0) ? $(data.selector) : $element;
+      duration = data.duration || this.config.defaultDuration;
+      if (data != null ? data.stop : void 0) {
+        $element.stop();
+      }
+      if (data != null ? data.delay : void 0) {
+        $element.delay(data.delay);
+      }
+      if (data != null ? data.css : void 0) {
+        $element.css(data.css);
+      }
+      if (data != null ? data.complete : void 0) {
+        callback = (function(_this) {
+          return function() {
+            return _this.doAnimation($element, data.complete);
+          };
+        })(this);
+      }
+      return $element.animate(data.animate, duration, callback);
+    };
+
+    return JqueryAnimate;
+
+  })(AbstractFormsliderPlugin);
+
+  this.JqueryAnimate = (function(superClass) {
+    extend(JqueryAnimate, superClass);
+
+    function JqueryAnimate() {
+      this.doAnimation = bind(this.doAnimation, this);
+      this.prepareAnimations = bind(this.prepareAnimations, this);
+      this.init = bind(this.init, this);
+      return JqueryAnimate.__super__.constructor.apply(this, arguments);
+    }
+
+    JqueryAnimate.config = {
+      dataPrefix: 'animate',
+      defaultDuration: 600
+    };
+
+    JqueryAnimate.prototype.init = function() {
+      return this.prepareAnimations(this.container);
+    };
+
+    JqueryAnimate.prototype.prepareAnimations = function(context) {
+      var $elements, dataKey;
+      dataKey = "" + this.config.dataPrefix;
+      $elements = $("[data-" + dataKey + "]", context);
+      if (!$elements.length) {
+        return;
+      }
+      return $elements.each((function(_this) {
+        return function(index, element) {
+          var $element, data, event, j, len, ref;
+          $element = $(element);
+          data = $element.data(dataKey);
+          if (!(data != null ? data.on : void 0)) {
+            return;
+          }
+          ref = data.on.split(',');
+          for (j = 0, len = ref.length; j < len; j++) {
+            event = ref[j];
+            _this.on(event.trim(), function(e, current, direction, next) {
+              _this.doAnimation($element, data);
+              if (data != null ? data.once : void 0) {
+                return _this.off(event.trim());
+              }
+            });
+          }
+        };
+      })(this));
+    };
+
+    JqueryAnimate.prototype.doAnimation = function($element, data) {
+      var callback, duration;
+      $element = (data != null ? data.selector : void 0) ? $(data.selector) : $element;
+      duration = data.duration || this.config.defaultDuration;
+      if (data != null ? data.stop : void 0) {
+        $element.stop();
+      }
+      if (data != null ? data.delay : void 0) {
+        $element.delay(data.delay);
+      }
+      if (data != null ? data.css : void 0) {
+        $element.css(data.css);
+      }
+      if (data != null ? data.complete : void 0) {
+        callback = (function(_this) {
+          return function() {
+            return _this.doAnimation($element, data.complete);
+          };
+        })(this);
+      }
+      return $element.animate(data.animate, duration, callback);
+    };
+
+    return JqueryAnimate;
 
   })(AbstractFormsliderPlugin);
 
@@ -2075,6 +2240,7 @@
       }
       this.setupConfig(config);
       this.firstInteraction = false;
+      this.ready = false;
       this.events = new EventManager(this.logger);
       this.locking = new Locking(true);
       this.setupDriver();
@@ -2142,6 +2308,9 @@
     };
 
     FormSlider.prototype.onReady = function() {
+      if (this.ready) {
+        return;
+      }
       this.ready = true;
       this.events.trigger('ready');
       return this.locking.unlock();
@@ -2205,6 +2374,8 @@
         "class": 'ScrollUp'
       }, {
         "class": 'LoadingState'
+      }, {
+        "class": 'JqueryAnimate'
       }, {
         "class": 'ProgressBarPercent'
       }, {

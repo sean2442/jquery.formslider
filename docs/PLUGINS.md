@@ -501,6 +501,56 @@ config: {
 Listens also on event `do-equal-height`. To trigger this event: `@trigger('do-equal-height', slideToEqualize)`.
 
 
+##### *JqueryAnimate*
+Exactlecutes animations absed on data attributes.
+Default configuration:
+```js
+config: {
+  dataPrefix:     'animate', // means data-animate
+  defaultDuration: 600
+}
+```
+
+*Api:*
+Just add a data attribute like `data-animate='{...}'` to an existing element or add an hidden element.
+
+The animation will be executed on the element it self or on the element found by the property `selector`.
+```html
+<div data-animate='{"selector": ".animation-target"}'></div>
+<span class="animation-target"></div>
+```
+
+The Animation will be executed when the event(s) fires that you specify by the `on` property:
+```html
+<div data-animate='{"on": "leaving.question, leaving.zipcode"}'></div>
+```
+
+Before the animation starts you can set css attributes via the property `css`.
+
+```html
+<div data-animate='{"css": {"opacity": 0}}'></div>
+```
+
+These Properties are regulating the animation:
+```coffee
+  animate: { }      # animation properties, see jquery.animate
+  duration: 600     # duration for the animation
+  delay: 0          # wait before animation starts
+  stop: true        # stop other queued animations
+  easing: 'swing'   # easing, see jquery.animate
+  once: false       # run animation exactly once
+```
+
+The `complete` property is a nested animation object like this which will be executed when the animation finishes.
+```coffee
+  complete: [nested animation object]
+```
+
+*Example:*
+```html
+<div data-animate='{"on": "ready, before.question", "css": {"opacity": 0}, "animate": {"opacity": 1}}'>huhu</div>
+```
+
 ##### *LazyLoad*
 Load images from the next slides.
 Default configuration:

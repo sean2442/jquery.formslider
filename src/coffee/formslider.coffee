@@ -141,6 +141,7 @@ class @FormSlider
       { class: 'EqualHeight'              }
       { class: 'ScrollUp'                 }
       { class: 'LoadingState'             }
+      { class: 'JqueryAnimate'            }
 
       # progressbar
       { class: 'ProgressBarPercent'       }

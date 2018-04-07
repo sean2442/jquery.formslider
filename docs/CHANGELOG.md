@@ -1,7 +1,9 @@
 # Changelog
 
 ##### 1.2.2
+  * introduce `JqueryAnimate` plugin, animations absed on data attributes
   * prevent `Formslider` from duplicate `ready` event triggering
+
 ##### 1.2.1
   * update dependencies
 

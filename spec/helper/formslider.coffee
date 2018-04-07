@@ -36,6 +36,7 @@ helper.formslider =
         { class: 'EqualHeight'              }
         { class: 'ScrollUp'                 }
         { class: 'LoadingState'             }
+        { class: 'JqueryAnimate'            }
 
         # progressbar
         {

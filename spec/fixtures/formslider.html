@@ -13,7 +13,7 @@
   <div class="formslider-wrapper loading">
     <div class="formslider">
 
-      <div class="slide" data-role="question" data-id="0">
+      <div class="slide" data-role="question" data-id="0" data-animate='{"on": "ready, before.question", "selector": ".headline", "css": {"opacity": 0, "text-decoration": "none", "font-weight": "normal"}, "animate": {"opacity": 1}, "duration": 1000, "complete": {"css": {"text-decoration": "underline"}}}'>
         <div class="headline">Are you a <b>woman</b> or <b>man</b>?</div>
         <input type="hidden" name="slides[0][question]" value="Are you a <b>woman</b> or <b>man</b>?">
         <div class="answers">
@@ -120,7 +120,7 @@
       </div-->
 
       <div class="slide" data-role="zipcode" data-id="zipcode">
-        <div class="headline">Where do you live?</div>
+        <div class="headline"><b>Where</b> do you live?</div>
         <div class="sub-headline">For calculating your happiness factor based on sun hours ;)</div>
         <div class="zipcode-input">
           <label for="">Post Code:</label>
@@ -135,7 +135,7 @@
       </div>
 
       <div class="slide" data-role="contact" data-id="contact">
-        <div class="headline">Get in contact!</div>
+        <div class="headline">Get in <b>contact</b>!</div>
         <div class="sub-headline">You have enough sun hours, may be I will join =)</div>
         <div class="name row">
           <label for="input_name_0">Name:</label>

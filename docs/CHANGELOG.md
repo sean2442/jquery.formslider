@@ -1,8 +1,9 @@
 # Changelog
 
 ##### 1.2.2
-  * introduce `JqueryAnimate` plugin, animations absed on data attributes
+  * introduce `JqueryAnimate` plugin, animations based on data attributes
   * prevent `Formslider` from duplicate `ready` event triggering
+  * make `FormsubmitterSubmit` default
   * `JqueryInputValidator` now listens on natural form submissions per default
   * `NavigateOnKey` supports now `preventDefault`
 

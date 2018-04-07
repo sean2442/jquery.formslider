@@ -9,9 +9,7 @@ class @FormSubmission extends AbstractFormsliderPlugin
     formSelector: 'form'
 
     submitter:
-      class: 'FormSubmitterCollect'
-      endpoint: '#'
-      method:   'POST'
+      class: 'FormSubmitterSubmit'
 
   init: =>
     @form = $(@config.formSelector)

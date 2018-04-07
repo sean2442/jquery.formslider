@@ -9,7 +9,7 @@
 
 <body>
 
-<form action="#">
+<form action="#form-submitted" method="GET" novalidate>
   <div class="formslider-wrapper loading">
     <div class="formslider">
 
@@ -124,7 +124,7 @@
         <div class="sub-headline">For calculating your happiness factor based on sun hours ;)</div>
         <div class="zipcode-input">
           <label for="">Post Code:</label>
-          <input type="number" name="contact[zipcode]" maxlength="5" required="required" autocompletetype="postal-code" data-force-max-length="1" data-without-spinner="1">
+          <input type="number" name="contact[zipcode]" maxlength="5" minlength="4" required="required" autocompletetype="postal-code" data-force-max-length="1" data-without-spinner="1">
           <a class="next-button" href="#" onclick="return false">Continue</a>
         </div>
       </div>
@@ -154,6 +154,7 @@
           <label for="input_email_0">E-Mail:</label>
           <input type="email" name="contact[email]" placeholder="E-Mail" required="required" autocompletetype="email" id="input_email_0"></div>
         <div class="button-row row">
+          <input type="submit" value="submit form">
           <a class="next-button submit-button" href="#" onclick="return false">continue</a>
         </div>
       </div>

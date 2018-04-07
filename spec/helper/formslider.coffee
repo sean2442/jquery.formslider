@@ -59,7 +59,15 @@ helper.formslider =
         { class: 'InputSync'                }
         { class: 'InputNormalizer'          }
         { class: 'InputFocus'               }
-        { class: 'FormSubmission'           }
+        {
+          class: 'FormSubmission'
+          config:
+            submitter:
+              class: 'FormSubmitterCollect'
+              endpoint: '#'
+              method:   'POST'
+              visitedSlideSelector: '.slide-visited'
+        }
         { class: 'InputForceMaxlength'      }
 
         # navigation

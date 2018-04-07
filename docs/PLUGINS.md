@@ -122,15 +122,15 @@ config: {
   formSelector: 'form',
 
   submitter: {
-    class: 'FormSubmitterCollect',
-    endpoint: '#',
-    method:   'POST'
-    visitedSlideSelector: '.slide-visited'
-  }
+    class: 'FormSubmitterSubmit' // you should add novalidato to your form
+  }    
 
   // submitter: {
-  //   class: 'FormSubmitterSubmit'
-  // }    
+  //   class: 'FormSubmitterCollect',
+  //   endpoint: '#',
+  //   method:   'POST'
+  //   visitedSlideSelector: '.slide-visited'
+  // }
 
   // make sure to load https://github.com/jquery-form/form
   // submitter: {
@@ -196,17 +196,18 @@ Validates inputs, selects and textareas by html5 attributes (see: [jquery.input.
 ```js
 config:{
   selectors:{
-    elements: 'input, textarea, select'
-    ignore:   ':hidden, [readonly]'
+    elements: 'input, textarea, select',
+    ignore:   ':hidden, [readonly]',
   },
   validateOnEvents: ['leaving.next'],
+  formSelector: 'form',  // set to null if ou dont which to listen for natural form submit
   messages:{
-    generic:   'invalid'
-    email:     'invalid email'
-    tel:       'invalid phone number'
-    number:    'invalid number'
-    minlength: 'to short'
-    maxlength: 'to long'
+    generic:   'invalid',
+    email:     'invalid email',
+    tel:       'invalid phone number',
+    number:    'invalid number',
+    minlength: 'to short',
+    maxlength: 'to long',
     required:  'required'
   }
 }

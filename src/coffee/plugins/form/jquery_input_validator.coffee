@@ -6,6 +6,8 @@ class @JqueryInputValidator extends AbstractFormsliderPlugin
 
     validateOnEvents: ['leaving.next']
 
+    formSelector: 'form'
+
     messages:
       generic:   'invalid'
       email:     'invalid email'
@@ -20,6 +22,10 @@ class @JqueryInputValidator extends AbstractFormsliderPlugin
 
     for eventName in @config.validateOnEvents
       @on(eventName, @onValidate)
+
+    if @config.formSelector
+      @form = $(@config.formSelector)
+      @form.submit(@onNaturalFormSubmit)
 
   onValidate: (event, currentSlide, direction, nextSlide) =>
     currentRole = $(currentSlide).data('role')
@@ -41,3 +47,8 @@ class @JqueryInputValidator extends AbstractFormsliderPlugin
 
   validate: ($inputs) =>
     @validator.validate($inputs)
+
+  onNaturalFormSubmit: (e) =>
+    unless @validator.validate(@form) == true
+      e.preventDefault()
+      return false

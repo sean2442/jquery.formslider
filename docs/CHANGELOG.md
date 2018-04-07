@@ -3,6 +3,7 @@
 ##### 1.2.2
   * introduce `JqueryAnimate` plugin, animations absed on data attributes
   * prevent `Formslider` from duplicate `ready` event triggering
+  * `NavigateOnKey` supports now `preventDefault`
 
 ##### 1.2.1
   * update dependencies

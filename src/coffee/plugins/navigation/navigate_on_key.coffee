@@ -11,6 +11,7 @@ class @NavigateOnKey extends AbstractFormsliderPlugin
       { # return
         selector: 'input'
         action: 'next'
+        prevent: true
         code: 13
         wait: 100
       }
@@ -38,6 +39,9 @@ class @NavigateOnKey extends AbstractFormsliderPlugin
     return unless keyCode == event.data.code
 
     @runTimeout(@formslider[event.data.action], event.data.wait)
+
+    if event.data?.prevent
+      event.preventDefault()
 
   runTimeout: (callback, wait) =>
     unless @timeout

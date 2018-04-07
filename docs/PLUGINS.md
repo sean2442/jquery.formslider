@@ -380,6 +380,7 @@ config: {
       selector: 'input',
       action: 'next',
       code: 13,
+      prevent: true,  // prevents natural behaviour
       wait: 100
     },
     { // left arrow

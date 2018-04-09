@@ -1,8 +1,8 @@
 class @JqueryInputValidator extends AbstractFormsliderPlugin
   @config =
     selectors:
-      elements: 'input, textarea, select'
-      ignore:   ':hidden, [readonly]'
+      elements: 'input[type!="hidden"], textarea, select'
+      ignore:   '[readonly]'
 
     validateOnEvents: ['leaving.next']
 

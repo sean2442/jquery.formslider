@@ -1,5 +1,12 @@
 # Changelog
 
+##### WIP: 1.2.3
+  * change default selector for `JqueryInputValidator`
+  ```
+  elements: 'input[type!="hidden"], textarea, select'
+  ignore:   '[readonly]'
+  ```
+
 ##### 1.2.2
   * introduce `JqueryAnimate` plugin, animations based on data attributes
   * prevent `Formslider` from duplicate `ready` event triggering

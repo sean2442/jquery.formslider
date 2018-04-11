@@ -6,6 +6,7 @@ class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
     animationSpeed: 300
     initialProgress: null
     animateHeight: true
+    firstSlideCounts: true
     dontCountOnRoles: [
       'loader'
       'contact'
@@ -81,7 +82,10 @@ class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
     indexFromZero = @countMax - 1 if indexFromZero > @countMax - 1
     indexFromZero = 0 if indexFromZero < 0
 
-    percent = ((indexFromZero + 1) / @countMax) * 100
+    if @config.firstSlideCounts
+      percent = ((indexFromZero + 1) / @countMax) * 100
+    else
+      percent = ((indexFromZero) / @countMax) * 100
 
     if @config.initialProgress && indexFromZero == 0
       percent = @config.initialProgress

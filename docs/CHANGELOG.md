@@ -1,6 +1,7 @@
 # Changelog
 
 ##### WIP: 1.2.3
+  * introduce `firstSlideCounts` for progressbar plugin
   * change default selector for `JqueryInputValidator`
   ```
   elements: 'input[type!="hidden"], textarea, select'

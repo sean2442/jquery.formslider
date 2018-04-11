@@ -414,9 +414,10 @@ Default configuration:
   selectorText: '.progress-text',
   selectorProgress: '.progress',
   animationSpeed: 300,
-  initialProgress: null, // initial bar width in percent
+  initialProgress: null,  // initial bar width in percent
+  firstSlideCounts: true  // weather to count first slide as visited or not
   animateHeight: true,
-  dataKeyForMaxLength: 'progressbar-longest-path', // set count max based on data attribute
+  // dataKeyForMaxLength: 'progressbar-longest-path', // set count max based on data attribute
   dontCountOnRoles: [
     'loader',
     'contact',

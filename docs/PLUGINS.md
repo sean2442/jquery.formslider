@@ -196,8 +196,8 @@ Validates inputs, selects and textareas by html5 attributes (see: [jquery.input.
 ```js
 config:{
   selectors:{
-    elements: 'input, textarea, select',
-    ignore:   ':hidden, [readonly]',
+    elements: 'input[type!="hidden"], textarea, select',
+    ignore:   '[readonly]'
   },
   validateOnEvents: ['leaving.next'],
   formSelector: 'form',  // set to null if ou dont which to listen for natural form submit

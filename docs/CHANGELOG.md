@@ -1,6 +1,6 @@
 # Changelog
 
-##### WIP: 1.2.3
+##### 1.2.3
   * introduce `firstSlideCounts` for progressbar plugin
   * change default selector for `JqueryInputValidator`
   ```

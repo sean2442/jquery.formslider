@@ -658,8 +658,8 @@
 
     JqueryInputValidator.config = {
       selectors: {
-        elements: 'input, textarea, select',
-        ignore: ':hidden, [readonly]'
+        elements: 'input[type!="hidden"], textarea, select',
+        ignore: '[readonly]'
       },
       validateOnEvents: ['leaving.next'],
       formSelector: 'form',
@@ -1307,6 +1307,7 @@
       animationSpeed: 300,
       initialProgress: null,
       animateHeight: true,
+      firstSlideCounts: true,
       dontCountOnRoles: ['loader', 'contact', 'confirmation'],
       hideOnRoles: ['zipcode', 'loader', 'contact', 'confirmation']
     };
@@ -1389,7 +1390,11 @@
       if (indexFromZero < 0) {
         indexFromZero = 0;
       }
-      percent = ((indexFromZero + 1) / this.countMax) * 100;
+      if (this.config.firstSlideCounts) {
+        percent = ((indexFromZero + 1) / this.countMax) * 100;
+      } else {
+        percent = (indexFromZero / this.countMax) * 100;
+      }
       if (this.config.initialProgress && indexFromZero === 0) {
         percent = this.config.initialProgress;
       }
@@ -1634,81 +1639,6 @@
     };
 
     return EqualHeight;
-
-  })(AbstractFormsliderPlugin);
-
-  this.JqueryAnimate = (function(superClass) {
-    extend(JqueryAnimate, superClass);
-
-    function JqueryAnimate() {
-      this.doAnimation = bind(this.doAnimation, this);
-      this.prepareAnimations = bind(this.prepareAnimations, this);
-      this.init = bind(this.init, this);
-      return JqueryAnimate.__super__.constructor.apply(this, arguments);
-    }
-
-    JqueryAnimate.config = {
-      dataPrefix: 'animate',
-      defaultDuration: 600
-    };
-
-    JqueryAnimate.prototype.init = function() {
-      return this.prepareAnimations(this.container);
-    };
-
-    JqueryAnimate.prototype.prepareAnimations = function(context) {
-      var $elements, dataKey;
-      dataKey = "" + this.config.dataPrefix;
-      $elements = $("[data-" + dataKey + "]", context);
-      if (!$elements.length) {
-        return;
-      }
-      return $elements.each((function(_this) {
-        return function(index, element) {
-          var $element, data, event, j, len, ref;
-          $element = $(element);
-          data = $element.data(dataKey);
-          if (!(data != null ? data.on : void 0)) {
-            return;
-          }
-          ref = data.on.split(',');
-          for (j = 0, len = ref.length; j < len; j++) {
-            event = ref[j];
-            _this.on(event.trim(), function(e, current, direction, next) {
-              _this.doAnimation($element, data);
-              if (data != null ? data.once : void 0) {
-                return _this.off(event.trim());
-              }
-            });
-          }
-        };
-      })(this));
-    };
-
-    JqueryAnimate.prototype.doAnimation = function($element, data) {
-      var callback, duration;
-      $element = (data != null ? data.selector : void 0) ? $(data.selector) : $element;
-      duration = data.duration || this.config.defaultDuration;
-      if (data != null ? data.stop : void 0) {
-        $element.stop();
-      }
-      if (data != null ? data.delay : void 0) {
-        $element.delay(data.delay);
-      }
-      if (data != null ? data.css : void 0) {
-        $element.css(data.css);
-      }
-      if (data != null ? data.complete : void 0) {
-        callback = (function(_this) {
-          return function() {
-            return _this.doAnimation($element, data.complete);
-          };
-        })(this);
-      }
-      return $element.animate(data.animate, duration, callback);
-    };
-
-    return JqueryAnimate;
 
   })(AbstractFormsliderPlugin);
 
